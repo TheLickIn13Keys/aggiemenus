@@ -5,6 +5,7 @@ import regex as re
 from tqdm import tqdm
 import json
 
+
 all_dcs = ["Segundo", "Tercero", "Cuarto", "Latitude"]
 
 target_urls = [(dc, f"https://housing.ucdavis.edu/dining/menus/dining-commons/{dc.lower()}/") for dc in all_dcs]
@@ -58,11 +59,11 @@ for dc, parser in tqdm(all_parsers, desc="Scraping data..."):
                             # Check if item is halal
                             if "filterHalal" in filter_tags: halal = True
 
-                            # Check if item is vegan
-                            if "filterVegan" in filter_tags: vegan = True 
+                            # Check if item is vegan (NOTE: if something is vegan it must be vegetarian)
+                            if "filterVegan" in filter_tags: vegan = True; vegetarian = True
                             
-                            # Check if item is vegetarian (NOTE: if something is vegan it must be vegetarian)
-                            if "filterVegetarian" or "filterVegan" in filter_tags: vegetarian = True 
+                            # Check if item is vegetarian 
+                            if "filterVegetarian" in filter_tags: vegetarian = True 
 
                         # Create food item dictionary
                         item = {
@@ -84,7 +85,7 @@ for dc, parser in tqdm(all_parsers, desc="Scraping data..."):
                         if item not in items:
                             items.append(item)
 
-json_data = json.dumps(items, indent=4)
+# json_data = json.dumps(items, indent=4)
 
-with open("data.json", "w") as file:
-    json.dump(items, file)
+# with open("data.json", "w") as file:
+#     json.dump(items, file)
