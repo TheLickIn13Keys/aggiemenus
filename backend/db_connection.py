@@ -1,5 +1,6 @@
 import dc_data_scraper
-from supabase_py import create_client, Client
+import all_dcs
+import supabase
 from dotenv import load_dotenv
 import os
 
@@ -11,13 +12,18 @@ url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
 
 # Create supabase client
-supabase: Client = create_client(url, key)
+client = supabase.create_client(url, key)
 
-# Insert items into the database
-response = supabase.table("food_items").insert(dc_data_scraper.items).execute()
+def fetch_db_dc_menu(dc):
+    """Return the rows that correspond to the selected DC from the DB"""
+    return client.table("food_items").select("*").eq("dc", dc).execute()
 
-# Check the response
-if response['staus_code'] != 201:
-    print("An error as occured while attempting to insert data into the database")
-else:
-    print("Successfully inserted data into the database!")
+def update_db_dc_menu(dc, menu):
+    """Update the DB menu that corresponds to the selected DC"""
+    client.table("food_items").delete().eq("dc", dc).execute()
+    client.table("food_items").insert(menu).execute()
+
+for dc, parser in all_dcs.all_parsers:
+    scraped_menu = dc_data_scraper.scrape_data(dc=dc, parser=parser)
+    update_db_dc_menu(dc, scraped_menu)
+    # dc_menu = fetch_db_dc_menu(dc)
