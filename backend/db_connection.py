@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 import os
 
 # Load variables from .env file
-load_dotenv()
+env_path = os.path.join(os.path.dirname(__file__), "..", ".env") # Loads .env from root
+load_dotenv(env_path)
 
 # Get supabase url and key from .env
 url: str = os.environ.get("SUPABASE_URL")
