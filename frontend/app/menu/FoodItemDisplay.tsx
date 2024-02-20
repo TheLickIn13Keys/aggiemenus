@@ -47,7 +47,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   return (
     <>
       {sections.map((section) => (
-        <div className="flex flex-col px-32">
+        <div key={section} className="flex flex-col px-32">
           <h1 className="p-3 text-2xl">{section}</h1>
           <div className="flex flex-row gap-10 overflow-x-scroll">
             {foodItems
