@@ -2,6 +2,7 @@ from datetime import datetime
 import regex as re
 from tqdm import tqdm
 import json
+import calendar
 
 def scrape_data(dc, parser):
     # List of items
@@ -62,7 +63,7 @@ def scrape_data(dc, parser):
                     # Create food item dictionary
                     item = {
                         "dc": dc,
-                        "date": str(date),
+                        "date": date.weekday(),
                         "meal": meal_name,
                         "section": section_name, 
                         "name": food_name,
