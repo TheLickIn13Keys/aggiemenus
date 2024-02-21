@@ -8,7 +8,7 @@ const NavBar = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
 
   return (
-    <div className="navbar bg-base-100 p-5">
+    <div className="navbar bg-base-100 p-10">
       <div className="navbar-start invisible" />
       <div className="navbar-center">
         {/* Display Davis Menus logo if search button is not clicked */}

@@ -25,7 +25,7 @@ const Selections = ({
   const meals = ["Breakfast", "Lunch", "Dinner"];
 
   return (
-    <div className="flex flex-col px-32 gap-10">
+    <div className="flex flex-col sm:px-32 px-5 gap-10">
       {/* Tabs for DCs */}
       <div className="tabs tabs-boxed">
         {allDCs.map((dc) => (
@@ -40,7 +40,7 @@ const Selections = ({
         ))}
       </div>
       {/* Days of the week */}
-      <div className="tabs tabs-bordered">
+      <div className="tabs tabs-bordered sm:tabs-md tabs-xs">
         {days.map((day, index) => (
           <div
             key={day}
