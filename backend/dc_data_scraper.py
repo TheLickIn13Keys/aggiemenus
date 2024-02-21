@@ -25,7 +25,20 @@ def scrape_data(dc, parser):
             for section in meal.find_next_siblings("h5"):
                 section_name = section.get_text() # Ex: Tomato Grill
                 for food_choices in section.find_next_sibling("ul").find_all("li", class_="trigger"):
-                    food_name = food_choices.find("span").get_text() # Ex: Pancakes
+                    # Name of the food
+                    food_name = food_choices.find("span").get_text()
+
+                    # Food description
+                    description: str = food_choices.find("ul", class_="nutrition").find("p").get_text()
+
+                    is_mismatched = re.match("^:\s+|\s+oz|\s+g", description)
+
+                    if is_mismatched:
+                        description = "None"
+
+                    # Serving size per meal
+                    serving_size = food_choices.find_next("h6", string="Serving Size").find_next_sibling("p").get_text()
+
                     # Amount of calories per meal
                     calories = food_choices.find_next("h6", string="Calories").find_next_sibling("p").get_text()
                     
@@ -64,9 +77,11 @@ def scrape_data(dc, parser):
                     item = {
                         "dc": dc,
                         "date": date.weekday(),
+                        "description": description,
                         "meal": meal_name,
                         "section": section_name, 
                         "name": food_name,
+                        "serving_size": re.sub("^:\s+", "", serving_size),
                         "calories": re.sub("^:\s", "", calories),
                         "fat": re.sub("^:\s", "", fat),
                         "carbs": re.sub("^:\s", "", carbs),

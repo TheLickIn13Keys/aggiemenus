@@ -10,7 +10,7 @@ load_dotenv(env_path)
 
 # Get supabase url and key from .env
 url: str = os.environ.get("SUPABASE_URL")
-key: str = os.environ.get("SUPABASE_KEY")
+key: str = os.environ.get("SUPABASE_ANON_KEY")
 
 # Create supabase client
 client = supabase.create_client(url, key)

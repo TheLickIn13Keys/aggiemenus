@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import FoodItem from "../api/foodItemSchema";
 import supabase from "../api/supabase";
+import FoodItemCard from "./FoodItemCard";
+import FoodItemModal from "./FoodItemModal";
+import NoFoodItems from "./NoFoodItems";
 
 interface Props {
   dc: string;
@@ -12,8 +15,10 @@ interface Props {
 const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [sections, setSections] = useState([""]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // setIsLoading(true);
     const fetchFoodItems = async () => {
       try {
         // Make call to supabase client
@@ -42,50 +47,44 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
 
     // Call function every time dc, day, or meal changes
     fetchFoodItems();
+    setIsLoading(false);
+    console.log(sections);
   }, [dc, day, meal]);
 
   return (
     <>
-      {sections.map((section) => (
-        <div key={section} className="flex flex-col px-32">
-          <h1 className="p-3 text-2xl">{section}</h1>
-          <div className="flex flex-row gap-10 overflow-x-scroll">
-            {foodItems
-              .filter((foodItem) => foodItem.section === section)
-              .map((foodItem) => (
-                <div
-                  key={foodItem.id}
-                  className="card bg-base-200 shadow-xl text-white w-96"
-                >
-                  <div className="card-body">
-                    <h2 className="card-title w-full">{foodItem.name}</h2>
-                    <p className="w-full">Calories: {foodItem.calories} cal</p>
-                    <p className="w-full">Carbs: {foodItem.carbs}g</p>
-                    <p className="w-full">Protein: {foodItem.protein}g</p>
-                    <p className="w-full">Fat: {foodItem.fat}g</p>
-                    <div className="flex flex-row gap-2">
-                      {foodItem.halal ? (
-                        <div className="badge badge-primary badge-outline">
-                          Halal
-                        </div>
-                      ) : null}
-                      {foodItem.vegan ? (
-                        <div className="badge badge-secondary badge-outline">
-                          Vegan
-                        </div>
-                      ) : null}
-                      {foodItem.vegetarian ? (
-                        <div className="badge badge-accent badge-outline">
-                          Vegetarian
-                        </div>
-                      ) : null}
-                    </div>
+      {sections.length !== 0 &&
+        sections.map((section) => (
+          <div key={section} className="flex flex-col sm:px-32 px-12">
+            <h1
+              className={`p-5 badge badge-ghost glass badge-outline text-2xl${
+                isLoading ? "" : ""
+              }`}
+            >
+              {section}
+            </h1>
+            <div className="flex flex-row pt-9 gap-5 overflow-x-scroll">
+              {foodItems
+                .filter((foodItem) => foodItem.section === section)
+                .map((foodItem, index) => (
+                  <div key={foodItem.id}>
+                    {/* Food card / modal to open button */}
+                    <label htmlFor={`food_item_${section}_${index}`}>
+                      <FoodItemCard foodItem={foodItem} isLoading={isLoading} />
+                    </label>
+
+                    {/* Modal */}
+                    <FoodItemModal
+                      foodItem={foodItem}
+                      section={section}
+                      index={index}
+                    />
                   </div>
-                </div>
-              ))}
+                ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      {sections.length === 0 && <NoFoodItems dc={dc} />}
     </>
   );
 };
