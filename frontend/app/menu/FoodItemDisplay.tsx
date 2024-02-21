@@ -49,7 +49,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
     fetchFoodItems();
     setIsLoading(false);
     console.log(sections);
-  }, [dc, day, meal, sections]);
+  }, [dc, day, meal]);
 
   return (
     <>
