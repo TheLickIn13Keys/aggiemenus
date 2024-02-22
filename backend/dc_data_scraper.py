@@ -76,7 +76,7 @@ def scrape_data(dc, parser):
                     # Create food item dictionary
                     item = {
                         "dc": dc,
-                        "date": date.weekday(),
+                        "date": date.weekday(), # Mon = 0, Sun = 6
                         "description": description,
                         "meal": meal_name,
                         "section": section_name, 

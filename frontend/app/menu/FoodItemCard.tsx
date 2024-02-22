@@ -8,9 +8,7 @@ interface Props {
 
 const FoodItemCard = ({ foodItem, isLoading }: Props) => {
   return (
-    <div
-      className={`btn bg-base-200 shadow-xl text-white w-96 h-72 overflow-y-hidden`}
-    >
+    <div className={`btn bg-base-200 shadow-lg w-96 h-72 overflow-y-hidden`}>
       <div className="card-body w-96 gap-3 align-middle">
         <div className="card-title w-full space-x-2 flex justify-center">
           <h2>{foodItem.name}</h2>
