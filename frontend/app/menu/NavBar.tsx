@@ -23,7 +23,7 @@ const NavBar = () => {
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered w-[800px]"
+            className="input input-bordered sm:w-[800px] w-lg"
           />
         </div>
       </div>
