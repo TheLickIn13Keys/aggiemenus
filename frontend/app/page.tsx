@@ -1,4 +1,7 @@
+import { redirect } from "next/navigation";
+
 export default function Home() {
+  redirect("./menu");
   return (
     <>
       <div className="hero min-h-screen bg-gradient-to-r from-black to-primary">
