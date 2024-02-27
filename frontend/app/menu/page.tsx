@@ -2,7 +2,13 @@
 import NavBar from "./NavBar";
 import Selections from "./Selections";
 import FoodItemDisplay from "./FoodItemDisplay";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface Filters {
+  dc: string;
+  day: number;
+  meal: string;
+}
 
 const Menu = () => {
   let today = new Date();
@@ -19,9 +25,13 @@ const Menu = () => {
     meal = "Dinner";
   }
 
-  const [selectedDC, setSelectedDC] = useState("Segundo");
-  const [selectedDay, setSelectedDay] = useState(dayNum);
-  const [selectedMeal, setSelectedMeal] = useState(meal);
+  // Retrieves saved filters (if they exist)
+  const savedFilters: Filters =
+    JSON.parse(sessionStorage.getItem("filters")!) || {};
+
+  const [selectedDC, setSelectedDC] = useState(savedFilters.dc || "Segundo");
+  const [selectedDay, setSelectedDay] = useState(savedFilters.day || dayNum);
+  const [selectedMeal, setSelectedMeal] = useState(savedFilters.meal || meal);
 
   return (
     <div className="space-y-10">

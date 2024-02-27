@@ -48,7 +48,9 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
     // Call function every time dc, day, or meal changes
     fetchFoodItems();
     setIsLoading(false);
-    console.log(sections);
+
+    // Save filters for current session
+    sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
   }, [dc, day, meal]);
 
   return (
