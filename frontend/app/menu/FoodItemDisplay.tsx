@@ -84,6 +84,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
             </div>
           </div>
         ))}
+      {/* Render No Food screen if there are no items at the given time */}
       {sections.length === 0 && <NoFoodItems dc={dc} />}
     </>
   );
