@@ -43,7 +43,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
           new Set(items.map((item) => item.section))
         );
         setSections(uniqueSections);
-        setIsLoading(false);
+        // setIsLoading(false);
       } catch (error: any) {
         console.log("Something went wrong when retrieving the data: ", error);
       }
