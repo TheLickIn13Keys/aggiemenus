@@ -71,6 +71,12 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
             </div>
           </div>
         </div>
+        <label
+          htmlFor={`food_item_${section}_${index}`}
+          className="modal-backdrop"
+        >
+          Close
+        </label>
       </div>
     </div>
   );

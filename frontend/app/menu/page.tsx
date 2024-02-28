@@ -3,6 +3,7 @@ import NavBar from "./NavBar";
 import Selections from "./Selections";
 import FoodItemDisplay from "./FoodItemDisplay";
 import { useEffect, useState } from "react";
+import Footer from "./Footer";
 
 interface Filters {
   dc: string;
@@ -46,6 +47,7 @@ const Menu = () => {
         setSelectedMeal={setSelectedMeal}
       />
       <FoodItemDisplay dc={selectedDC} day={selectedDay} meal={selectedMeal} />
+      <Footer />
     </div>
   );
 };

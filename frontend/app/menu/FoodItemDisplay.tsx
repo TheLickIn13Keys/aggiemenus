@@ -5,6 +5,7 @@ import supabase from "../api/supabase";
 import FoodItemCard from "./FoodItemCard";
 import FoodItemModal from "./FoodItemModal";
 import NoFoodItems from "./NoFoodItems";
+import SkeletonCard from "./SkeletonCard";
 
 interface Props {
   dc: string;
@@ -15,13 +16,15 @@ interface Props {
 const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [sections, setSections] = useState([""]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const loadingSkeletons = [1, 2, 3];
 
   useEffect(() => {
     // setIsLoading(true);
     const fetchFoodItems = async () => {
       try {
         // Make call to supabase client
+        setIsLoading(true);
         const { data, error } = await supabase
           .from("food_items")
           .select("*")
@@ -40,6 +43,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
           new Set(items.map((item) => item.section))
         );
         setSections(uniqueSections);
+        setIsLoading(false);
       } catch (error: any) {
         console.log("Something went wrong when retrieving the data: ", error);
       }
@@ -65,6 +69,13 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
             >
               {section}
             </h1>
+            {isLoading && (
+              <div className="flex flex-row pt-9 gap-5 overflow-x-scroll">
+                {loadingSkeletons.map(() => (
+                  <SkeletonCard />
+                ))}
+              </div>
+            )}
             <div className="flex flex-row pt-9 gap-5 overflow-x-scroll">
               {foodItems
                 .filter((foodItem) => foodItem.section === section)
