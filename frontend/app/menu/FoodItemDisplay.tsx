@@ -54,7 +54,9 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
     setIsLoading(false);
 
     // Save filters for current session
-    sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
+    if (typeof window !== undefined) {
+      sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
+    }
   }, [dc, day, meal]);
 
   return (
