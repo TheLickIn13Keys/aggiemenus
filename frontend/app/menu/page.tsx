@@ -26,13 +26,11 @@ const Menu = () => {
     meal = "Dinner";
   }
 
-  let savedFilters: Filters;
+  let savedFilters: Filters = { dc: "Segundo", day: dayNum, meal: meal };
 
   // Retrieves saved filters (if they exist)
   if (typeof window !== "undefined") {
     savedFilters = JSON.parse(sessionStorage.getItem("filters")!);
-  } else {
-    savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
   }
 
   const [selectedDC, setSelectedDC] = useState(savedFilters.dc);
