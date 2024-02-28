@@ -3,10 +3,9 @@ import FoodItem from "../api/foodItemSchema";
 
 interface Props {
   foodItem: FoodItem;
-  isLoading: boolean;
 }
 
-const FoodItemCard = ({ foodItem, isLoading }: Props) => {
+const FoodItemCard = ({ foodItem }: Props) => {
   return (
     <div
       className={`btn bg-base-200 shadow-lg w-72 h-96 sm:w-96 sm:h-72 overflow-y-hidden overflow-x-hidden`}

@@ -71,8 +71,8 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
             </h1>
             {isLoading && (
               <div className="flex flex-row pt-9 gap-5 overflow-x-scroll">
-                {loadingSkeletons.map(() => (
-                  <SkeletonCard />
+                {loadingSkeletons.map((item) => (
+                  <SkeletonCard key={item} />
                 ))}
               </div>
             )}
@@ -83,7 +83,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
                   <div key={foodItem.id}>
                     {/* Food card / modal to open button */}
                     <label htmlFor={`food_item_${section}_${index}`}>
-                      <FoodItemCard foodItem={foodItem} isLoading={isLoading} />
+                      <FoodItemCard foodItem={foodItem} />
                     </label>
 
                     {/* Modal */}

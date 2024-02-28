@@ -26,13 +26,18 @@ const Menu = () => {
     meal = "Dinner";
   }
 
-  // Retrieves saved filters (if they exist)
-  const savedFilters: Filters =
-    JSON.parse(sessionStorage.getItem("filters")!) || {};
+  let savedFilters: Filters;
 
-  const [selectedDC, setSelectedDC] = useState(savedFilters.dc || "Segundo");
-  const [selectedDay, setSelectedDay] = useState(savedFilters.day || dayNum);
-  const [selectedMeal, setSelectedMeal] = useState(savedFilters.meal || meal);
+  // Retrieves saved filters (if they exist)
+  if (typeof window !== "undefined") {
+    savedFilters = JSON.parse(sessionStorage.getItem("filters")!);
+  } else {
+    savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
+  }
+
+  const [selectedDC, setSelectedDC] = useState(savedFilters.dc);
+  const [selectedDay, setSelectedDay] = useState(savedFilters.day);
+  const [selectedMeal, setSelectedMeal] = useState(savedFilters.meal);
 
   return (
     <div className="space-y-10">
