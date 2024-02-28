@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import React, { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
@@ -8,16 +7,19 @@ const NavBar = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
 
   return (
-    <div className="navbar bg-base-100 p-10">
+    <div className="navbar bg-base-100 pt-10">
       <div className="navbar-start invisible" />
-      <div className="navbar-center">
+      <div className="navbar-center flex items-center justify-center">
         {/* Display Davis Menus logo if search button is not clicked */}
-        <Link
-          className={`btn btn-ghost text-4xl ${searchBarOpen ? "hidden" : ""}`}
-          href="/"
-        >
-          Davis Menus
-        </Link>
+        <div className="flex flex-col items-center justify-center">
+          <img
+            src="/navbar.png"
+            alt="Aggie Menus"
+            className={`${
+              searchBarOpen ? "hidden" : ""
+            } size-64 items-cente justify-center`}
+          />
+        </div>
         {/* Display full search bar if search button is not clicked */}
         <div className={`form-control ${!searchBarOpen ? "hidden" : ""}`}>
           <input
@@ -27,7 +29,7 @@ const NavBar = () => {
           />
         </div>
       </div>
-      <div className="navbar-end">
+      <div className="navbar-end invisible">
         <button
           className="btn btn-ghost btn-circle"
           onClick={() => setSearchBarOpen(!searchBarOpen)}

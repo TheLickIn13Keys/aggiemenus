@@ -2,25 +2,37 @@
 import NavBar from "./NavBar";
 import Selections from "./Selections";
 import FoodItemDisplay from "./FoodItemDisplay";
-import supabase from "../api/supabase";
-import { useState } from "react";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import Footer from "./Footer";
 
-interface Props {
-  searchParams: { query: string };
+interface Filters {
+  dc: string;
+  day: number;
+  meal: string;
 }
 
-const Menu = ({ searchParams: { query } }: Props) => {
-  // Redirect for now
-  redirect("./");
+const Menu = () => {
+  let today = new Date();
+  let dayNum = today.getDay() - 1 === -1 ? 6 : today.getDay() - 1; // Accounts for difference in counting days between Python and JS
+  let time = today.getHours();
+  let meal = "Breakfast";
 
-  const [selectedDC, setSelectedDC] = useState("Segundo");
-  const [selectedDay, setSelectedDay] = useState(0);
-  const [selectedMeal, setSelectedMeal] = useState("Breakfast");
+  // Set default meal time
+  if (time >= 0 && time < 12) {
+    meal = "Breakfast";
+  } else if (time >= 12 && time < 17) {
+    meal = "Lunch";
+  } else {
+    meal = "Dinner";
+  }
 
-  // console.log(selectedDC);
-  // console.log(selectedDay);
-  // console.log(selectedMeal);
+  // Retrieves saved filters (if they exist)
+  const savedFilters: Filters =
+    JSON.parse(sessionStorage.getItem("filters")!) || {};
+
+  const [selectedDC, setSelectedDC] = useState(savedFilters.dc || "Segundo");
+  const [selectedDay, setSelectedDay] = useState(savedFilters.day || dayNum);
+  const [selectedMeal, setSelectedMeal] = useState(savedFilters.meal || meal);
 
   return (
     <div className="space-y-10">
@@ -35,6 +47,7 @@ const Menu = ({ searchParams: { query } }: Props) => {
         setSelectedMeal={setSelectedMeal}
       />
       <FoodItemDisplay dc={selectedDC} day={selectedDay} meal={selectedMeal} />
+      <Footer />
     </div>
   );
 };
