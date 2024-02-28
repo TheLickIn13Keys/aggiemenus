@@ -17,7 +17,7 @@ const NavBar = () => {
             alt="Aggie Menus"
             className={`${
               searchBarOpen ? "hidden" : ""
-            } size-64 items-cente justify-center`}
+            } size-64 items-center justify-center`}
           />
         </div>
         {/* Display full search bar if search button is not clicked */}
