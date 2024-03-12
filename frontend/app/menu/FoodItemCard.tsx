@@ -8,7 +8,7 @@ interface Props {
 const FoodItemCard = ({ foodItem }: Props) => {
   return (
     <div
-      className={`btn bg-base-200 shadow-lg w-72 h-96 sm:w-96 sm:h-72 overflow-y-hidden overflow-x-hidden`}
+      className={`btn bg-base-200 shadow-lg w-72 h-96 sm:w-96 sm:h-full overflow-y-hidden overflow-x-hidden`}
     >
       <div className="card-body w-96 gap-3 align-middle">
         <div className="card-title w-full space-x-2 flex justify-center">
@@ -28,7 +28,7 @@ const FoodItemCard = ({ foodItem }: Props) => {
         {/* Short description */}
         <p className="w-full py-3 flex justify-center">
           {foodItem.description !== "None"
-            ? foodItem.description.split(" ").slice(0, 15).join(" ") + "..."
+            ? foodItem.description.split(" ").slice(0, 5).join(" ") + "..."
             : ""}
         </p>
         <div className="flex flex-wrap justify-center items-center gap-2">

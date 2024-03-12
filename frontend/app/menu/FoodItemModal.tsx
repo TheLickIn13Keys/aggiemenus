@@ -43,7 +43,12 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
           </div>
           {/* Short description */}
           <p className="w-full py-3 flex justify-center text-center">
-            {foodItem.description !== "None" ? foodItem.description : ""}
+            {foodItem.description !== "None" && foodItem.description}
+          </p>
+          {/* Allergens */}
+          <p className="w-full py-3 flex justify-center text-center">
+            <p className="font-semibold">Allergens:</p>{" "}
+            {foodItem.allergens.map((allergen) => `${allergen} | `)}
           </p>
           {/* Nutritional facts */}
           <div className="flex flex-wrap justify-center items-center gap-5">
