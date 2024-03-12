@@ -20,43 +20,85 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   const loadingSkeletons = [1, 2, 3];
 
   useEffect(() => {
-    // setIsLoading(true);
+    const abortController = new AbortController();
     const fetchFoodItems = async () => {
+      // try {
+      //   // Make call to supabase client
+      //   setIsLoading(true);
+      //   const { data, error } = await supabase
+      //     .from("food_items")
+      //     .select("*")
+      //     .match({ dc: dc, date: day, meal: meal });
+
+      //   if (error) {
+      //     throw new Error(error.message);
+      //   }
+
+      //   // Get food items from response json
+      //   const items = data as FoodItem[];
+
+      //   setFoodItems(items);
+
+      //   // Get unique sections
+      //   const uniqueSections = Array.from(
+      //     new Set(items.map((item) => item.section))
+      //   );
+
+      //   setSections(uniqueSections);
+
+      //   setIsLoading(false);
+      // } catch (error: any) {
+      //   console.log("Something went wrong when retrieving the data: ", error);
+      //   setIsLoading(false); // Set loading to false even if the fetch fails
+      // }
       try {
-        // Make call to supabase client
-        setIsLoading(true);
-        const { data, error } = await supabase
-          .from("food_items")
-          .select("*")
-          .match({ dc: dc, date: day, meal: meal });
+        const res = await fetch("../api/items", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ dc: dc, day: day, meal: meal }),
+          signal: abortController.signal,
+        });
 
-        if (error) {
-          throw new Error(error.message);
+        if (!res.ok) {
+          throw Error("Network response not ok");
         }
-
         // Get food items from response json
-        const items = data as FoodItem[];
+        const responseData = await res.json();
+        const items = responseData as FoodItem[];
+
         setFoodItems(items);
 
         // Get unique sections
         const uniqueSections = Array.from(
           new Set(items.map((item) => item.section))
         );
+
         setSections(uniqueSections);
-        // setIsLoading(false);
+
+        setIsLoading(false);
       } catch (error: any) {
-        console.log("Something went wrong when retrieving the data: ", error);
+        if (error.name === "AbortError") {
+          console.log("Fetch aborted");
+        } else {
+          console.log("Fetch error: ", error);
+        }
       }
     };
 
     // Call function every time dc, day, or meal changes
     fetchFoodItems();
-    setIsLoading(false);
 
-    // Save filters for current session
-    if (typeof window !== undefined) {
-      sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
-    }
+    // Cleanup function
+    return () => {
+      // Save filters for current session
+      if (typeof window !== undefined) {
+        sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
+      }
+
+      abortController.abort();
+    };
   }, [dc, day, meal]);
 
   return (
