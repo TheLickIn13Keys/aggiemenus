@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { cache, useEffect, useState } from "react";
 import FoodItem from "../api/foodItemSchema";
 import supabase from "../api/supabase";
 import FoodItemCard from "./FoodItemCard";
@@ -22,35 +22,6 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   useEffect(() => {
     const abortController = new AbortController();
     const fetchFoodItems = async () => {
-      // try {
-      //   // Make call to supabase client
-      //   setIsLoading(true);
-      //   const { data, error } = await supabase
-      //     .from("food_items")
-      //     .select("*")
-      //     .match({ dc: dc, date: day, meal: meal });
-
-      //   if (error) {
-      //     throw new Error(error.message);
-      //   }
-
-      //   // Get food items from response json
-      //   const items = data as FoodItem[];
-
-      //   setFoodItems(items);
-
-      //   // Get unique sections
-      //   const uniqueSections = Array.from(
-      //     new Set(items.map((item) => item.section))
-      //   );
-
-      //   setSections(uniqueSections);
-
-      //   setIsLoading(false);
-      // } catch (error: any) {
-      //   console.log("Something went wrong when retrieving the data: ", error);
-      //   setIsLoading(false); // Set loading to false even if the fetch fails
-      // }
       try {
         const res = await fetch("../api/items", {
           method: "POST",
@@ -77,6 +48,11 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
 
         setSections(uniqueSections);
 
+        // Save filters for current session
+        // if (typeof window !== undefined) {
+        //   sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
+        // }
+
         setIsLoading(false);
       } catch (error: any) {
         if (error.name === "AbortError") {
@@ -92,11 +68,6 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
 
     // Cleanup function
     return () => {
-      // Save filters for current session
-      if (typeof window !== undefined) {
-        sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
-      }
-
       abortController.abort();
     };
   }, [dc, day, meal]);
@@ -107,7 +78,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
         sections.map((section) => (
           <div key={section} className="flex flex-col sm:px-32 px-12">
             <h1
-              className={`p-5 badge badge-ghost glass badge-outline text-2xl${
+              className={`p-5 badge badge-ghost badge-outline text-2xl${
                 isLoading ? "" : ""
               }`}
             >

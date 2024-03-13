@@ -28,9 +28,9 @@ const Selections = ({
     <div className="flex flex-col sm:px-32 px-5 gap-10">
       {/* Tabs for DCs */}
       <div className="tabs tabs-boxed">
-        {allDCs.map((dc) => (
+        {allDCs.map((dc, index) => (
           <div
-            key={dc}
+            key={index}
             role="tab"
             className={`tab ${selectedDC === dc ? "tab-active" : ""}`}
             onClick={() => setSelectedDC(dc)}

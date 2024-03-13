@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import FoodItem from "../api/foodItemSchema";
 
@@ -46,10 +47,10 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
             {foodItem.description !== "None" && foodItem.description}
           </p>
           {/* Allergens */}
-          <p className="w-full py-3 flex justify-center text-center">
+          <div className="w-full py-3 flex justify-center text-center">
             <p className="font-semibold">Allergens:</p>{" "}
             {foodItem.allergens.map((allergen) => `${allergen} | `)}
-          </p>
+          </div>
           {/* Nutritional facts */}
           <div className="flex flex-wrap justify-center items-center gap-5">
             <div className="flex flex-col justify-center items-center gap-2">
