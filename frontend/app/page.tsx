@@ -21,7 +21,7 @@ export default function Home() {
               className="btn btn-primary btn-lg text-white font-semibold"
               href={"/menu"}
             >
-              Menu
+              Go to Menu
             </Link>
           </div>
         </div>
