@@ -9,75 +9,78 @@ import SkeletonCard from "./SkeletonCard";
 
 interface Props {
   dc: string;
-  day: string;
-  meal: string;
+  foodItems: FoodItem[];
+  sections: string[];
+  isLoading: boolean;
 }
 
-const FoodItemDisplay = ({ dc, day, meal }: Props) => {
-  const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
-  const [sections, setSections] = useState([""]);
-  const [isLoading, setIsLoading] = useState(false);
+const FoodItemDisplay = ({ dc, foodItems, sections, isLoading }: Props) => {
   const loadingSkeletons = [1, 2, 3];
 
-  useEffect(() => {
-    setIsLoading(true);
-    const abortController = new AbortController();
-    const fetchFoodItems = async () => {
-      try {
-        const res = await fetch("../api/items", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ dc: dc, day: day, meal: meal }),
-          signal: abortController.signal,
-        });
+  // const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
+  // const [sections, setSections] = useState([""]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const loadingSkeletons = [1, 2, 3];
 
-        if (!res.ok) {
-          throw Error("Network response not ok");
-        }
-        // Get food items from response json
-        const responseData = await res.json();
-        const items = responseData as FoodItem[];
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   const abortController = new AbortController();
+  //   const fetchFoodItems = async () => {
+  //     try {
+  //       const res = await fetch("../api/items", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ dc: dc, day: day, meal: meal }),
+  //         signal: abortController.signal,
+  //       });
 
-        setFoodItems(items);
+  //       if (!res.ok) {
+  //         throw Error("Network response not ok");
+  //       }
+  //       // Get food items from response json
+  //       const responseData = await res.json();
+  //       const items = responseData as FoodItem[];
 
-        // Get unique sections
-        const uniqueSections = Array.from(
-          new Set(items.map((item) => item.section))
-        );
+  //       setFoodItems(items);
 
-        setSections(uniqueSections);
+  //       // Get unique sections
+  //       const uniqueSections = Array.from(
+  //         new Set(items.map((item) => item.section))
+  //       );
 
-        // Save filters for current session
-        // if (typeof window !== undefined) {
-        //   sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
-        // }
+  //       setSections(uniqueSections);
 
-        setIsLoading(false);
-      } catch (error: any) {
-        if (error.name === "AbortError") {
-          console.log("Fetch aborted");
-        } else {
-          console.log("Fetch error: ", error);
-        }
-      }
-    };
+  //       // Save filters for current session
+  //       // if (typeof window !== undefined) {
+  //       //   sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
+  //       // }
 
-    // Call function every time dc, day, or meal changes
-    fetchFoodItems();
+  //       setIsLoading(false);
+  //     } catch (error: any) {
+  //       if (error.name === "AbortError") {
+  //         console.log("Fetch aborted");
+  //       } else {
+  //         console.log("Fetch error: ", error);
+  //       }
+  //     }
+  //   };
 
-    // Cleanup function
-    return () => {
-      abortController.abort();
-    };
-  }, [dc, day, meal]);
+  //   // Call function every time dc, day, or meal changes
+  //   fetchFoodItems();
+
+  //   // Cleanup function
+  //   return () => {
+  //     abortController.abort();
+  //   };
+  // }, [dc, day, meal]);
 
   return (
     <>
       {sections.length !== 0 &&
-        sections.map((section) => (
-          <div key={section} className="flex flex-col sm:px-32 px-12">
+        sections.map((section, index) => (
+          <div key={index} className="flex flex-col sm:px-32 px-12">
             <h1
               className={`p-5 badge badge-ghost badge-outline text-2xl${
                 isLoading ? "skeleton w-40" : ""
