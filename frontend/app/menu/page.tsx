@@ -13,45 +13,45 @@ interface Filters {
 }
 
 const Menu = () => {
-  const [selectedDC, setSelectedDC] = useState("");
-  const [selectedDay, setSelectedDay] = useState("");
-  const [selectedMeal, setSelectedMeal] = useState("");
+  const [selectedDC, setSelectedDC] = useState("Segundo");
+  const [selectedDay, setSelectedDay] = useState("0");
+  const [selectedMeal, setSelectedMeal] = useState("Breakfast");
 
-  // Recalculate day and meal upon reload
-  useEffect(() => {
-    let today = new Date();
-    let dayNum = String(today.getDay() - 1 === -1 ? 6 : today.getDay() - 1); // Accounts for difference in counting days between Python and JS
-    let time = today.getHours();
-    let meal = "Breakfast";
+  // // Recalculate day and meal upon reload
+  // useEffect(() => {
+  //   let today = new Date();
+  //   let dayNum = String(today.getDay() - 1 === -1 ? 6 : today.getDay() - 1); // Accounts for difference in counting days between Python and JS
+  //   let time = today.getHours();
+  //   let meal = "Breakfast";
 
-    // Set default meal time
-    if (time >= 0 && time < 12) {
-      meal = "Breakfast";
-    } else if (time >= 12 && time < 17) {
-      meal = "Lunch";
-    } else {
-      meal = "Dinner";
-    }
+  //   // Set default meal time
+  //   if (time >= 0 && time < 12) {
+  //     meal = "Breakfast";
+  //   } else if (time >= 12 && time < 17) {
+  //     meal = "Lunch";
+  //   } else {
+  //     meal = "Dinner";
+  //   }
 
-    // let savedFilters: Filters;
+  //   // let savedFilters: Filters;
 
-    // Retrieves saved filters (if they exist)
-    // if (typeof window !== "undefined") {
-    //   const filtersFromStorage = sessionStorage.getItem("filters");
-    //   if (filtersFromStorage) {
-    //     savedFilters = JSON.parse(filtersFromStorage);
-    //   } else {
-    //     savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
-    //   }
-    // } else {
-    //   savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
-    // }
+  //   // Retrieves saved filters (if they exist)
+  //   // if (typeof window !== "undefined") {
+  //   //   const filtersFromStorage = sessionStorage.getItem("filters");
+  //   //   if (filtersFromStorage) {
+  //   //     savedFilters = JSON.parse(filtersFromStorage);
+  //   //   } else {
+  //   //     savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
+  //   //   }
+  //   // } else {
+  //   //   savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
+  //   // }
 
-    // Set all fields based off of filter results
-    setSelectedDC("Segundo");
-    setSelectedDay(dayNum);
-    setSelectedMeal(meal);
-  }, []);
+  //   // Set all fields based off of filter results
+  //   setSelectedDC("Segundo");
+  //   setSelectedDay(dayNum);
+  //   setSelectedMeal(meal);
+  // }, []);
 
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [sections, setSections] = useState([""]);
