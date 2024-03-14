@@ -24,7 +24,7 @@ const Menu = ({ searchParams: { query } }: Props) => {
   // console.log(dc);
 
   const [selectedDC, setSelectedDC] = useState("Segundo");
-  const [selectedDay, setSelectedDay] = useState(0);
+  const [selectedDay, setSelectedDay] = useState("0");
   const [selectedMeal, setSelectedMeal] = useState("Breakfast");
 
   // console.log(selectedDC);

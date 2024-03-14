@@ -8,7 +8,7 @@ import NoFoodItems from "./NoFoodItems";
 
 interface Props {
   dc: string;
-  day: number;
+  day: string;
   meal: string;
 }
 
