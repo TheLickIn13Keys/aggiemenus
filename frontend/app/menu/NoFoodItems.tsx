@@ -7,13 +7,19 @@ interface Props {
 
 const NoFoodItems = ({ dc }: Props) => {
   return (
-    <div className="flex flex-col justify-center items-center px-32 gap-5">
+    <div className="flex flex-col justify-center items-center gap-5">
       <h1 className="text-5xl text-primary font-semibold">Sorry!</h1>
-      <p className="text-xl">
+      <p className="text-xl text-center sm:px-32 px-12">
         It appears that {dc} isn&apos;t serving food at this time... please try
         another day!
       </p>
-      <img src="/../icon.png" alt="Cow chef" />
+      <Image
+        src="/../icon.png"
+        alt="Cow chef"
+        width={500}
+        height={500}
+        className="sm:size-96 size-64 items-center justify-center"
+      />
     </div>
   );
 };
