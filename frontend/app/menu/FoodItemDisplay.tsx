@@ -15,40 +15,61 @@ interface Props {
 const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [sections, setSections] = useState([""]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const loadingSkeletons = [1, 2, 3];
 
   useEffect(() => {
-    // setIsLoading(true);
+    setIsLoading(true);
+    const abortController = new AbortController();
     const fetchFoodItems = async () => {
       try {
-        // Make call to supabase client
-        const { data, error } = await supabase
-          .from("food_items")
-          .select("*")
-          .match({ dc: dc, date: day, meal: meal });
+        const res = await fetch("../api/items", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ dc: dc, day: day, meal: meal }),
+          signal: abortController.signal,
+        });
 
-        if (error) {
-          throw new Error(error.message);
+        if (!res.ok) {
+          throw Error("Network response not ok");
         }
-
         // Get food items from response json
-        const items = data as FoodItem[];
+        const responseData = await res.json();
+        const items = responseData as FoodItem[];
+
         setFoodItems(items);
 
         // Get unique sections
         const uniqueSections = Array.from(
           new Set(items.map((item) => item.section))
         );
+
         setSections(uniqueSections);
+
+        // Save filters for current session
+        // if (typeof window !== undefined) {
+        //   sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
+        // }
+
+        setIsLoading(false);
       } catch (error: any) {
-        console.log("Something went wrong when retrieving the data: ", error);
+        if (error.name === "AbortError") {
+          console.log("Fetch aborted");
+        } else {
+          console.log("Fetch error: ", error);
+        }
       }
     };
 
     // Call function every time dc, day, or meal changes
     fetchFoodItems();
-    setIsLoading(false);
-    console.log(sections);
+
+    // Cleanup function
+    return () => {
+      abortController.abort();
+    };
   }, [dc, day, meal]);
 
   return (
