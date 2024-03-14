@@ -9,7 +9,7 @@ import SkeletonCard from "./SkeletonCard";
 
 interface Props {
   dc: string;
-  day: number;
+  day: string;
   meal: string;
 }
 
@@ -20,6 +20,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   const loadingSkeletons = [1, 2, 3];
 
   useEffect(() => {
+    setIsLoading(true);
     const abortController = new AbortController();
     const fetchFoodItems = async () => {
       try {
@@ -79,10 +80,10 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
           <div key={section} className="flex flex-col sm:px-32 px-12">
             <h1
               className={`p-5 badge badge-ghost badge-outline text-2xl${
-                isLoading ? "" : ""
+                isLoading ? "skeleton w-40" : ""
               }`}
             >
-              {section}
+              {!isLoading && section}
             </h1>
             {isLoading && (
               <div className="flex flex-row pt-9 gap-5 overflow-x-scroll">

@@ -4,8 +4,8 @@ import React from "react";
 interface Props {
   selectedDC: string;
   setSelectedDC: (dc: string) => void;
-  selectedDay: number;
-  setSelectedDay: (day: number) => void;
+  selectedDay: string;
+  setSelectedDay: (day: string) => void;
   selectedMeal: string;
   setSelectedMeal: (meal: string) => void;
 }
@@ -45,8 +45,10 @@ const Selections = ({
           <div
             key={day}
             role="tab"
-            className={`tab ${selectedDay === index ? "tab-active" : ""}`}
-            onClick={() => setSelectedDay(index)}
+            className={`tab ${
+              selectedDay === String(index) ? "tab-active" : ""
+            }`}
+            onClick={() => setSelectedDay(String(index))}
           >
             {day}
           </div>

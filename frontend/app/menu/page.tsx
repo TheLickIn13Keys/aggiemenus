@@ -7,19 +7,19 @@ import Footer from "./Footer";
 
 interface Filters {
   dc: string;
-  day: number;
+  day: string;
   meal: string;
 }
 
 const Menu = () => {
   const [selectedDC, setSelectedDC] = useState("");
-  const [selectedDay, setSelectedDay] = useState(-1);
+  const [selectedDay, setSelectedDay] = useState("");
   const [selectedMeal, setSelectedMeal] = useState("");
 
   // Recalculate day and meal upon reload
   useEffect(() => {
     let today = new Date();
-    let dayNum = today.getDay() - 1 === -1 ? 6 : today.getDay() - 1; // Accounts for difference in counting days between Python and JS
+    let dayNum = String(today.getDay() - 1 === -1 ? 6 : today.getDay() - 1); // Accounts for difference in counting days between Python and JS
     let time = today.getHours();
     let meal = "Breakfast";
 
