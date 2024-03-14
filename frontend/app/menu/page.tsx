@@ -47,7 +47,7 @@ const Menu = () => {
     // }
 
     // Set all fields based off of filter results
-    // setSelectedDC(savedFilters.dc);
+    setSelectedDC("Segundo");
     setSelectedDay(dayNum);
     setSelectedMeal(meal);
   }, []);
