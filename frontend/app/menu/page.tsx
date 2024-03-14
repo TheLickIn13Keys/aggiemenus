@@ -59,7 +59,7 @@ const Menu = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const abortController = new AbortController();
+    // const abortController = new AbortController();
     const fetchFoodItems = async () => {
       try {
         const res = await fetch("../api/items", {
@@ -72,7 +72,7 @@ const Menu = () => {
             day: selectedDay,
             meal: selectedMeal,
           }),
-          signal: abortController.signal,
+          // signal: abortController.signal,
         });
 
         if (!res.ok) {
@@ -98,11 +98,11 @@ const Menu = () => {
 
         setIsLoading(false);
       } catch (error: any) {
-        if (error.name === "AbortError") {
-          console.log("Fetch aborted");
-        } else {
-          console.log("Fetch error: ", error);
-        }
+        // if (error.name === "AbortError") {
+        // console.log("Fetch aborted");
+        // } else {
+        console.log("Fetch error: ", error);
+        // }
       }
     };
 
@@ -111,7 +111,7 @@ const Menu = () => {
 
     // Cleanup function
     return () => {
-      abortController.abort();
+      // abortController.abort();
     };
   }, [selectedDC, selectedDay, selectedMeal]);
 
