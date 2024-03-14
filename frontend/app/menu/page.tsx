@@ -12,37 +12,45 @@ interface Filters {
 }
 
 const Menu = () => {
-  let today = new Date();
-  let dayNum = today.getDay() - 1 === -1 ? 6 : today.getDay() - 1; // Accounts for difference in counting days between Python and JS
-  let time = today.getHours();
-  let meal = "Breakfast";
+  const [selectedDC, setSelectedDC] = useState("");
+  const [selectedDay, setSelectedDay] = useState(-1);
+  const [selectedMeal, setSelectedMeal] = useState("");
 
-  // Set default meal time
-  if (time >= 0 && time < 12) {
-    meal = "Breakfast";
-  } else if (time >= 12 && time < 17) {
-    meal = "Lunch";
-  } else {
-    meal = "Dinner";
-  }
+  // Recalculate day and meal upon reload
+  useEffect(() => {
+    let today = new Date();
+    let dayNum = today.getDay() - 1 === -1 ? 6 : today.getDay() - 1; // Accounts for difference in counting days between Python and JS
+    let time = today.getHours();
+    let meal = "Breakfast";
 
-  let savedFilters: Filters;
+    // Set default meal time
+    if (time >= 0 && time < 12) {
+      meal = "Breakfast";
+    } else if (time >= 12 && time < 17) {
+      meal = "Lunch";
+    } else {
+      meal = "Dinner";
+    }
 
-  // Retrieves saved filters (if they exist)
-  // if (typeof window !== "undefined") {
-  //   const filtersFromStorage = sessionStorage.getItem("filters");
-  //   if (filtersFromStorage) {
-  //     savedFilters = JSON.parse(filtersFromStorage);
-  //   } else {
-  //     savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
-  //   }
-  // } else {
-  //   savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
-  // }
+    let savedFilters: Filters;
 
-  const [selectedDC, setSelectedDC] = useState("Segundo");
-  const [selectedDay, setSelectedDay] = useState(dayNum);
-  const [selectedMeal, setSelectedMeal] = useState(meal);
+    // Retrieves saved filters (if they exist)
+    if (typeof window !== "undefined") {
+      const filtersFromStorage = sessionStorage.getItem("filters");
+      if (filtersFromStorage) {
+        savedFilters = JSON.parse(filtersFromStorage);
+      } else {
+        savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
+      }
+    } else {
+      savedFilters = { dc: "Segundo", day: dayNum, meal: meal };
+    }
+
+    // Set all fields based off of filter results
+    setSelectedDC(savedFilters.dc);
+    setSelectedDay(savedFilters.day);
+    setSelectedMeal(savedFilters.meal);
+  }, []);
 
   return (
     <div className="space-y-10">
