@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Davis Menus",
+  title: "Aggie Menus",
   description: "A website to help you find your next meal at UC Davis",
   icons: { icon: "/icon.svg" },
 };

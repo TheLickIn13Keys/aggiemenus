@@ -16,6 +16,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [sections, setSections] = useState([""]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedSection, setSelectedSection] = useState<number | null>(null);
   const loadingSkeletons = [1, 2, 3];
 
   useEffect(() => {
@@ -72,19 +73,36 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
     };
   }, [dc, day, meal]);
 
+  const handleAccordionClick = (curNumber: number) => {
+    if (selectedSection === curNumber) {
+      setSelectedSection(null);
+    } else {
+      setSelectedSection(curNumber);
+    }
+  };
+
   return (
-    <>
+    <div className="px-32">
       {sections.length !== 0 &&
-        sections.map((section) => (
-          <div key={section} className="flex flex-col sm:px-32 px-12">
-            <h1
-              className={`p-5 badge badge-ghost glass badge-outline text-2xl${
-                isLoading ? "" : ""
-              }`}
-            >
-              {section}
-            </h1>
-            <div className="flex flex-row pt-9 gap-5 overflow-x-scroll">
+        sections.map((section, curSection) => (
+          <div
+            key={section}
+            className="collapse collapse-arrow"
+            onClick={() => handleAccordionClick(curSection)}
+          >
+            {/* Radio btn */}
+            <input
+              type="radio"
+              name="sections"
+              checked={selectedSection === curSection}
+              readOnly
+              className="hover:cursor-pointer"
+            />
+            {/* Title */}
+            <div className="collapse-title text-xl font-medium">{section}</div>
+            {/* Content div */}
+            <div className={`grid grid-cols-3 pt-9 gap-5 collapse-content`}>
+              {/* Content */}
               {foodItems
                 .filter((foodItem) => foodItem.section === section)
                 .map((foodItem, index) => (
@@ -103,10 +121,42 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
                   </div>
                 ))}
             </div>
+
+            {/* <input type="radio" name="sections" />
+            <div
+              className={`p-5 collapse-title text-xl font-medium${
+                isLoading ? "" : ""
+              }`}
+            >
+              {section}
+            </div>
+            <div
+              className={`flex flex-col pt-9 gap-5 collapse-content ${
+                selectedSection === index ? "collapse-open" : "collapse-close"
+              }`}
+            >
+              {foodItems
+                .filter((foodItem) => foodItem.section === section)
+                .map((foodItem, index) => (
+                  <div key={foodItem.id}> */}
+            {/* Food card / modal to open button */}
+            {/* <label htmlFor={`food_item_${section}_${index}`}>
+                      <FoodItemCard foodItem={foodItem} isLoading={isLoading} />
+                    </label> */}
+
+            {/* Modal */}
+            {/* <FoodItemModal
+                      foodItem={foodItem}
+                      section={section}
+                      index={index}
+                    />
+                  </div>
+                ))}
+            </div> */}
           </div>
         ))}
       {sections.length === 0 && <NoFoodItems dc={dc} />}
-    </>
+    </div>
   );
 };
 

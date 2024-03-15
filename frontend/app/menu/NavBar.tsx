@@ -16,7 +16,7 @@ const NavBar = () => {
           className={`btn btn-ghost text-4xl ${searchBarOpen ? "hidden" : ""}`}
           href="/"
         >
-          Davis Menus
+          Aggie Menus
         </Link>
         {/* Display full search bar if search button is not clicked */}
         <div className={`form-control ${!searchBarOpen ? "hidden" : ""}`}>
@@ -33,11 +33,11 @@ const NavBar = () => {
           onClick={() => setSearchBarOpen(!searchBarOpen)}
         >
           {/* If search bar is closed, display search icon. Otherwise, display 'X' icon */}
-          {!searchBarOpen ? (
+          {/* {!searchBarOpen ? (
             <IoIosSearch size="24" />
           ) : (
             <IoCloseOutline size="24" />
-          )}
+          )} */}
         </button>
       </div>
     </div>
