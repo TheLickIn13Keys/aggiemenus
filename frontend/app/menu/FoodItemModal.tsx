@@ -31,13 +31,20 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
             <h2 className="text-2xl font-semibold">{foodItem.name}</h2>
             <div className="flex flex-row gap-3">
               {foodItem.halal ? (
-                <div className="badge badge-primary badge-outline">H</div>
+                <div className="badge badge-primary badge-outline">Halal</div>
               ) : null}
               {foodItem.vegan ? (
-                <div className="badge badge-accent badge-outline">V</div>
+                <div className="badge badge-accent badge-outline">Vegan</div>
               ) : null}
+              {/* Vegetarian badge will be hidden if meal is vegan */}
               {foodItem.vegetarian ? (
-                <div className="badge badge-accent badge-outline">Veg</div>
+                <div
+                  className={`badge badge-accent badge-outline ${
+                    foodItem.vegan && "hidden"
+                  }`}
+                >
+                  Vegetarian
+                </div>
               ) : null}
             </div>
           </div>
@@ -59,18 +66,24 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="badge badge-primary font-semibold">Carbs</div>
-              {foodItem.carbs}g
+              {foodItem.carbs} {foodItem.carbs != "N/A" && "g"}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="badge badge-primary font-semibold">Protein</div>
-              {foodItem.protein}g
+              {foodItem.protein} {foodItem.protein != "N/A" && "g"}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="badge badge-primary font-semibold">Fat</div>
-              {foodItem.fat}g
+              {foodItem.fat} {foodItem.fat != "N/A" && "g"}
             </div>
           </div>
         </div>
+        <label
+          htmlFor={`food_item_${section}_${index}`}
+          className="modal-backdrop"
+        >
+          Close
+        </label>
       </div>
     </div>
   );

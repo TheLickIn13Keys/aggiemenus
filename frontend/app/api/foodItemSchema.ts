@@ -7,10 +7,10 @@ interface FoodItem {
   section: string; // Depends on DC, but Tomato Grill, Bistro, etc
   day: string;
   serving_size: string;
-  calories: number;
-  fat: number;
-  protein: number;
-  carbs: number;
+  calories: string;
+  fat: string;
+  protein: string;
+  carbs: string;
   allergens: string[];
   vegetarian: boolean;
   vegan: boolean;

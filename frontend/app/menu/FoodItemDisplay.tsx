@@ -19,6 +19,9 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   const [selectedSection, setSelectedSection] = useState<number | null>(null);
   const loadingSkeletons = [1, 2, 3];
 
+  // Sets a minimum timeout for the fetch request to resolve (for a smoother user experience)
+  const minTimeout = new Promise((resolve: any) => setTimeout(resolve, 800));
+
   useEffect(() => {
     setIsLoading(true);
     const abortController = new AbortController();
@@ -33,11 +36,13 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
           signal: abortController.signal,
         });
 
-        if (!res.ok) {
+        const [_, fetchResult] = await Promise.all([minTimeout, res]);
+
+        if (!fetchResult.ok) {
           throw Error("Network response not ok");
         }
         // Get food items from response json
-        const responseData = await res.json();
+        const responseData = await fetchResult.json();
         const items = responseData as FoodItem[];
 
         setFoodItems(items);
@@ -81,8 +86,12 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
     }
   };
 
-  return (
-    <div className="px-32">
+  return isLoading ? (
+    <div className="flex flex-col items-center align-middle justify-center">
+      <span className="loading loading-spinner loading-lg"></span>
+    </div>
+  ) : (
+    <div className="sm:px-32">
       {sections.length !== 0 &&
         sections.map((section, curSection) => (
           <div
@@ -101,12 +110,17 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
             {/* Title */}
             <div className="collapse-title text-xl font-medium">{section}</div>
             {/* Content div */}
-            <div className={`grid grid-cols-3 pt-9 gap-5 collapse-content`}>
+            <div
+              className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 pt-5 gap-5 collapse-content`}
+            >
               {/* Content */}
               {foodItems
                 .filter((foodItem) => foodItem.section === section)
                 .map((foodItem, index) => (
-                  <div key={foodItem.id}>
+                  <div
+                    key={foodItem.id}
+                    className="flex flex-col justify-center"
+                  >
                     {/* Food card / modal to open button */}
                     <label htmlFor={`food_item_${section}_${index}`}>
                       <FoodItemCard foodItem={foodItem} isLoading={isLoading} />
