@@ -87,7 +87,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   };
 
   return isLoading ? (
-    <div className="flex flex-col items-center align-middle justify-center">
+    <div className="flex flex-col items-center align-middle justify-center py-60">
       <span className="loading loading-spinner loading-lg"></span>
     </div>
   ) : (

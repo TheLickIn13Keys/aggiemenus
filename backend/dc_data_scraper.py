@@ -1,13 +1,9 @@
 from datetime import datetime
 import regex as re
 from tqdm import tqdm
-import json
-import calendar
+
 
 def scrape_data(dc, parser):
-    # List of items
-    items = []
-
     # Parsing logic
     for i in tqdm(range(1, 8), desc=f"Parsing data from {dc}"):
         day = parser.find(id=f"tab{i}content")
@@ -73,14 +69,13 @@ def scrape_data(dc, parser):
                         # Check if item is vegetarian 
                         if "filterVegetarian" in filter_tags: vegetarian = True 
 
-                    # Create food item dictionary
-                    item = {
-                        "dc": dc,
-                        "date": date.weekday(), # Mon = 0, Sun = 6
-                        "description": description,
-                        "meal": meal_name,
-                        "section": section_name, 
+                    # We split the info we scraped into 2 sections: common_item_info and current_menu_info
+                        # common_item_info contains information that will be inserted into the common_items table
+                        # current_menu_info contains information that will be inserted into the current_menu table
+
+                    common_item_info = {
                         "name": food_name,
+                        "description": description,
                         "serving_size": re.sub("^:\s+", "", serving_size),
                         "calories": re.sub("^:\s", "", calories),
                         "fat": re.sub("^:\s", "", fat),
@@ -92,12 +87,12 @@ def scrape_data(dc, parser):
                         "vegetarian": vegetarian
                     }
 
-                    if item not in items:
-                        items.append(item)
+                    current_item_info = {
+                        "dc": dc,
+                        "date": date.weekday(), # Mon = 0, Sun = 6
+                        "meal": meal_name,
+                        "section": section_name, 
+                    }
 
-
-    # with open(f"{dc}_data.json", "w") as file:
-    #     json.dump(items, file)
-
-    # Return dictionary of food items for the given DC
-    return items
+                    # Yield the scraped item to db_connection.py so we can insert the it into the DB
+                    yield (common_item_info, current_item_info)

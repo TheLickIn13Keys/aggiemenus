@@ -28,19 +28,21 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
           </div>
           {/* Food name and tags  */}
           <div className="w-full space-x-2 gap-5 flex justify-center items-center align-middle">
-            <h2 className="text-2xl font-semibold">{foodItem.name}</h2>
+            <h2 className="text-2xl font-semibold">
+              {foodItem.common_items.name}
+            </h2>
             <div className="flex flex-row gap-3">
-              {foodItem.halal ? (
+              {foodItem.common_items.halal ? (
                 <div className="badge badge-primary badge-outline">Halal</div>
               ) : null}
-              {foodItem.vegan ? (
+              {foodItem.common_items.vegan ? (
                 <div className="badge badge-accent badge-outline">Vegan</div>
               ) : null}
               {/* Vegetarian badge will be hidden if meal is vegan */}
-              {foodItem.vegetarian ? (
+              {foodItem.common_items.vegetarian ? (
                 <div
                   className={`badge badge-accent badge-outline ${
-                    foodItem.vegan && "hidden"
+                    foodItem.common_items.vegan && "hidden"
                   }`}
                 >
                   Vegetarian
@@ -50,7 +52,9 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
           </div>
           {/* Short description */}
           <p className="w-full py-3 flex justify-center text-center">
-            {foodItem.description !== "None" ? foodItem.description : ""}
+            {foodItem.common_items.description !== "None"
+              ? foodItem.common_items.description
+              : ""}
           </p>
           {/* Nutritional facts */}
           <div className="flex flex-wrap justify-center items-center gap-5">
@@ -58,23 +62,26 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
               <div className="badge badge-primary w-[93px] font-semibold">
                 Serving
               </div>
-              {foodItem.serving_size}
+              {foodItem.common_items.serving_size}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="badge badge-primary font-semibold">Calories</div>
-              {foodItem.calories}
+              {foodItem.common_items.calories}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="badge badge-primary font-semibold">Carbs</div>
-              {foodItem.carbs} {foodItem.carbs != "N/A" && "g"}
+              {foodItem.common_items.carbs}{" "}
+              {foodItem.common_items.carbs != "N/A" && "g"}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="badge badge-primary font-semibold">Protein</div>
-              {foodItem.protein} {foodItem.protein != "N/A" && "g"}
+              {foodItem.common_items.protein}{" "}
+              {foodItem.common_items.protein != "N/A" && "g"}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="badge badge-primary font-semibold">Fat</div>
-              {foodItem.fat} {foodItem.fat != "N/A" && "g"}
+              {foodItem.common_items.fat}{" "}
+              {foodItem.common_items.fat != "N/A" && "g"}
             </div>
           </div>
         </div>

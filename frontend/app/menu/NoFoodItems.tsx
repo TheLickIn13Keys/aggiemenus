@@ -7,9 +7,9 @@ interface Props {
 
 const NoFoodItems = ({ dc }: Props) => {
   return (
-    <div className="flex flex-col justify-center items-center px-32 gap-5">
+    <div className="flex flex-col justify-center items-center px-10 sm:px-32 gap-5">
       <h1 className="text-5xl text-primary font-semibold">Sorry!</h1>
-      <p className="text-xl">
+      <p className="text-xl text-center">
         It appears that {dc} isn&apos;t serving food at this time... please try
         another day!
       </p>
