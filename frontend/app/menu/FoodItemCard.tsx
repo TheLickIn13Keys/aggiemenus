@@ -13,21 +13,21 @@ const FoodItemCard = ({ foodItem, isLoading }: Props) => {
     >
       <div className="card-body gap-5 items-start truncate">
         <h2 className="text-2xl items-start max-w-full truncate">
-          {foodItem.name}
+          {foodItem.common_items.name}
         </h2>
         <div className="card-title w-full flex flex-col justify-start items-start">
           <div className="flex flex-row sm:flex-col xl:flex-row gap-2 ">
-            {foodItem.halal ? (
+            {foodItem.common_items.halal ? (
               <div className="badge badge-primary badge-outline">Halal</div>
             ) : null}
-            {foodItem.vegan ? (
+            {foodItem.common_items.vegan ? (
               <div className="badge badge-accent badge-outline">Vegan</div>
             ) : null}
             {/* Vegetarian badge will be hidden if meal is vegan */}
-            {foodItem.vegetarian ? (
+            {foodItem.common_items.vegetarian ? (
               <div
                 className={`badge badge-accent badge-outline ${
-                  foodItem.vegan && "hidden"
+                  foodItem.common_items.vegan && "hidden"
                 }`}
               >
                 Vegetarian
@@ -50,19 +50,22 @@ const FoodItemCard = ({ foodItem, isLoading }: Props) => {
           </div> */}
           <div className="flex flex-col justify-center items-center gap-2">
             <div className="badge badge-primary font-semibold">Cal</div>
-            {foodItem.calories}
+            {foodItem.common_items.calories}
           </div>
           <div className="flex flex-col justify-center items-center gap-2">
             <div className="badge badge-primary font-semibold">Carb</div>
-            {foodItem.carbs} {foodItem.carbs != "N/A" && "g"}
+            {foodItem.common_items.carbs}{" "}
+            {foodItem.common_items.carbs != "N/A" && "g"}
           </div>
           <div className="flex flex-col justify-center items-center gap-2">
             <div className="badge badge-primary font-semibold">Pro</div>
-            {foodItem.protein} {foodItem.protein != "N/A" && "g"}
+            {foodItem.common_items.protein}{" "}
+            {foodItem.common_items.protein != "N/A" && "g"}
           </div>
           <div className="flex flex-col justify-center items-center gap-2">
             <div className="badge badge-primary font-semibold">Fat</div>
-            {foodItem.fat} {foodItem.fat != "N/A" && "g"}
+            {foodItem.common_items.fat}{" "}
+            {foodItem.common_items.fat != "N/A" && "g"}
           </div>
         </div>
       </div>

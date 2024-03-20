@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import supabase from "../supabase";
 
+// Test API functionality
 export async function GET(req: NextRequest) {
   return NextResponse.json({ message: "ok" });
 }
 
+// We use a POST request so that we can include the query parameters in the body
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
@@ -12,8 +14,8 @@ export async function POST(req: NextRequest) {
     // Get data from supabase
     try {
       const { data, error } = await supabase
-        .from("food_items")
-        .select("*")
+        .from("current_menu")
+        .select(`*, common_items ( * )`)
         .eq("dc", body["dc"])
         .eq("date", body["day"])
         .eq("meal", body["meal"]);
