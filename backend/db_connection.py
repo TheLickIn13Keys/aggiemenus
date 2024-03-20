@@ -4,27 +4,52 @@ import supabase
 from dotenv import load_dotenv
 import os
 
-# Load variables from .env file
-env_path = os.path.join(os.path.dirname(__file__), "..", ".env") # Loads .env from root
-load_dotenv(env_path)
+def find_or_create_common_items(item):
+    """Finds item in common_items table, or creates a new item, and returns the id"""
+    # Check if the item exists in the common_items table
+    res = client.table('common_items').select('id', 'name').eq('name', item['name']).execute()
 
-# Get supabase url and key from .env
-url: str = os.environ.get("SUPABASE_URL")
-key: str = os.environ.get("SUPABASE_ANON_KEY")
+    if len(res.data) == 0:
+        # If the item does not exist, insert it
+        item['embedding'] = [0] * 1536 # Replace with actual embedding later @Anish
+        client.table('common_items').insert(item).execute()
 
-# Create supabase client
-client = supabase.create_client(url, key)
-
-def fetch_db_dc_menu(dc):
-    """Return the rows that correspond to the selected DC from the DB"""
-    return client.table("food_items").select("*").eq("dc", dc).execute()
-
-def update_db_dc_menu(dc, menu):
+        # Fetch the data again and return the newly generated id
+        new_res = client.table('common_items').select('id', 'name').eq('name', item['name']).execute()
+        return new_res.data[0]['id']
+    elif len(res.data) == 1:
+        return res.data[0]['id']
+    else:
+        raise ValueError(f'More than one item should not be returned but found {len(res.data)}')
+    
+def update_current_menu(dc, menu):
     """Update the DB menu that corresponds to the selected DC"""
-    client.table("food_items").delete().eq("dc", dc).execute()
-    client.table("food_items").insert(menu).execute()
+    client.table("current_menu").delete().eq("dc", dc).execute()
+    client.table("current_menu").insert(menu).execute()
 
-for dc, parser in all_dcs.all_parsers:
-    scraped_menu = dc_data_scraper.scrape_data(dc=dc, parser=parser)
-    update_db_dc_menu(dc, scraped_menu)
-    # dc_menu = fetch_db_dc_menu(dc)
+if __name__ == '__main__':
+    # Load variables from .env file
+    env_path = os.path.join(os.path.dirname(__file__), "..", ".env") # Loads .env from root
+    load_dotenv(env_path)
+
+    # Get supabase url and key from .env
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_ANON_KEY")
+
+    # Create supabase client
+    client = supabase.create_client(url, key)
+
+    for dc, parser in all_dcs.all_parsers:
+        menu = []
+        for common_item_info, current_menu_info in dc_data_scraper.scrape_data(dc=dc, parser=parser):
+            # Find or create a common item and store its primary key
+            common_item_id = find_or_create_common_items(item=common_item_info)
+
+            # The common item's primary key will be used as a foreign key in the current menu
+            current_menu_info['item_id'] = common_item_id
+
+            # Append current item to menu
+            menu.append(current_menu_info)
+
+        # Update the menu for the current DC
+        update_current_menu(dc=dc, menu=menu)
