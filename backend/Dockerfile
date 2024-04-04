@@ -9,4 +9,4 @@ COPY . .
 RUN addgroup --system app && adduser --system --ingroup app app && chown app:app /app
 USER app
 
-CMD ["python3", "./db_connection"]
+CMD ["python3", "./db_connection.py"]
