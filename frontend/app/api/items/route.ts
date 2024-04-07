@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
         .from("current_menu")
         .select(`*, common_items ( * )`)
         .eq("dc", body["dc"])
-        .eq("date", body["day"])
+        .eq("day", body["day"])
         .eq("meal", body["meal"]);
 
       if (error) {
