@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
     # Get supabase url and key from .env
     url = os.environ.get("SUPABASE_URL")
-    key = os.environ.get("SUPABASE_ANON_KEY")
+    key = os.environ.get("SUPABASE_SERVICE_KEY")
 
     # Create supabase client
     client = supabase.create_client(url, key)
