@@ -1,6 +1,7 @@
 import dc_data_scraper
 import all_dcs
 import supabase
+import json
 from dotenv import load_dotenv
 import os
 from dotenv import dotenv_values
@@ -11,10 +12,10 @@ from openai import OpenAI
 
 def get_embedding(text, model="text-embedding-3-small"):
     text = text.replace("\n", " ")
-    config = dotenv_values(".env")
+    # config = dotenv_values(".env")
 
     client = OpenAI(
-        api_key = config.get("SECRET_KEY")
+        api_key = os.environ.get("OPEN_API_KEY")
     )
 
     response = client.embeddings.create(
@@ -51,8 +52,7 @@ def update_current_menu(dc, menu):
 
 if __name__ == '__main__':
     # Load variables from .env file
-    env_path = os.path.join(os.path.dirname(__file__), "..", ".env") # Loads .env from root
-    load_dotenv(env_path)
+    load_dotenv()
 
     # Get supabase url and key from .env
     url = os.environ.get("SUPABASE_URL")
