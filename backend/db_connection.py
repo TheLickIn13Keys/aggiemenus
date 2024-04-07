@@ -1,8 +1,29 @@
 import dc_data_scraper
 import all_dcs
 import supabase
+import json
 from dotenv import load_dotenv
 import os
+from dotenv import dotenv_values
+from openai import OpenAI
+
+# Load variables from .env file
+
+
+def get_embedding(text, model="text-embedding-3-small"):
+    text = text.replace("\n", " ")
+    # config = dotenv_values(".env")
+
+    client = OpenAI(
+        api_key = os.environ.get("OPEN_API_KEY")
+    )
+
+    response = client.embeddings.create(
+      input=text,
+      model="text-embedding-ada-002"
+    )
+
+    return response.data[0].embedding
 
 def find_or_create_common_items(item):
     """Finds item in common_items table, or creates a new item, and returns the id"""
@@ -11,7 +32,9 @@ def find_or_create_common_items(item):
 
     if len(res.data) == 0:
         # If the item does not exist, insert it
-        item['embedding'] = [0] * 1536 # Replace with actual embedding later @Anish
+        item_string = json.dumps(item)
+        embedding_data = get_embedding(item_string)
+        item['embedding'] = embedding_data
         client.table('common_items').insert(item).execute()
 
         # Fetch the data again and return the newly generated id
@@ -29,8 +52,7 @@ def update_current_menu(dc, menu):
 
 if __name__ == '__main__':
     # Load variables from .env file
-    env_path = os.path.join(os.path.dirname(__file__), "..", ".env") # Loads .env from root
-    load_dotenv(env_path)
+    load_dotenv()
 
     # Get supabase url and key from .env
     url = os.environ.get("SUPABASE_URL")

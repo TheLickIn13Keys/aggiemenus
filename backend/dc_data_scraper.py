@@ -89,7 +89,7 @@ def scrape_data(dc, parser):
 
                     current_item_info = {
                         "dc": dc,
-                        "date": date.weekday(), # Mon = 0, Sun = 6
+                        "day": date.weekday(), # Mon = 0, Sun = 6
                         "meal": meal_name,
                         "section": section_name, 
                     }
