@@ -1,13 +1,13 @@
 #import openai
 import os
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 from openai import OpenAI
 
 # Load variables from .env file
-config = dotenv_values(".env")
+load_dotenv()
 
 client = OpenAI(
-    api_key = config.get("SECRET_KEY")
+    api_key = os.environ.get("OPEN_API_KEY")
 )
 
 response = client.embeddings.create(

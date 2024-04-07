@@ -22,7 +22,7 @@ def get_embedding(text, model="text-embedding-3-small"):
       model="text-embedding-ada-002"
     )
 
-   return response.data[0].embedding
+    return response.data[0].embedding
 
 def find_or_create_common_items(item):
     """Finds item in common_items table, or creates a new item, and returns the id"""
