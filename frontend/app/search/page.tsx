@@ -67,20 +67,20 @@ const Search = () => {
     <div className="animate-fade-in">
       <div className="navbar bg-base-100 pt-10">
         <div className="navbar-start invisible" />
-        <div className="navbar-center flex flex-col">
+        <div className="navbar-center flex flex-col justify-center items-center">
           {/* Display full search bar if search button is not clicked */}
           <div className={`form-control ${!searchBarOpen ? "hidden" : ""}`}>
             <input
               id="search"
               type="text"
               placeholder="Search"
-              className="input input-bordered sm:w-[800px] w-lg"
+              className="input input-bordered sm:w-[800px] w-60"
               onChange={(event) => setQuery(event.target.value)}
               onKeyDown={(event) => handleKeyDown(event)}
             />
           </div>
         </div>
-        <div className="navbar-end pr-16">
+        <div className="navbar-end sm:px-10 pr-0 sm:justify-start justify-center">
           {/* Button to close search bar (and return to the menu page) */}
           <button
             className="btn btn-ghost btn-circle"
@@ -90,8 +90,8 @@ const Search = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col justify-start text-left p-14 gap-5">
-        <div className="text-3xl font-semibold">
+      <div className="flex flex-col sm:justify-start justify-center sm:text-left text-center p-14 gap-5">
+        <div className="sm:text-3xl text-2xl font-semibold">
           {savedQuery === ""
             ? `Search across all DCs`
             : `Found ${foodItems.length} results for: ${savedQuery}`}
@@ -101,7 +101,7 @@ const Search = () => {
             <span className="loading loading-spinner loading-lg"></span>
           </div>
         ) : (
-          <div className="grid grid-cols-5 animate-fade-in">
+          <div className="grid sm:grid-cols-4 grid-cols-1 animate-fade-in gap-3 max-h-64">
             {foodItems.length > 0 &&
               foodItems.map((foodItem, index) => (
                 <SearchFoodCard key={index} foodItem={foodItem} />

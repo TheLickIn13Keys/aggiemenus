@@ -15,7 +15,11 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
   if (searchBarOpen) redirect("/search");
 
   return (
-    <div className={`flex flex-col ${searchBarOpen && "animate-fade-out"}`}>
+    <div
+      className={`flex flex-col ${
+        searchBarOpen && "animate-fade-out"
+      } justify-center items-center`}
+    >
       <div className="navbar bg-base-100 pt-10">
         <div className="navbar-start invisible" />
         <div className="navbar-center flex flex-col">
@@ -28,7 +32,7 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
             />
           </div>
         </div>
-        <div className="navbar-end pr-16">
+        <div className="navbar-end sm:pr-16 pr-0">
           <button
             className="btn btn-ghost btn-circle"
             onClick={() => setSearchBarOpen(!searchBarOpen)}
@@ -51,7 +55,7 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
           height={600}
           className={`${
             searchBarOpen ? "hidden" : ""
-          } size-64 items-center justify-center`}
+          } size-44 items-center justify-center`}
         />
       </div>
     </div>

@@ -17,7 +17,7 @@ const SearchFoodCard = ({ foodItem }: Props) => {
   ];
   return (
     <div
-      className={`btn bg-base-100 shadow-lg w-full h-60 sm:h-96 lg:h-60 flex flex-row truncate`}
+      className={`btn bg-base-100 shadow-lg w-full h-full sm:h-96 lg:h-full flex flex-row truncate`}
     >
       <div className="card-body gap-5 items-start truncate">
         <h2 className="text-lg items-start max-w-full truncate">
