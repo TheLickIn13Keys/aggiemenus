@@ -7,14 +7,22 @@ import { useState } from "react";
 import Footer from "./Footer";
 
 const Menu = () => {
+  const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [selectedDC, setSelectedDC] = useState("Segundo");
   const [selectedDay, setSelectedDay] = useState("0");
   const [selectedMeal, setSelectedMeal] = useState("Breakfast");
 
   return (
-    <div className="space-y-10 flex flex-col h-screen justify-between">
+    <div
+      className={`space-y-10 flex flex-col h-screen justify-between ${
+        !searchBarOpen ? "animate-fade-in" : "animate-fade-out"
+      }`}
+    >
       <header>
-        <NavBar />
+        <NavBar
+          searchBarOpen={searchBarOpen}
+          setSearchBarOpen={setSearchBarOpen}
+        />
       </header>
       {/* <Selections /> */}
       <Selections

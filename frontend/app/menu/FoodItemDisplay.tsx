@@ -91,7 +91,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
       <span className="loading loading-spinner loading-lg"></span>
     </div>
   ) : (
-    <div className="sm:px-32">
+    <div className="sm:px-32 animate-fade-in">
       {sections.length !== 0 &&
         sections.map((section, curSection) => (
           <div
@@ -123,7 +123,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
                   >
                     {/* Food card / modal to open button */}
                     <label htmlFor={`food_item_${section}_${index}`}>
-                      <FoodItemCard foodItem={foodItem} isLoading={isLoading} />
+                      <FoodItemCard foodItem={foodItem} />
                     </label>
 
                     {/* Modal */}
@@ -135,38 +135,6 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
                   </div>
                 ))}
             </div>
-
-            {/* <input type="radio" name="sections" />
-            <div
-              className={`p-5 collapse-title text-xl font-medium${
-                isLoading ? "" : ""
-              }`}
-            >
-              {section}
-            </div>
-            <div
-              className={`flex flex-col pt-9 gap-5 collapse-content ${
-                selectedSection === index ? "collapse-open" : "collapse-close"
-              }`}
-            >
-              {foodItems
-                .filter((foodItem) => foodItem.section === section)
-                .map((foodItem, index) => (
-                  <div key={foodItem.id}> */}
-            {/* Food card / modal to open button */}
-            {/* <label htmlFor={`food_item_${section}_${index}`}>
-                      <FoodItemCard foodItem={foodItem} isLoading={isLoading} />
-                    </label> */}
-
-            {/* Modal */}
-            {/* <FoodItemModal
-                      foodItem={foodItem}
-                      section={section}
-                      index={index}
-                    />
-                  </div>
-                ))}
-            </div> */}
           </div>
         ))}
       {sections.length === 0 && <NoFoodItems dc={dc} />}
