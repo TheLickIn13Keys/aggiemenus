@@ -15,7 +15,7 @@ def get_embedding(text, model="text-embedding-3-small"):
     # config = dotenv_values(".env")
 
     client = OpenAI(
-        api_key = os.environ.get("OPEN_API_KEY")
+        api_key = os.environ.get("OPEN_AI_KEY")
     )
 
     response = client.embeddings.create(
@@ -24,6 +24,9 @@ def get_embedding(text, model="text-embedding-3-small"):
     )
 
     return response.data[0].embedding
+
+
+    
 
 def find_or_create_common_items(item):
     """Finds item in common_items table, or creates a new item, and returns the id"""
