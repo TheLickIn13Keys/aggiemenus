@@ -14,7 +14,7 @@ const Menu = () => {
 
   return (
     <div
-      className={`space-y-10 flex flex-col h-screen justify-between ${
+      className={`flex flex-col min-h-screen gap-5 justify-between ${
         !searchBarOpen ? "animate-fade-in" : "animate-fade-out"
       }`}
     >
@@ -24,17 +24,23 @@ const Menu = () => {
           setSearchBarOpen={setSearchBarOpen}
         />
       </header>
-      {/* <Selections /> */}
-      <Selections
-        selectedDC={selectedDC}
-        setSelectedDC={setSelectedDC}
-        selectedDay={selectedDay}
-        setSelectedDay={setSelectedDay}
-        selectedMeal={selectedMeal}
-        setSelectedMeal={setSelectedMeal}
-      />
-      <FoodItemDisplay dc={selectedDC} day={selectedDay} meal={selectedMeal} />
-      <footer className="">
+      <main>
+        {/* <Selections /> */}
+        <Selections
+          selectedDC={selectedDC}
+          setSelectedDC={setSelectedDC}
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
+          selectedMeal={selectedMeal}
+          setSelectedMeal={setSelectedMeal}
+        />
+        <FoodItemDisplay
+          dc={selectedDC}
+          day={selectedDay}
+          meal={selectedMeal}
+        />
+      </main>
+      <footer>
         <Footer />
       </footer>
     </div>
