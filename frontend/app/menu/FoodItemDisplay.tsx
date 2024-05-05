@@ -16,7 +16,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [sections, setSections] = useState([""]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedSection, setSelectedSection] = useState<number | null>(null);
+  const [selectedSection, setSelectedSection] = useState<number | null>(0);
   const loadingSkeletons = [1, 2, 3];
 
   // Sets a minimum timeout for the fetch request to resolve (for a smoother user experience)
