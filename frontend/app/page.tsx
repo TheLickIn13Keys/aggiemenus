@@ -1,10 +1,18 @@
+"use client"; // This is a client component 
+
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { useEffect } from 'react';
+import  Head  from 'next/head';                                                                                                                                                                                                         
+import { useRouter } from 'next/router';
+
 
 export default function Home() {
-  redirect("/menu");
+    redirect('/menu'); // Redirect to '/menu' route
   return (
-    <>
+	<>
+
+
       <div
         className="hero min-h-screen"
         style={{
