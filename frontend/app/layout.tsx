@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Aggie Menus",
   description: "A website to help you find your next meal at UC Davis",
   icons: { icon: "/icon.svg" },
+  manifest: '/manifest.json'
 };
 
 export default function RootLayout({
