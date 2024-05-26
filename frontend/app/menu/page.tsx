@@ -10,7 +10,7 @@ import Head from "next/head";
 const Menu = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [selectedDC, setSelectedDC] = useState("Segundo");
-  const [selectedDay, setSelectedDay] = useState("0");
+  const [selectedDay, setSelectedDay] = useState(0);
   const [selectedMeal, setSelectedMeal] = useState("Breakfast");
 
   return (

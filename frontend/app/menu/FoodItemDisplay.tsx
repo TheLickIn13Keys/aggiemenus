@@ -8,7 +8,7 @@ import NoFoodItems from "./NoFoodItems";
 
 interface Props {
   dc: string;
-  day: string;
+  day: number;
   meal: string;
 }
 
@@ -32,7 +32,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ dc: dc, day: day, meal: meal }),
+          body: JSON.stringify({ dc: dc, day: String(day), meal: meal }),
           signal: abortController.signal,
         });
 

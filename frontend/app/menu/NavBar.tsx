@@ -20,7 +20,7 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
         searchBarOpen && "animate-fade-out"
       } justify-center items-center`}
     >
-      <div className="navbar bg-base-100 pt-10">
+      <div className="navbar bg-base-100">
         <div className="navbar-start invisible" />
         <div className="navbar-center flex flex-col">
           {/* Display full search bar if search button is not clicked */}
@@ -32,9 +32,10 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
             />
           </div>
         </div>
+        {/* Search bar icon (commented out until wireframes are complete) */}
         <div className="navbar-end sm:pr-16 pr-0">
           <button
-            className="btn btn-ghost btn-circle"
+            className="btn btn-ghost btn-circle hidden"
             onClick={() => setSearchBarOpen(!searchBarOpen)}
           >
             {/* If search bar is closed, display search icon. Otherwise, display 'X' icon */}
@@ -49,13 +50,13 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
       {/* Display Davis Menus logo if search button is not clicked */}
       <div className="flex flex-col justify-center items-center">
         <Image
-          src="/navbar.png"
+          src="/aggiemenus.svg"
           alt="Aggie Menus"
-          width={600}
-          height={600}
+          width={200}
+          height={200}
           className={`${
             searchBarOpen ? "hidden" : ""
-          } size-44 items-center justify-center`}
+          } items-center justify-center`}
         />
       </div>
     </div>
