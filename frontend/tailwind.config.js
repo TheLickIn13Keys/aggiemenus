@@ -19,5 +19,30 @@ module.exports = {
       },
     },
   },
+  daisyui: {
+    themes: [
+      {
+        aggiemenus: {
+          primary: "#355B85",
+
+          secondary: "#ff00ff",
+
+          accent: "#00ffff",
+
+          neutral: "#ff00ff",
+
+          "base-100": "#ECF5F7",
+
+          info: "#0000ff",
+
+          success: "#0F7745",
+
+          warning: "#CE5E0D",
+
+          error: "#C10230",
+        },
+      },
+    ],
+  },
   plugins: [require("daisyui")],
 };
