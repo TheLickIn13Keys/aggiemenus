@@ -70,7 +70,7 @@ const Selections = ({
         />
       </div>
       {/* Days of the week and meals*/}
-      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:py-5 py-3 sm:gap-3 gap-5 px-32">
+      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:py-5 py-3 sm:gap-3 gap-5 sm:px-32 px-8">
         {/* Days of the week */}
         <div className="flex justify-between relative">
           <button
