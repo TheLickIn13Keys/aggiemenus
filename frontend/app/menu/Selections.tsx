@@ -36,9 +36,9 @@ const Selections = ({
   };
 
   return (
-    <div className="flex flex-col sm:px-32 p-5 sm:gap-7 gap-3">
+    <div className="flex flex-col pb-5 sm:gap-7">
       {/* Tabs for DCs */}
-      <div className="relative sm:h-12 h-10">
+      <div className="relative sm:h-12 h-10 bg-white sm:px-0 px-10">
         <div
           className={`grid grid-cols-${allDCs.length} justify-center items-center h-full`}
         >
@@ -54,10 +54,12 @@ const Selections = ({
         </div>
         {/* Animation for DC selection */}
         <motion.div
-          className="absolute left-0 bottom-0 h-0.5 bg-primary"
-          style={{ width: "25%" }}
+          className="absolute left-5 bottom-0 h-0.5 bg-primary" // Adjust left position by the same amount of px-5
+          style={{
+            width: `calc((100% - 40px) / 4)`,
+          }} // Subtract padding from total width
           animate={{
-            x: `${allDCs.indexOf(selectedDC) * 100}%`,
+            x: `calc(${allDCs.indexOf(selectedDC)} * 100%)`,
           }}
           transition={{
             type: "spring",
@@ -68,7 +70,7 @@ const Selections = ({
         />
       </div>
       {/* Days of the week and meals*/}
-      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:py-5 py-3 sm:gap-3 gap-5">
+      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:py-5 py-3 sm:gap-3 gap-5 px-32">
         {/* Days of the week */}
         <div className="flex justify-between relative">
           <button

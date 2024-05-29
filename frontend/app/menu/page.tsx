@@ -15,7 +15,7 @@ const Menu = () => {
 
   return (
     <div
-      className={`flex flex-col min-h-screen gap-5 justify-between ${
+      className={`flex flex-col min-h-screen justify-between ${
         !searchBarOpen ? "animate-fade-in" : "animate-fade-out"
       }`}
     >

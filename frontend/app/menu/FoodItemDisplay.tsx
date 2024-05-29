@@ -108,7 +108,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
       <span className="loading loading-spinner loading-lg"></span>
     </div>
   ) : (
-    <div className="sm:px-32">
+    <div className="sm:px-32 pb-10">
       {/* {sections.length !== 0 &&
         sections.map((section, curSection) => (
           <div
@@ -156,9 +156,9 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
             </motion.div>
           ))}
       </motion.div>
+      {sections.length === 0 && <NoFoodItems dc={dc} />}
     </div>
     // ))}
-    // {sections.length === 0 && <NoFoodItems dc={dc} />}
     // </div>
   );
 };
