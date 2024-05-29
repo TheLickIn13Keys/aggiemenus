@@ -15,51 +15,72 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
   if (searchBarOpen) redirect("/search");
 
   return (
-    <div
-      className={`flex flex-col ${
-        searchBarOpen && "animate-fade-out"
-      } justify-center items-center`}
-    >
-      <div className="navbar bg-base-100 pt-10">
-        <div className="navbar-start invisible" />
-        <div className="navbar-center flex flex-col">
-          {/* Display full search bar if search button is not clicked */}
-          <div className={`form-control ${!searchBarOpen ? "hidden" : ""}`}>
+    <div className="flex flex-col justify-center items-center sm:py-12 py-8 bg-white">
+      <Image
+        src="/aggiemenus.svg"
+        alt="Aggie Menus"
+        width={300}
+        height={300}
+        className={`${
+          searchBarOpen ? "hidden" : ""
+        } items-center justify-center sm:size-[15%] size-[50%]`}
+      />
+    </div>
+  );
+  // <div
+  //   className={`flex flex-col ${
+  //     searchBarOpen && "animate-fade-out"
+  //   } justify-center items-center bg-white py-5`}
+  // >
+  {
+    /* <div className="navbar bg-white"> */
+  }
+  {
+    /* <div className="navbar-start invisible" /> */
+  }
+  {
+    /* <div className="navbar-center flex flex-col"> */
+  }
+  {
+    /* Display full search bar if search button is not clicked */
+  }
+  {
+    /* <div className={`form-control ${!searchBarOpen ? "hidden" : ""}`}>
             <input
               type="text"
               placeholder="Search"
               className="input input-bordered sm:w-[800px] w-lg"
             />
           </div>
-        </div>
-        <div className="navbar-end sm:pr-16 pr-0">
+        </div> */
+  }
+  {
+    /* Search bar icon (commented out until wireframes are complete) */
+  }
+  {
+    /* <div className="navbar-end sm:pr-16 pr-0">
           <button
-            className="btn btn-ghost btn-circle"
+            className="btn btn-ghost btn-circle hidden"
             onClick={() => setSearchBarOpen(!searchBarOpen)}
-          >
-            {/* If search bar is closed, display search icon. Otherwise, display 'X' icon */}
-            {!searchBarOpen ? (
+          > */
+  }
+  {
+    /* If search bar is closed, display search icon. Otherwise, display 'X' icon */
+  }
+  {
+    /* {!searchBarOpen ? (
               <IoIosSearch size="24" />
             ) : (
               <IoCloseOutline size="24" />
             )}
           </button>
         </div>
-      </div>
-      {/* Display Davis Menus logo if search button is not clicked */}
-      <div className="flex flex-col justify-center items-center">
-        <Image
-          src="/navbar.png"
-          alt="Aggie Menus"
-          width={600}
-          height={600}
-          className={`${
-            searchBarOpen ? "hidden" : ""
-          } size-44 items-center justify-center`}
-        />
-      </div>
-    </div>
-  );
+      </div> */
+  }
+  {
+    /* Display Davis Menus logo if search button is not clicked */
+  }
+  // </div>
 };
 
 export default NavBar;

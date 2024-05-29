@@ -2,7 +2,7 @@ import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import React, {useEffect} from 'react';
+import React, { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,9 +10,8 @@ export const metadata: Metadata = {
   title: "Aggie Menus",
   description: "A website to help you find your next meal at UC Davis",
   icons: { icon: "/icon.svg" },
-  manifest: '/manifest.json'
+  manifest: "/manifest.json",
 };
-
 
 export default function RootLayout({
   children,
@@ -20,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-theme="light" lang="en">
+    <html lang="en">
       <body className={inter.className}>
         {children}
         <Analytics />
@@ -28,5 +27,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-

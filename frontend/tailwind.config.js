@@ -17,11 +17,43 @@ module.exports = {
         "fade-in": "fadein 0.5s ease-out forwards",
         "fade-out": "fadein 0.5s ease-in backwards",
       },
+      keyframes: {
+        open: {
+          "0%": { width: "0px" },
+          // '50%': {width: '50%'},
+          "100%": { width: "635px" },
+        },
+        close: {
+          "0%": { width: "8rem" },
+          "100%": { width: "0px" },
+        },
+      },
     },
   },
-  plugins: [require("daisyui")],
-	daisyui: {
-		themes: ["light", "dark"],
+  daisyui: {
+    themes: [
+      {
+        aggiemenus: {
+          primary: "#355B85",
 
-	},
+          secondary: "#ff00ff",
+
+          accent: "#00ffff",
+
+          neutral: "#ff00ff",
+
+          "base-100": "#ECF5F7",
+
+          info: "#0000ff",
+
+          success: "#0F7745",
+
+          warning: "#CE5E0D",
+
+          error: "#C10230",
+        },
+      },
+    ],
+  },
+  plugins: [require("daisyui")],
 };

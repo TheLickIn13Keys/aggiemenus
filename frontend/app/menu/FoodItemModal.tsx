@@ -4,15 +4,15 @@ import FoodItem from "../api/foodItemSchema";
 interface Props {
   foodItem: FoodItem;
   index: number;
-  section: string;
+  // section: string;
 }
 
-const FoodItemModal = ({ foodItem, index, section }: Props) => {
+const FoodItemModal = ({ foodItem, index }: Props) => {
   return (
     <div>
       <input
         type="checkbox"
-        id={`food_item_${section}_${index}`}
+        id={`food_item_${index}`}
         className="modal-toggle"
       />
       <div className="modal bg-white" role="dialog">
@@ -20,19 +20,19 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
           <div className="flex flex-row">
             {/* Close button */}
             <label
-              htmlFor={`food_item_${section}_${index}`}
+              htmlFor={`food_item_${index}`}
               className="btn btn-sm btn-circle btn-ghost -ml-2 top-2"
             >
               ✕
             </label>
           </div>
           {/* Food name and tags  */}
-            <h2 className="text-2xl font-semibold left-2 mt-8">
-              {foodItem.common_items.name}
-            </h2>
-            <h2 className="text-md text-gray-500 left-2 my-0.5">
-              {section}
-            </h2>
+          <h2 className="text-2xl font-semibold left-2 mt-8">
+            {foodItem.common_items.name}
+          </h2>
+          <h2 className="text-md text-gray-500 left-2 my-0.5">
+            {foodItem.section}
+          </h2>
 
           <div className="w-full space-x-2 gap-5 flex mt-2 justify-start items-center align-start">
             <div className="flex flex-row gap-3">
@@ -60,23 +60,22 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
               ? foodItem.common_items.description
               : ""}
           </p>
-		  <p className = "w-full justify-center text-start my-3">
-		  {foodItem.common_items.allergens.length > 0
-			  ? (
-				<>
-					<strong>Allergens:</strong> {foodItem.common_items.allergens.join(', ')}
-				</>
-				) : <></>
-		  }
-		  </p>
+          <p className="w-full justify-center text-start my-3">
+            {foodItem.common_items.allergens.length > 0 ? (
+              <>
+                <strong>Allergens:</strong>{" "}
+                {foodItem.common_items.allergens.join(", ")}
+              </>
+            ) : (
+              <></>
+            )}
+          </p>
 
-		<hr className="border-t border-gray-400 mt-3" />
+          <hr className="border-t border-gray-400 mt-3" />
           {/* Nutritional facts */}
           <div className="flex flex-wrap justify-between items-center">
             <div className="flex flex-col justify-start w-1/3 p-4 pl-0">
-              <div className="font-semibold">
-                Serving
-              </div>
+              <div className="font-semibold">Serving</div>
               {foodItem.common_items.serving_size}
             </div>
             <div className="flex w-1/3 flex-col justify-start items-start p-4">
@@ -98,14 +97,10 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
               {foodItem.common_items.fat}{" "}
               {foodItem.common_items.fat != "N/A" && "g"}
             </div>
-            <div className="flex flex-col w-1/3 justify-center items-center p-4 pr-0">
-            </div>
+            <div className="flex flex-col w-1/3 justify-center items-center p-4 pr-0"></div>
           </div>
         </div>
-        <label
-          htmlFor={`food_item_${section}_${index}`}
-          className="modal-backdrop"
-        >
+        <label htmlFor={`food_item_${index}`} className="modal-backdrop">
           Close
         </label>
       </div>
