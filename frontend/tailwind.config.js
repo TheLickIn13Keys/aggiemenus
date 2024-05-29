@@ -17,6 +17,17 @@ module.exports = {
         "fade-in": "fadein 0.5s ease-out forwards",
         "fade-out": "fadein 0.5s ease-in backwards",
       },
+      keyframes: {
+        open: {
+          "0%": { width: "0px" },
+          // '50%': {width: '50%'},
+          "100%": { width: "635px" },
+        },
+        close: {
+          "0%": { width: "8rem" },
+          "100%": { width: "0px" },
+        },
+      },
     },
   },
   daisyui: {

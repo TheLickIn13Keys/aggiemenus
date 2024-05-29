@@ -4,15 +4,15 @@ import FoodItem from "../api/foodItemSchema";
 interface Props {
   foodItem: FoodItem;
   index: number;
-  section: string;
+  // section: string;
 }
 
-const FoodItemModal = ({ foodItem, index, section }: Props) => {
+const FoodItemModal = ({ foodItem, index }: Props) => {
   return (
     <div>
       <input
         type="checkbox"
-        id={`food_item_${section}_${index}`}
+        id={`food_item_${index}`}
         className="modal-toggle"
       />
       <div className="modal" role="dialog">
@@ -20,7 +20,7 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
           <div className="flex flex-row-reverse">
             {/* Close button */}
             <label
-              htmlFor={`food_item_${section}_${index}`}
+              htmlFor={`food_item_${index}`}
               className="btn btn-sm btn-circle btn-ghost right-2 top-2"
             >
               ✕
@@ -85,10 +85,7 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
             </div>
           </div>
         </div>
-        <label
-          htmlFor={`food_item_${section}_${index}`}
-          className="modal-backdrop"
-        >
+        <label htmlFor={`food_item_${index}`} className="modal-backdrop">
           Close
         </label>
       </div>

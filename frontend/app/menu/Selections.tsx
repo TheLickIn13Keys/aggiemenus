@@ -36,7 +36,7 @@ const Selections = ({
   };
 
   return (
-    <div className="flex flex-col sm:px-32 p-5 gap-10">
+    <div className="flex flex-col sm:px-32 p-5 sm:gap-7 gap-3">
       {/* Tabs for DCs */}
       <div className="relative sm:h-12 h-10">
         <div
@@ -45,7 +45,7 @@ const Selections = ({
           {allDCs.map((dc) => (
             <div
               key={dc}
-              className="col-span-1 items-center justify-between text-primary sm:text-2xl text-sm font-semibold text-center hover:cursor-pointer"
+              className="col-span-1 items-center justify-between text-primary sm:text-xl text-sm font-semibold text-center hover:cursor-pointer"
               onClick={() => setSelectedDC(dc)}
             >
               {dc}
@@ -59,11 +59,16 @@ const Selections = ({
           animate={{
             x: `${allDCs.indexOf(selectedDC) * 100}%`,
           }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 25,
+            duration: 0.1,
+          }}
         />
       </div>
       {/* Days of the week and meals*/}
-      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 py-5 gap-5">
+      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:py-5 py-3 sm:gap-3 gap-5">
         {/* Days of the week */}
         <div className="flex justify-between relative">
           <button
@@ -76,7 +81,7 @@ const Selections = ({
           <AnimatePresence mode="wait">
             <motion.p
               key={selectedDay}
-              className="flex align-middle justify-center items-center sm:text-2xl text-lg text-primary font-semibold"
+              className="flex align-middle justify-center items-center sm:text-xl text-lg text-primary font-semibold"
               initial={{ opacity: 0, x: direction === 1 ? 50 : -50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: direction === 1 ? -50 : 50 }}
@@ -97,7 +102,7 @@ const Selections = ({
         {/* Meals */}
         <div className="relative sm:h-12 h-10">
           <div
-            className={`grid grid-cols-${meals.length} justify-center items-center h-full`}
+            className={`grid grid-cols-3 justify-center items-center h-full`}
           >
             {meals.map((meal) => (
               <div
@@ -108,7 +113,7 @@ const Selections = ({
                 <p
                   className={`${
                     selectedMeal === meal ? "text-white" : "text-primary"
-                  } sm:text-2xl text-sm font-semibold text-center`}
+                  } sm:text-xl text-sm font-semibold text-center`}
                 >
                   {meal}
                 </p>

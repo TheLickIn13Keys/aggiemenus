@@ -5,6 +5,7 @@ import supabase from "../api/supabase";
 import FoodItemCard from "./FoodItemCard";
 import FoodItemModal from "./FoodItemModal";
 import NoFoodItems from "./NoFoodItems";
+import { motion } from "framer-motion";
 
 interface Props {
   dc: string;
@@ -17,6 +18,22 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
   const [sections, setSections] = useState([""]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSection, setSelectedSection] = useState<number | null>(0);
+
+  // Used for loading in foodItems animation
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
   const loadingSkeletons = [1, 2, 3];
 
   // Sets a minimum timeout for the fetch request to resolve (for a smoother user experience)
@@ -91,54 +108,58 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
       <span className="loading loading-spinner loading-lg"></span>
     </div>
   ) : (
-    <div className="sm:px-32 animate-fade-in">
-      {sections.length !== 0 &&
+    <div className="sm:px-32">
+      {/* {sections.length !== 0 &&
         sections.map((section, curSection) => (
           <div
             key={section}
             className="collapse collapse-arrow"
             onClick={() => handleAccordionClick(curSection)}
-          >
-            {/* Radio btn */}
-            <input
+          > */}
+      {/* Radio btn */}
+      {/* <input
               type="radio"
               name="sections"
               checked={selectedSection === curSection}
               readOnly
               className="hover:cursor-pointer"
-            />
-            {/* Title */}
-            <div className="collapse-title text-xl font-medium">{section}</div>
-            {/* Content div */}
-            <div
-              className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 pt-5 gap-5 collapse-content`}
+            /> */}
+      {/* Title */}
+      {/* <div className="collapse-title text-xl font-medium">{section}</div> */}
+      {/* Content div */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-2 gap-5`}
+      >
+        {/* Content */}
+        {foodItems
+          // .filter((foodItem) => foodItem.section === section)
+          .map((foodItem, index) => (
+            <motion.div
+              key={foodItem.id}
+              variants={itemVariants}
+              className="flex flex-col justify-center"
             >
-              {/* Content */}
-              {foodItems
-                .filter((foodItem) => foodItem.section === section)
-                .map((foodItem, index) => (
-                  <div
-                    key={foodItem.id}
-                    className="flex flex-col justify-center"
-                  >
-                    {/* Food card / modal to open button */}
-                    <label htmlFor={`food_item_${section}_${index}`}>
-                      <FoodItemCard foodItem={foodItem} />
-                    </label>
+              {/* Food card / modal to open button */}
+              <label htmlFor={`food_item_${index}`} className="h-full">
+                <FoodItemCard foodItem={foodItem} />
+              </label>
 
-                    {/* Modal */}
-                    <FoodItemModal
-                      foodItem={foodItem}
-                      section={section}
-                      index={index}
-                    />
-                  </div>
-                ))}
-            </div>
-          </div>
-        ))}
-      {sections.length === 0 && <NoFoodItems dc={dc} />}
+              {/* Modal */}
+              <FoodItemModal
+                foodItem={foodItem}
+                // section={section}
+                index={index}
+              />
+            </motion.div>
+          ))}
+      </motion.div>
     </div>
+    // ))}
+    // {sections.length === 0 && <NoFoodItems dc={dc} />}
+    // </div>
   );
 };
 
