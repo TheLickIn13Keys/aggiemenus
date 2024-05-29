@@ -16,7 +16,7 @@ const FoodItemModal = ({ foodItem, index }: Props) => {
         className="modal-toggle"
       />
       <div className="modal bg-white" role="dialog">
-        <div className="modal-box p-8 py-12 **max-h-none">
+        <div className="modal-box p-8 py-12 **max-h-none bg-white">
           <div className="flex flex-row">
             {/* Close button */}
             <label
