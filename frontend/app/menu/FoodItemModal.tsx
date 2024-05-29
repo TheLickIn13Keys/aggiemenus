@@ -61,12 +61,12 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
               : ""}
           </p>
 		  <p className = "w-full justify-center text-start my-3">
-		  {foodItem.common_items.allergens != "None"
+		  {foodItem.common_items.allergens.length > 0
 			  ? (
 				<>
 					<strong>Allergens:</strong> {foodItem.common_items.allergens.join(', ')}
 				</>
-				) : ""
+				) : <></>
 		  }
 		  </p>
 
