@@ -55,7 +55,7 @@ const FoodItemModal = ({ foodItem, index, section }: Props) => {
             </div>
           </div>
           {/* Short description */}
-          <p className="w-full py-3 flex justify-center text-start mt-5">
+          <p className="w-full py-3 flex justify-start text-start mt-5">
             {foodItem.common_items.description !== "None"
               ? foodItem.common_items.description
               : ""}
