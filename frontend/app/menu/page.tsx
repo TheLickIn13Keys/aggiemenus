@@ -33,7 +33,7 @@ const Menu = () => {
 
   return (
     <div
-      className={`flex flex-col min-h-screen justify-between ${
+      className={`flex flex-col min-h-screen ${
         !searchBarOpen ? "animate-fade-in" : "animate-fade-out"
       }`}
     >
@@ -57,7 +57,7 @@ const Menu = () => {
           setSearchBarOpen={setSearchBarOpen}
         />
       </header>
-      <main>
+      <main className="flex flex-col flex-grow">
         {/* <Selections /> */}
         <Selections
           selectedDC={selectedDC}
