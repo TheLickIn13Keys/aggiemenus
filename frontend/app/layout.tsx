@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Aggie Menus",
   description: "A website to help you find your next meal at UC Davis",
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/cowlogo.png" },
   manifest: "/manifest.json",
 };
 
