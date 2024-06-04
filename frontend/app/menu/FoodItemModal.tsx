@@ -80,21 +80,21 @@ const FoodItemModal = ({ foodItem, index }: Props) => {
             </div>
             <div className="flex w-1/3 flex-col justify-start items-start p-4">
               <div className="font-semibold">Calories</div>
-              {foodItem.common_items.calories}
+              {Math.round(parseInt(foodItem.common_items.calories))}
             </div>
             <div className="flex flex-col w-1/3 justify-start items-start p-4 pl-8 pr-0">
               <div className=" font-semibold">Carbs</div>
-              {foodItem.common_items.carbs}{" "}
-              {foodItem.common_items.carbs != "N/A" && "g"}
+              {Math.round(parseInt(foodItem.common_items.carbs))}{" "}
+              {foodItem.common_items.carbs !== "N/A" && "g"}
             </div>
             <div className="flex flex-col w-1/3 justify-start items-start p-4 pl-0">
               <div className=" font-semibold">Protein</div>
-              {foodItem.common_items.protein}{" "}
+              {Math.round(parseInt(foodItem.common_items.protein))}{" "}
               {foodItem.common_items.protein != "N/A" && "g"}
             </div>
             <div className="flex flex-col w-1/3 justify-start items-start p-4">
               <div className="font-semibold">Fat</div>
-              {foodItem.common_items.fat}{" "}
+              {Math.round(parseInt(foodItem.common_items.fat))}{" "}
               {foodItem.common_items.fat != "N/A" && "g"}
             </div>
             <div className="flex flex-col w-1/3 justify-center items-center p-4 pr-0"></div>

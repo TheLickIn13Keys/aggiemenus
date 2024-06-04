@@ -2,8 +2,7 @@
 import NavBar from "./NavBar";
 import Selections from "./Selections";
 import FoodItemDisplay from "./FoodItemDisplay";
-import supabase from "../api/supabase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Head from "next/head";
 
@@ -13,9 +12,28 @@ const Menu = () => {
   const [selectedDay, setSelectedDay] = useState(0);
   const [selectedMeal, setSelectedMeal] = useState("Breakfast");
 
+  // Automatically adjust the day and selectedMeal depending on the current day and time
+  useEffect(() => {
+    // Set the day
+    const curDate = new Date(Date.now());
+    const day = (curDate.getDay() - 1 + 7) % 7;
+    setSelectedDay(day);
+
+    // Set the meal
+    const curTime = curDate.getHours();
+    console.log(curTime);
+    if (curTime >= 0 && curTime < 11) {
+      setSelectedMeal("Breakfast");
+    } else if (curTime >= 11 && curTime < 17) {
+      setSelectedMeal("Lunch");
+    } else if (curTime >= 17 && curTime < 24) {
+      setSelectedMeal("Dinner");
+    }
+  }, []);
+
   return (
     <div
-      className={`flex flex-col min-h-screen justify-between ${
+      className={`flex flex-col min-h-screen ${
         !searchBarOpen ? "animate-fade-in" : "animate-fade-out"
       }`}
     >
@@ -39,7 +57,7 @@ const Menu = () => {
           setSearchBarOpen={setSearchBarOpen}
         />
       </header>
-      <main>
+      <main className="flex flex-col flex-grow">
         {/* <Selections /> */}
         <Selections
           selectedDC={selectedDC}

@@ -109,23 +109,6 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
     </div>
   ) : (
     <div className="sm:px-32 pb-10">
-      {/* {sections.length !== 0 &&
-        sections.map((section, curSection) => (
-          <div
-            key={section}
-            className="collapse collapse-arrow"
-            onClick={() => handleAccordionClick(curSection)}
-          > */}
-      {/* Radio btn */}
-      {/* <input
-              type="radio"
-              name="sections"
-              checked={selectedSection === curSection}
-              readOnly
-              className="hover:cursor-pointer"
-            /> */}
-      {/* Title */}
-      {/* <div className="collapse-title text-xl font-medium">{section}</div> */}
       {/* Content div */}
       <motion.div
         variants={containerVariants}

@@ -54,22 +54,22 @@ const Selections = ({
         </div>
         {/* Animation for DC selection */}
         <motion.div
-          className="absolute left-5 bottom-0 h-0.5 bg-primary" // Adjust left position by the same amount of px-5
+          className="relative bottom-0 h-0.5 bg-primary"
           style={{
-            width: `calc((100% - 40px) / 4)`,
-          }} // Subtract padding from total width
-          animate={{
-            x: `calc(${allDCs.indexOf(selectedDC)} * 100%)`,
+            width: `calc(100% / ${allDCs.length})`,
+            left: `calc(${allDCs.indexOf(selectedDC)} * 100% / ${
+              allDCs.length
+            })`,
           }}
           transition={{
             type: "spring",
             stiffness: 300,
             damping: 25,
-            duration: 0.1,
+            duration: 0.2,
           }}
         />
       </div>
-      {/* Days of the week and meals*/}
+      {/* Days of the week and meals */}
       <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:py-5 py-3 sm:gap-3 gap-5 sm:px-32 px-8">
         {/* Days of the week */}
         <div className="flex justify-between relative">
