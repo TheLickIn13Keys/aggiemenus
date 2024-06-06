@@ -7,7 +7,7 @@ const Footer = () => {
         Made by{" "}
         <span className="font-semibold">
           <a href="https://aggieworks.org/" target="_blank">
-            Aggieworks
+            AggieWorks
           </a>
         </span>
       </p>
