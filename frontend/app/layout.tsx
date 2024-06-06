@@ -7,8 +7,9 @@ import React, { useEffect } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Aggie Menus",
-  description: "A website to help you find your next meal at UC Davis",
+  title: "aggiemenus",
+  description:
+    "The improved dining commons menu for UC Davis students made by AggieWorks",
   icons: { icon: "/cowlogo.png" },
   manifest: "/manifest.json",
 };
