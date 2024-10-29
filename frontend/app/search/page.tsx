@@ -10,14 +10,17 @@ import { DiVim } from "react-icons/di";
 import FoodItemModal from "../menu/FoodItemModal";
 import SearchCardModal from "./SearchCardModal";
 import Footer from "../menu/Footer";
+import { useSearchParams } from 'next/navigation';
 
 const Search = () => {
+  const searchParams = useSearchParams();
+  const urlQuery = searchParams.get('q') || '';
   const [foodItems, setFoodItems] = useState<SearchFoodItem[]>([]);
   const [paginatedCards, setPaginatedCards] = useState<SearchFoodItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchBarOpen, setSearchBarOpen] = useState(true);
-  const [query, setQuery] = useState("");
-  const [savedQuery, setSavedQuery] = useState("");
+  const [query, setQuery] = useState(urlQuery);
+  const [savedQuery, setSavedQuery] = useState(urlQuery);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagesArray, setPagesArray] = useState([1]);
   const [totalPages, setTotalPages] = useState(1);
@@ -89,6 +92,13 @@ const Search = () => {
       }
     }
   };
+
+  // Submit the initial query when component mounts if URL has a query
+  useEffect(() => {
+    if (urlQuery) {
+      submit();
+    }
+  }, []);
 
   return (
     <div className="animate-fade-in flex flex-col min-h-screen">
