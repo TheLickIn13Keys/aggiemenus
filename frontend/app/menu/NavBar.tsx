@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { IoIosSearch } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
@@ -12,10 +13,29 @@ interface Props {
 }
 
 const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
-  if (searchBarOpen) redirect("/search");
+  const [query, setQuery] = useState("");
+  const router = useRouter();
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      router.push(`/search?q=${encodeURIComponent(query)}`);
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center sm:py-12 py-8 bg-white">
+      <div className="w-full flex justify-end px-4 mb-4">
+        <div className="form-control">
+          <input
+            type="text"
+            placeholder="Search"
+            className="input input-bordered w-60"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
+      </div>
       <Image
         src="/aggiemenus.svg"
         alt="Aggie Menus"
@@ -27,60 +47,6 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
       />
     </div>
   );
-  // <div
-  //   className={`flex flex-col ${
-  //     searchBarOpen && "animate-fade-out"
-  //   } justify-center items-center bg-white py-5`}
-  // >
-  {
-    /* <div className="navbar bg-white"> */
-  }
-  {
-    /* <div className="navbar-start invisible" /> */
-  }
-  {
-    /* <div className="navbar-center flex flex-col"> */
-  }
-  {
-    /* Display full search bar if search button is not clicked */
-  }
-  {
-    /* <div className={`form-control ${!searchBarOpen ? "hidden" : ""}`}>
-            <input
-              type="text"
-              placeholder="Search"
-              className="input input-bordered sm:w-[800px] w-lg"
-            />
-          </div>
-        </div> */
-  }
-  {
-    /* Search bar icon (commented out until wireframes are complete) */
-  }
-  {
-    /* <div className="navbar-end sm:pr-16 pr-0">
-          <button
-            className="btn btn-ghost btn-circle hidden"
-            onClick={() => setSearchBarOpen(!searchBarOpen)}
-          > */
-  }
-  {
-    /* If search bar is closed, display search icon. Otherwise, display 'X' icon */
-  }
-  {
-    /* {!searchBarOpen ? (
-              <IoIosSearch size="24" />
-            ) : (
-              <IoCloseOutline size="24" />
-            )}
-          </button>
-        </div>
-      </div> */
-  }
-  {
-    /* Display Davis Menus logo if search button is not clicked */
-  }
-  // </div>
 };
 
 export default NavBar;
