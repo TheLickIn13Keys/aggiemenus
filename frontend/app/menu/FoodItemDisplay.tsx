@@ -128,7 +128,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
         className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-2 gap-5`}
       >
         {/* Content */}
-        {foodItems
+        {filterItems(foodItems)
           // .filter((foodItem) => foodItem.section === section)
           .map((foodItem, index) => (
             <motion.div
