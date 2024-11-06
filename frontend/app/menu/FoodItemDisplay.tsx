@@ -6,6 +6,7 @@ import FoodItemCard from "./FoodItemCard";
 import FoodItemModal from "./FoodItemModal";
 import NoFoodItems from "./NoFoodItems";
 import { motion } from "framer-motion";
+// hello
 
 interface Props {
   dc: string;
