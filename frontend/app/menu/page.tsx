@@ -11,6 +11,7 @@ const Menu = () => {
   const [selectedDC, setSelectedDC] = useState("Segundo");
   const [selectedDay, setSelectedDay] = useState(0);
   const [selectedMeal, setSelectedMeal] = useState("Breakfast");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Automatically adjust the day and selectedMeal depending on the current day and time
   useEffect(() => {
@@ -55,6 +56,7 @@ const Menu = () => {
         <NavBar
           searchBarOpen={searchBarOpen}
           setSearchBarOpen={setSearchBarOpen}
+          setSearchQuery={setSearchQuery}
         />
       </header>
       <main className="flex flex-col flex-grow">
@@ -71,6 +73,7 @@ const Menu = () => {
           dc={selectedDC}
           day={selectedDay}
           meal={selectedMeal}
+          searchQuery={searchQuery}
         />
       </main>
       <footer>

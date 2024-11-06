@@ -6,16 +6,50 @@ import FoodItemCard from "./FoodItemCard";
 import FoodItemModal from "./FoodItemModal";
 import NoFoodItems from "./NoFoodItems";
 import { motion } from "framer-motion";
+import FilterOptions from "./FilterOptions";
 
 interface Props {
   dc: string;
   day: number;
   meal: string;
+  searchQuery: string;
 }
 
-const FoodItemDisplay = ({ dc, day, meal }: Props) => {
+const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [sections, setSections] = useState([""]);
+  const [filters, setFilters] = useState({
+    halal: false,
+    vegetarian: false,
+    vegan: false,
+  });
+
+  const filterItems = (items: FoodItem[]) => {
+    let filteredItems = items;
+
+    // Apply dietary filters
+    if (filters.halal) {
+      filteredItems = filteredItems.filter(item => item.common_items.halal);
+    }
+    if (filters.vegetarian) {
+      filteredItems = filteredItems.filter(item => item.common_items.vegetarian);
+    }
+    if (filters.vegan) {
+      filteredItems = filteredItems.filter(item => item.common_items.vegan);
+    }
+
+    // Apply search query filter
+    if (searchQuery) {
+      filteredItems = filteredItems.filter(item =>
+        item.common_items.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.common_items.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.section.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    return filteredItems;
+  };
+
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSection, setSelectedSection] = useState<number | null>(0);
 
@@ -109,6 +143,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
     </div>
   ) : (
     <div className="sm:px-32 pb-10">
+      <FilterOptions filters={filters} setFilters={setFilters} />
       {/* Content div */}
       <motion.div
         variants={containerVariants}
@@ -117,7 +152,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
         className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-2 gap-5`}
       >
         {/* Content */}
-        {foodItems
+        {filterItems(foodItems)
           // .filter((foodItem) => foodItem.section === section)
           .map((foodItem, index) => (
             <motion.div
@@ -139,7 +174,15 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
             </motion.div>
           ))}
       </motion.div>
-      {sections.length === 0 && <NoFoodItems dc={dc} />}
+      {filterItems(foodItems).length === 0 && 
+        (searchQuery ? 
+          <div className="flex flex-col items-center justify-center py-20">
+            <p className="text-xl text-gray-500">No results found for "{searchQuery}"</p>
+          </div>
+          : 
+          <NoFoodItems dc={dc} />
+        )
+      }
     </div>
     // ))}
     // </div>
