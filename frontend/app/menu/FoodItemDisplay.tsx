@@ -6,7 +6,7 @@ import FoodItemCard from "./FoodItemCard";
 import FoodItemModal from "./FoodItemModal";
 import NoFoodItems from "./NoFoodItems";
 import { motion } from "framer-motion";
-// hello
+import FilterOptions from "./FilterOptions";
 
 interface Props {
   dc: string;
@@ -18,16 +18,38 @@ interface Props {
 const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [sections, setSections] = useState([""]);
+  const [filters, setFilters] = useState({
+    halal: false,
+    vegetarian: false,
+    vegan: false,
+  });
 
   const filterItems = (items: FoodItem[]) => {
-    if (!searchQuery) return items;
-    
-    return items.filter(item => 
-      item.common_items.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.common_items.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.section.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    let filteredItems = items;
+
+    // Apply dietary filters
+    if (filters.halal) {
+      filteredItems = filteredItems.filter(item => item.common_items.halal);
+    }
+    if (filters.vegetarian) {
+      filteredItems = filteredItems.filter(item => item.common_items.vegetarian);
+    }
+    if (filters.vegan) {
+      filteredItems = filteredItems.filter(item => item.common_items.vegan);
+    }
+
+    // Apply search query filter
+    if (searchQuery) {
+      filteredItems = filteredItems.filter(item =>
+        item.common_items.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.common_items.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.section.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    return filteredItems;
   };
+
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSection, setSelectedSection] = useState<number | null>(0);
 
@@ -121,6 +143,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     </div>
   ) : (
     <div className="sm:px-32 pb-10">
+      <FilterOptions filters={filters} setFilters={setFilters} />
       {/* Content div */}
       <motion.div
         variants={containerVariants}
