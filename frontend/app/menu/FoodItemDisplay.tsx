@@ -11,11 +11,22 @@ interface Props {
   dc: string;
   day: number;
   meal: string;
+  searchQuery: string;
 }
 
-const FoodItemDisplay = ({ dc, day, meal }: Props) => {
+const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [sections, setSections] = useState([""]);
+
+  const filterItems = (items: FoodItem[]) => {
+    if (!searchQuery) return items;
+    
+    return items.filter(item => 
+      item.common_items.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.common_items.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.section.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSection, setSelectedSection] = useState<number | null>(0);
 
@@ -117,7 +128,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
         className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-2 gap-5`}
       >
         {/* Content */}
-        {foodItems
+        {filterItems(foodItems)
           // .filter((foodItem) => foodItem.section === section)
           .map((foodItem, index) => (
             <motion.div
@@ -139,7 +150,15 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
             </motion.div>
           ))}
       </motion.div>
-      {sections.length === 0 && <NoFoodItems dc={dc} />}
+      {filterItems(foodItems).length === 0 && 
+        (searchQuery ? 
+          <div className="flex flex-col items-center justify-center py-20">
+            <p className="text-xl text-gray-500">No results found for "{searchQuery}"</p>
+          </div>
+          : 
+          <NoFoodItems dc={dc} />
+        )
+      }
     </div>
     // ))}
     // </div>

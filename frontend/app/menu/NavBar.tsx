@@ -10,15 +10,15 @@ import { redirect } from "next/navigation";
 interface Props {
   searchBarOpen: boolean;
   setSearchBarOpen: (searchBarOpen: boolean) => void;
+  setSearchQuery: (query: string) => void;
 }
 
-const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
+const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
   const [query, setQuery] = useState("");
-  const router = useRouter();
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      router.push(`/search?q=${encodeURIComponent(query)}`);
+      setSearchQuery(query);
     }
   };
 
@@ -31,7 +31,12 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen }: Props) => {
             placeholder="Search"
             className="input input-bordered w-60"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              if (e.target.value === '') {
+                setSearchQuery('');
+              }
+            }}
             onKeyDown={handleKeyDown}
           />
         </div>
