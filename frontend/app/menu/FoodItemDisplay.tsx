@@ -114,7 +114,7 @@ const FoodItemDisplay = ({ dc, day, meal }: Props) => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-2 gap-5`}
+        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-[15px] gap-5`}
       >
         {/* Content */}
         {foodItems
