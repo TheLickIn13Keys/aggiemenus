@@ -22,6 +22,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     halal: false,
     vegetarian: false,
     vegan: false,
+    glutenFree: false,
   });
 
   const filterItems = (items: FoodItem[]) => {
@@ -37,7 +38,16 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     if (filters.vegan) {
       filteredItems = filteredItems.filter(item => item.common_items.vegan);
     }
-
+    if (filters.glutenFree) {
+      filteredItems = filteredItems.filter(item => {
+        const allergens = item.common_items.allergens.map(allergen => 
+          allergen.toLowerCase()
+        );
+        return !allergens.some(allergen => 
+          allergen.includes('wheat') || allergen.includes('gluten')
+        );
+      });
+    }
     // Apply search query filter
     if (searchQuery) {
       filteredItems = filteredItems.filter(item =>
@@ -98,9 +108,9 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
 
         setFoodItems(items);
 
-        // Get unique sections
+        // Get unique sections and replace null values
         const uniqueSections = Array.from(
-          new Set(items.map((item) => item.section))
+          new Set(items.map((item) => item.section || "Other"))
         );
 
         setSections(uniqueSections);
