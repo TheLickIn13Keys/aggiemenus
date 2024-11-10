@@ -32,27 +32,14 @@ interface Props {
     vegetarian: boolean;
     vegan: boolean;
     glutenFree: boolean;
+    dairyFree: boolean;
   };
   setFilters: (filters: {
     halal: boolean;
     vegetarian: boolean;
     vegan: boolean;
     glutenFree: boolean;
-  }) => void;
-}
-
-interface Props {
-  filters: {
-    halal: boolean;
-    vegetarian: boolean;
-    vegan: boolean;
-    glutenFree: boolean;  // Add this
-  };
-  setFilters: (filters: {
-    halal: boolean;
-    vegetarian: boolean;
-    vegan: boolean;
-    glutenFree: boolean;  // Add this
+    dairyFree: boolean;
   }) => void;
 }
 
@@ -96,6 +83,15 @@ const FilterOptions = ({ filters, setFilters }: Props) => {
           className="checkbox checkbox-info"
         />
         <span>Gluten Free</span>
+      </label>
+      <label className="cursor-pointer flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={filters.dairyFree}
+          onChange={(e) => setFilters({ ...filters, dairyFree: e.target.checked })}
+          className="checkbox checkbox-info"
+        />
+        <span>Dairy Free</span>
       </label>
     </div>
   );
