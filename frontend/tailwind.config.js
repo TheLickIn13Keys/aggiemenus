@@ -7,6 +7,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        calorieBlue: '#3787E0',
+        veganGreen: '#6BD926',
+        vegetarianOrange: '#FF9447',
+        halalPink: '#FC537C',
+        textDarkBlue: '#355B85',
+      },
       keyframes: {
         fadein: {
           "0%": { opacity: "0" },

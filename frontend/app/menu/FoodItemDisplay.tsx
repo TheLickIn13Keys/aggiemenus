@@ -120,9 +120,9 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
 
         setFoodItems(items);
 
-        // Get unique sections
+        // Get unique sections and replace null values
         const uniqueSections = Array.from(
-          new Set(items.map((item) => item.section))
+          new Set(items.map((item) => item.section || "Other"))
         );
 
         setSections(uniqueSections);
@@ -171,7 +171,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-2 gap-5`}
+        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-[15px] gap-5`}
       >
         {/* Content */}
         {filterItems(foodItems)
