@@ -5,8 +5,7 @@ Dietary restrictions:
 - Vegan
 - Dairy free
 - Gluten free
-- Possibly pescetarian if I can make that work
-
+- Possibly pescetarian if I can make that workx
 Allergens:
 - Dairy
 -Eggs
