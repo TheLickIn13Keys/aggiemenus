@@ -1,3 +1,30 @@
+/*
+Dietary restrictions:
+- Halal
+- Vegetarian
+- Vegan
+- Dairy free
+- Gluten free
+- Possibly pescetarian if I can make that workx
+Allergens:
+- Dairy
+-Eggs
+- Fish
+- Shellfish
+- Tree nuts
+  - Coconuts
+- Peanuts
+  - Peanut oil
+- Wheat/Gluten
+-Soy
+  - Soybean oil
+  - Soy lecithin
+-Sesame
+- Fryers
+- Alcohol
+- Vinegar
+*/
+
 interface Props {
   filters: {
     halal: boolean;
