@@ -5,6 +5,10 @@ interface Props {
   foodItem: FoodItem;
 }
 
+/**
+im adding some custom colors in the tailwind.config.js file for the new filters, isabel can look over them later and change them if needed
+ */
+
 const FoodItemCard = ({ foodItem }: Props) => {
   return (
     <div className="flex flex-col rounded bg-white px-[20px] py-[20px] sm:gap-3 gap-2 transform hover:bg-slate-200 hover:cursor-pointer hover:scale-105 transition duration-300 ease-in-out -mb-[5px]">
@@ -44,6 +48,24 @@ const FoodItemCard = ({ foodItem }: Props) => {
           <div className="px-[8px] py-[5px] rounded-full bg-halalPink">
             Halal
           </div>
+        )}
+        {/* pescetarian */}
+        {foodItem.common_items.pescetarian && (
+        <div className="px-[8px] py-[5px] rounded-full bg-pescetarianYellow">
+          Halal
+        </div>
+        )}
+        {/* gluten free */}
+        {foodItem.common_items.glutenFree && (
+        <div className="px-[8px] py-[5px] rounded-full bg-glutenFreePurple">
+          Halal
+        </div>
+        )}
+         {/* dairy free */}
+        {foodItem.common_items.dairyFree && (
+        <div className="px-[8px] py-[5px] rounded-full bg-dairyFreeRed">
+          Halal
+        </div>
         )}
       </div>
     </div>
