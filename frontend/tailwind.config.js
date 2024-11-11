@@ -12,6 +12,9 @@ module.exports = {
         veganGreen: '#6BD926',
         vegetarianOrange: '#FF9447',
         halalPink: '#FC537C',
+        pescetarianYellow: '#F5D300',
+        dairyFreeRed: '#FF0000',
+        glutenFreePurple: '#800080',
         textDarkBlue: '#355B85',
       },
       keyframes: {
