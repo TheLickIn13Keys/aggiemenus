@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 from dotenv import dotenv_values
 from openai import OpenAI
+import uuid
 
 # Load variables from .env file
 
@@ -30,6 +31,10 @@ def get_embedding(text, model="text-embedding-3-small"):
 
 def find_or_create_common_items(item):
     """Finds item in common_items table, or creates a new item, and returns the id"""
+    # Print the incoming item data
+    print(f"Processing item: {item['name']}")
+    print(f"Item data: {item}")
+
     # Check if the item exists in the common_items table
     res = client.table('common_items').select('id', 'name').eq('name', item['name']).execute()
 
@@ -37,20 +42,48 @@ def find_or_create_common_items(item):
         # If the item does not exist, insert it
         item_string = json.dumps(item)
         embedding_data = get_embedding(item_string)
-        item['embedding'] = embedding_data
-        client.table('common_items').insert(item).execute()
-
-        # Fetch the data again and return the newly generated id
-        new_res = client.table('common_items').select('id', 'name').eq('name', item['name']).execute()
-        return new_res.data[0]['id']
+        item_without_id = {
+            'name': item['name'],
+            'description': item['description'],
+            'serving_size': item['serving_size'],
+            'calories': item['calories'],
+            'fat': item['fat'],
+            'carbs': item['carbs'],
+            'protein': item['protein'],
+            'allergens': item['allergens'],
+            'halal': item['halal'],
+            'vegan': item['vegan'],
+            'vegetarian': item['vegetarian'],
+            'pescetarian': item['pescetarian'],
+            'dairyFree': item['dairyFree'],
+            'glutenFree': item['glutenFree'],
+            'embedding': embedding_data,
+        }
+        
+        # Print the data being inserted
+        print(f"Inserting new item data: {item_without_id}")
+        
+        result = client.table('common_items').insert(item_without_id).execute()
+        print(f"Insert result: {result.data}")
+        return result.data[0]['id']
     elif len(res.data) == 1:
+        print(f"Found existing item with id: {res.data[0]['id']}")
         return res.data[0]['id']
     else:
         raise ValueError(f'More than one item should not be returned but found {len(res.data)}')
     
 def update_current_menu(dc, menu):
     """Update the DB menu that corresponds to the selected DC"""
+    # First, delete existing menu items for this DC
     client.table("current_menu").delete().eq("dc", dc).execute()
+    
+    # Add IDs to each menu item before inserting
+    for item in menu:
+        # Remove id if it exists to let database auto-increment
+        if 'id' in item:
+            del item['id']
+        
+    # Insert the new menu items
     client.table("current_menu").insert(menu).execute()
 
 if __name__ == '__main__':
