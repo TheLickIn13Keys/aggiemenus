@@ -11,30 +11,43 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
 
   if (body["dc"] && body["day"] && body["meal"]) {
-    // Get data from supabase
     try {
       const { data, error } = await supabase
         .from("current_menu")
-        .select(`*, common_items ( * )`)
+        .select(`*, common_items(*)`)
         .eq("dc", body["dc"])
         .eq("day", body["day"])
         .eq("meal", body["meal"]);
 
       if (error) {
+        console.error("Supabase error:", error);
         throw new Error(error.message);
       }
 
-      return NextResponse.json(data, { status: 200 });
+      // Transform the data to add the missing fields
+      const transformedData = data?.map(item => ({
+        ...item,
+        common_items: {
+          ...item.common_items,
+          // Add missing fields with computed values based on allergens
+          dairyFree: !item.common_items.allergens.some((allergen: string) => 
+            allergen.toLowerCase().includes('dairy')),
+          glutenFree: !item.common_items.allergens.some((allergen: string) => 
+            allergen.toLowerCase().includes('gluten') || 
+            allergen.toLowerCase().includes('wheat')),
+          pescetarian: item.common_items.vegan || 
+                      item.common_items.vegetarian ||
+                      item.common_items.allergens.some((allergen: string) => 
+                        allergen.toLowerCase().includes('fish') || 
+                        allergen.toLowerCase().includes('shellfish'))
+        }
+      }));
+
+      return NextResponse.json(transformedData, { status: 200 });
     } catch (error: any) {
-      return NextResponse.json({ error: error.body }, { status: 500 });
+      console.error("API error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
   }
-
-  // Otherwise, tell the user we are missing the appropriate parameters
-  else {
-    return NextResponse.json(
-      { error: "Please enter valid parameters" },
-      { status: 400 }
-    );
-  }
+  return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
 }

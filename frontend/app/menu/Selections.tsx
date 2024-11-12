@@ -36,11 +36,11 @@ const Selections = ({
   };
 
   return (
-    <div className="flex flex-col pb-5 sm:gap-7">
+    <div className="flex flex-col sm:gap-7">
       {/* Tabs for DCs */}
-      <div className="relative sm:h-12 h-10 bg-white sm:px-0 px-10">
+      <div className="relative bg-white sm:px-0 px-10">
         <div
-          className={`grid grid-cols-${allDCs.length} justify-center items-center h-full`}
+          className={`grid grid-cols-${allDCs.length} justify-center items-center h-full p-[20px]`}
         >
           {allDCs.map((dc) => (
             <div
@@ -53,8 +53,10 @@ const Selections = ({
           ))}
         </div>
         {/* Animation for DC selection */}
+        
+        {/* ------------------------------FIX BOTTOM SLIDER FOR DC SELECTION--------------------------- */}
         <motion.div
-          className="relative bottom-0 h-0.5 bg-primary"
+          className="w-1/4 absolute bottom-0 h-[2px] bg-primary"
           style={{
             width: `calc(100% / ${allDCs.length})`,
             left: `calc(${allDCs.indexOf(selectedDC)} * 100% / ${
@@ -70,9 +72,9 @@ const Selections = ({
         />
       </div>
       {/* Days of the week and meals */}
-      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:py-5 py-3 sm:gap-3 gap-5 sm:px-32 px-8">
+      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:px-32 px-8">
         {/* Days of the week */}
-        <div className="flex justify-between relative">
+        <div className="flex justify-between relative mt-[20px]">
           <button
             className="hover:cursor-pointer"
             onClick={() => changeDay(-1)}
@@ -102,7 +104,7 @@ const Selections = ({
           </button>
         </div>
         {/* Meals */}
-        <div className="relative sm:h-12 h-10">
+        <div className="relative py-5">
           <div
             className={`grid grid-cols-3 justify-center items-center h-full`}
           >
@@ -114,7 +116,7 @@ const Selections = ({
               >
                 <p
                   className={`${
-                    selectedMeal === meal ? "text-white" : "text-primary"
+                    selectedMeal === meal ? "text-textDarkBlue" : "text-primary"
                   } sm:text-xl text-sm font-semibold text-center`}
                 >
                   {meal}
@@ -123,11 +125,8 @@ const Selections = ({
                 <AnimatePresence mode="wait">
                   {selectedMeal === meal && (
                     <motion.div
-                      className="absolute inset-0 bg-primary rounded-full -z-10"
-                      style={{
-                        width: `${100 / meals.length}%`,
-                        x: `${meals.indexOf(meal) * 100}%`,
-                      }}
+                      className="absolute bottom-0 bg-primary h-[2px] w-1/3 -z-10"
+                      
                       initial={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
                       animate={{ scaleX: 1, scaleY: 1, opacity: 1 }}
                       exit={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}

@@ -22,6 +22,9 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     halal: false,
     vegetarian: false,
     vegan: false,
+    glutenFree: false,
+    dairyFree: false,
+    pescetarian: false,
   });
 
   const filterItems = (items: FoodItem[]) => {
@@ -37,7 +40,16 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     if (filters.vegan) {
       filteredItems = filteredItems.filter(item => item.common_items.vegan);
     }
-
+    if (filters.glutenFree) {
+      filteredItems = filteredItems.filter(item => item.common_items.glutenFree);
+    }
+    
+    if (filters.dairyFree) {
+      filteredItems = filteredItems.filter(item => item.common_items.dairyFree);
+    }
+    if (filters.pescetarian) {
+      filteredItems = filteredItems.filter(item => item.common_items.pescetarian);
+    }
     // Apply search query filter
     if (searchQuery) {
       filteredItems = filteredItems.filter(item =>
@@ -92,15 +104,21 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
         if (!fetchResult.ok) {
           throw Error("Network response not ok");
         }
-        // Get food items from response json
+        
         const responseData = await fetchResult.json();
         const items = responseData as FoodItem[];
+        
+        // Log the first item to verify the data structure
+        if (items.length > 0) {
+          console.log("Sample food item:", items[0]);
+          console.log("Sample common_items:", items[0].common_items);
+        }
 
         setFoodItems(items);
 
-        // Get unique sections
+        // Get unique sections and replace null values
         const uniqueSections = Array.from(
-          new Set(items.map((item) => item.section))
+          new Set(items.map((item) => item.section || "Other"))
         );
 
         setSections(uniqueSections);
@@ -149,7 +167,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-2 gap-5`}
+        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-[15px] gap-5`}
       >
         {/* Content */}
         {filterItems(foodItems)
