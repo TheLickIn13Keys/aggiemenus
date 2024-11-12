@@ -10,6 +10,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
+  console.log("Current Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
+  console.log("Request body:", body);
+
   if (body["dc"] && body["day"] && body["meal"]) {
     try {
       const { data, error } = await supabase
@@ -18,6 +21,8 @@ export async function POST(req: NextRequest) {
         .eq("dc", body["dc"])
         .eq("day", body["day"])
         .eq("meal", body["meal"]);
+
+      // console.log("Supabase response:", { data, error });
 
       if (error) {
         console.error("Supabase error:", error);
