@@ -22,33 +22,12 @@ export async function POST(req: NextRequest) {
         .eq("day", body["day"])
         .eq("meal", body["meal"]);
 
-      // console.log("Supabase response:", { data, error });
-
       if (error) {
         console.error("Supabase error:", error);
         throw new Error(error.message);
       }
 
-      // Transform the data to add the missing fields
-      const transformedData = data?.map(item => ({
-        ...item,
-        common_items: {
-          ...item.common_items,
-          // Add missing fields with computed values based on allergens
-          dairyFree: !item.common_items.allergens.some((allergen: string) => 
-            allergen.toLowerCase().includes('dairy')),
-          glutenFree: !item.common_items.allergens.some((allergen: string) => 
-            allergen.toLowerCase().includes('gluten') || 
-            allergen.toLowerCase().includes('wheat')),
-          pescetarian: item.common_items.vegan || 
-                      item.common_items.vegetarian ||
-                      item.common_items.allergens.some((allergen: string) => 
-                        allergen.toLowerCase().includes('fish') || 
-                        allergen.toLowerCase().includes('shellfish'))
-        }
-      }));
-
-      return NextResponse.json(transformedData, { status: 200 });
+      return NextResponse.json(data, { status: 200 });
     } catch (error: any) {
       console.error("API error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
