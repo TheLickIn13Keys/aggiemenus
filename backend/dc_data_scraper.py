@@ -57,6 +57,7 @@ def scrape_data(dc, parser):
                     filter_tags = food_choices.get('class')
 
                     halal, vegan, vegetarian = False, False, False
+                    pescetarian, dairyFree, glutenFree = False, False, False
 
                     # If there are filter tags
                     if filter_tags:
@@ -68,6 +69,27 @@ def scrape_data(dc, parser):
                         
                         # Check if item is vegetarian 
                         if "filterVegetarian" in filter_tags: vegetarian = True 
+
+                    allergens_lower = [allergen.strip().lower() for allergen in allergens.split(",")]
+
+                    # Dairy-free if no dairy allergen
+                    dairyFree = not any('dairy' in allergen for allergen in allergens_lower)
+
+                    # Gluten-free if no wheat/gluten allergen
+                    glutenFree = not any(('wheat' in allergen or 'gluten' in allergen) for allergen in allergens_lower)
+
+                    # Pescetarian if vegetarian/vegan OR contains fish/shellfish
+                    pescetarian = vegetarian or vegan or any(
+                        ('fish' in allergen or 'shellfish' in allergen) for allergen in allergens_lower
+                    )
+
+                    # Print allergens data before processing
+                    print(f"\nProcessing food item: {food_name}")
+                    print(f"Raw allergens text: {allergens}")
+                    print(f"Processed allergens list: {[word.strip().capitalize() for word in allergens.split(',')]}")
+                    print(f"DairyFree: {dairyFree}")
+                    print(f"GlutenFree: {glutenFree}")
+                    print(f"Pescetarian: {pescetarian}")
 
                     # We split the info we scraped into 2 sections: common_item_info and current_menu_info
                         # common_item_info contains information that will be inserted into the common_items table
@@ -84,8 +106,14 @@ def scrape_data(dc, parser):
                         "allergens": [word.strip().capitalize() for word in allergens.split(",")],
                         "halal": halal,
                         "vegan": vegan,
-                        "vegetarian": vegetarian
+                        "vegetarian": vegetarian,
+                        "pescetarian": pescetarian,
+                        "dairyFree": dairyFree,
+                        "glutenFree": glutenFree
                     }
+
+                    # Print the final common_item_info
+                    print(f"Final common_item_info: {common_item_info}")
 
                     current_item_info = {
                         "dc": dc,
