@@ -52,7 +52,7 @@ const FoodItemCard = ({ foodItem }: Props) => {
         {/* pescetarian */}
         {foodItem.common_items.pescetarian && (
         <div className="px-[8px] py-[5px] rounded-full bg-pescetarianYellow">
-          Halal
+          Pescetarian
         </div>
         )}
         {/* gluten free */}

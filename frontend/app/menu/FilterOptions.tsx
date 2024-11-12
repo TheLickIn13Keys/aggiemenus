@@ -26,13 +26,14 @@ Allergens:
 - Vinegar
 */
 
-interface Props {
+interface FilterOptionsProps {
   filters: {
     halal: boolean;
     vegetarian: boolean;
     vegan: boolean;
     glutenFree: boolean;
     dairyFree: boolean;
+    pescetarian: boolean;
   };
   setFilters: (filters: {
     halal: boolean;
@@ -40,10 +41,11 @@ interface Props {
     vegan: boolean;
     glutenFree: boolean;
     dairyFree: boolean;
+    pescetarian: boolean;
   }) => void;
 }
 
-const FilterOptions = ({ filters, setFilters }: Props) => {
+const FilterOptions = ({ filters, setFilters }: FilterOptionsProps) => {
   return (
     <div className="flex flex-wrap gap-3 px-5 py-2">
       <label className="cursor-pointer flex items-center gap-2">
@@ -92,6 +94,15 @@ const FilterOptions = ({ filters, setFilters }: Props) => {
           className="checkbox checkbox-info"
         />
         <span>Dairy Free</span>
+      </label>
+      <label className="cursor-pointer flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={filters.pescetarian}
+          onChange={(e) => setFilters({ ...filters, pescetarian: e.target.checked })}
+          className="checkbox checkbox-info"
+        />
+        <span>Pescetarian</span>
       </label>
     </div>
   );
