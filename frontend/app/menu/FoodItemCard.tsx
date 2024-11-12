@@ -64,7 +64,7 @@ const FoodItemCard = ({ foodItem }: Props) => {
          {/* dairy free */}
         {foodItem.common_items.dairyFree && (
         <div className="px-[8px] py-[5px] rounded-full bg-dairyFreeRed">
-          Halal
+          Dairy Free
         </div>
         )}
       </div>
