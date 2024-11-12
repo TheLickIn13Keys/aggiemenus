@@ -162,36 +162,38 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
   ) : (
     <div className="sm:px-32 pb-10">
       <FilterOptions filters={filters} setFilters={setFilters} />
-      {/* Content div */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 py-[15px] gap-5`}
-      >
-        {/* Content */}
-        {filterItems(foodItems)
-          // .filter((foodItem) => foodItem.section === section)
-          .map((foodItem, index) => (
-            <motion.div
-              key={foodItem.id}
-              variants={itemVariants}
-              className="flex flex-col justify-center"
-            >
-              {/* Food card / modal to open button */}
-              <label htmlFor={`food_item_${index}`} className="h-full">
-                <FoodItemCard foodItem={foodItem} />
-              </label>
-
-              {/* Modal */}
-              <FoodItemModal
-                foodItem={foodItem}
-                // section={section}
-                index={index}
-              />
-            </motion.div>
-          ))}
-      </motion.div>
+      {/* Map through sections first */}
+      {sections.map((section, sectionIndex) => (
+        <div key={section} className="mb-8">
+          <h2 className="text-xl font-semibold text-textDarkBlue mb-4">{section}</h2>
+          {/* Content div for this section */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 gap-4"
+          >
+            {/* Filter items for this section */}
+            {filterItems(foodItems)
+              .filter(item => item.section === section)
+              .map((foodItem, index) => (
+                <motion.div
+                  key={foodItem.id}
+                  variants={itemVariants}
+                  className="w-full"
+                >
+                  <label htmlFor={`food_item_${sectionIndex}_${index}`}>
+                    <FoodItemCard foodItem={foodItem} />
+                  </label>
+                  <FoodItemModal
+                    foodItem={foodItem}
+                    index={index}
+                  />
+                </motion.div>
+              ))}
+          </motion.div>
+        </div>
+      ))}
       {filterItems(foodItems).length === 0 && 
         (searchQuery ? 
           <div className="flex flex-col items-center justify-center py-20">
@@ -202,8 +204,6 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
         )
       }
     </div>
-    // ))}
-    // </div>
   );
 };
 
