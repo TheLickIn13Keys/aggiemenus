@@ -77,6 +77,7 @@ const Selections = ({
             onClick={() => changeDay(-1)}
           >
             <MdKeyboardArrowLeft color="bg-primary" size={20} />
+
           </button>
           <AnimatePresence mode="wait">
             <motion.p
