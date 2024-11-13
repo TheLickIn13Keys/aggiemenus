@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:static": "next build && touch dist/.nojekyll",
+    "cap:sync": "npm run build:static && npx cap sync",
+    "cap:ios": "npm run cap:sync && npx cap open ios",
+    "cap:android": "npm run cap:sync && npx cap open android"
   },
   "dependencies": {
     "@capacitor/android": "^6.1.2",
@@ -14,7 +18,7 @@
     "@capacitor/core": "^6.1.2",
     "@capacitor/ios": "^6.1.2",
     "@supabase-cache-helpers/postgrest-swr": "^1.5.0",
-    "@supabase/supabase-js": "^2.39.7",
+    "@supabase/supabase-js": "^2.46.1",
     "@vercel/analytics": "^1.2.2",
     "date-fns": "^3.3.1",
     "dotenv": "^16.4.4",

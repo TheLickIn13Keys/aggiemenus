@@ -22,66 +22,45 @@ const Selections = ({
   setSelectedMeal,
 }: Props) => {
   const allDCs = ["Segundo", "Tercero", "Cuarto", "Latitude"];
-
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
   const meals = ["Breakfast", "Lunch", "Dinner"];
-
-  const [direction, setDirection] = useState(0); // Direction in which to move days (next or prev day)
+  const [direction, setDirection] = useState(0);
 
   const changeDay = (nextOrPrev: number) => {
     setDirection(nextOrPrev);
-    const nextDayIndex = (selectedDay + nextOrPrev + days.length) % days.length; // Allows the index to wrap around, even if it's negative
+    const nextDayIndex = (selectedDay + nextOrPrev + days.length) % days.length;
     setSelectedDay(nextDayIndex);
   };
 
   return (
-    <div className="flex flex-col sm:gap-7">
-      {/* Tabs for DCs */}
-      <div className="relative bg-white sm:px-0 px-10">
-        <div
-          className={`grid grid-cols-${allDCs.length} justify-center items-center h-full p-[20px]`}
-        >
+    <div className="flex flex-col pb-5 sm:gap-7">
+      {/* DC Tabs */}
+      <div className="w-full bg-white sm:px-0 px-10">
+        <div className="grid grid-cols-4 w-full">
           {allDCs.map((dc) => (
-            <div
+            <button
               key={dc}
-              className="col-span-1 items-center justify-between text-primary sm:text-xl text-sm font-semibold text-center hover:cursor-pointer"
               onClick={() => setSelectedDC(dc)}
+              className={`relative py-3 text-primary sm:text-xl text-sm font-semibold text-center hover:cursor-pointer ${
+                selectedDC === dc ? 'border-b-2 border-primary' : ''
+              }`}
             >
               {dc}
-            </div>
+            </button>
           ))}
         </div>
-        {/* Animation for DC selection */}
-        
-        {/* ------------------------------FIX BOTTOM SLIDER FOR DC SELECTION--------------------------- */}
-        <motion.div
-          className="w-1/4 absolute bottom-0 h-[2px] bg-primary"
-          style={{
-            width: `calc(100% / ${allDCs.length})`,
-            left: `calc(${allDCs.indexOf(selectedDC)} * 100% / ${
-              allDCs.length
-            })`,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 25,
-            duration: 0.2,
-          }}
-        />
       </div>
-      {/* Days of the week and meals */}
-      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:px-32 px-8">
-        {/* Days of the week */}
-        <div className="flex justify-between relative mt-[20px]">
+
+      {/* Days and Meals */}
+      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:py-5 py-3 sm:gap-3 gap-5 sm:px-32 px-8">
+        {/* Day selector */}
+        <div className="flex justify-between items-center relative">
           <button
             className="hover:cursor-pointer"
             onClick={() => changeDay(-1)}
           >
-            <MdKeyboardArrowLeft color="bg-primary" size={30} />
+            <MdKeyboardArrowLeft color="primary" size={30} />
           </button>
-          {/* Animation for switching days */}
           <AnimatePresence mode="wait">
             <motion.p
               key={selectedDay}
@@ -99,47 +78,29 @@ const Selections = ({
               {days[selectedDay]}
             </motion.p>
           </AnimatePresence>
-          <button className="hover:cursor-pointer" onClick={() => changeDay(1)}>
-            <MdKeyboardArrowRight color="bg-primary" size={30} />
+          <button 
+            className="hover:cursor-pointer"
+            onClick={() => changeDay(1)}
+          >
+            <MdKeyboardArrowRight color="primary" size={30} />
           </button>
         </div>
-        {/* Meals */}
-        <div className="relative py-5">
-          <div
-            className={`grid grid-cols-3 justify-center items-center h-full`}
-          >
+
+        {/* Meal selector */}
+        <div className="relative h-12">
+          <div className="grid grid-cols-3 gap-4">
             {meals.map((meal) => (
-              <div
+              <button
                 key={meal}
-                className="col-span-1 items-center justify-between"
                 onClick={() => setSelectedMeal(meal)}
+                className={`relative rounded-full transition-colors duration-300 ${
+                  selectedMeal === meal 
+                    ? 'bg-primary text-white' 
+                    : 'text-primary hover:bg-primary/10'
+                } sm:text-xl text-sm font-semibold py-2`}
               >
-                <p
-                  className={`${
-                    selectedMeal === meal ? "text-textDarkBlue" : "text-primary"
-                  } sm:text-xl text-sm font-semibold text-center`}
-                >
-                  {meal}
-                </p>
-                {/* Animate pill for meal times */}
-                <AnimatePresence mode="wait">
-                  {selectedMeal === meal && (
-                    <motion.div
-                      className="absolute bottom-0 bg-primary h-[2px] w-1/3 -z-10"
-                      
-                      initial={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
-                      animate={{ scaleX: 1, scaleY: 1, opacity: 1 }}
-                      exit={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 25,
-                        duration: 0.1,
-                      }}
-                    />
-                  )}
-                </AnimatePresence>
-              </div>
+                {meal}
+              </button>
             ))}
           </div>
         </div>

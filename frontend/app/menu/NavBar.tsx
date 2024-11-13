@@ -1,11 +1,6 @@
 "use client";
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
+import React, { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
-import { IoCloseOutline } from "react-icons/io5";
-import { redirect } from "next/navigation";
 
 interface Props {
   searchBarOpen: boolean;
@@ -16,32 +11,26 @@ interface Props {
 const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
   const [query, setQuery] = useState("");
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      setSearchQuery(query);
-    }
+  const handleSearchChange = (value: string) => {
+    setQuery(value);
+    setSearchQuery(value); // Update parent's searchQuery immediately
   };
 
   return (
     <div className="flex flex-col justify-center items-center sm:py-12 py-8 bg-white">
       <div className="w-full flex justify-end px-4 mb-4">
-        <div className="form-control">
+        <div className="form-control relative">
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered w-60"
+            className="input input-bordered w-60 pr-10"
             value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              if (e.target.value === '') {
-                setSearchQuery('');
-              }
-            }}
-            onKeyDown={handleKeyDown}
+            onChange={(e) => handleSearchChange(e.target.value)}
           />
+          <IoIosSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         </div>
       </div>
-      <Image
+      <img
         src="/aggiemenus.svg"
         alt="Aggie Menus"
         width={300}
