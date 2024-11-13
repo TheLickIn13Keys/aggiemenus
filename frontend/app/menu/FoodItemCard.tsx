@@ -3,50 +3,59 @@ import FoodItem from "../api/foodItemSchema";
 
 interface Props {
   foodItem: FoodItem;
+  index: string;
 }
 
-const FoodItemCard = ({ foodItem }: Props) => {
+/**
+im adding some custom colors in the tailwind.config.js file for the new filters, isabel can look over them later and change them if needed
+ */
+
+const FoodItemCard = ({ foodItem, index }: Props) => {
   return (
-    <div className="flex flex-col rounded bg-white px-[20px] py-[20px] sm:gap-3 gap-2 transform hover:bg-slate-200 hover:cursor-pointer hover:scale-105 transition duration-300 ease-in-out -mb-[5px]">
-      {/* Name */}
-      <div className="flex flex-col mb-[5px]">
-        {/* FIX NEGATIVE MARGIN LATER ON */}
-        <div className="flex-1 text-start font-semibold text-sm max-w-full truncate text-textDarkBlue  mb-[4px]">
-          {foodItem.common_items.name}
+    <label htmlFor={`food_item_${index}`}>
+      <div className="flex flex-row justify-between items-center rounded bg-white px-6 py-4 hover:bg-slate-200 hover:cursor-pointer transition duration-300 ease-in-out">
+        <div className="flex flex-col">
+          <div className="font-semibold text-sm text-textDarkBlue">
+            {foodItem.common_items.name}
+          </div>
+          <div className="text-gray-400 text-xs">
+            {foodItem.section}
+          </div>
         </div>
-        {/* Section */}
-        <div className="flex-1 text-start text-gray-400 text-xs ">
-          {foodItem.section}
+        <div className="flex flex-row gap-2 items-center">
+          {/* Calories */}
+          {foodItem.common_items.calories !== "N/A" && (
+            <div className="px-3 py-1 rounded-full bg-calorieBlue text-white text-xs font-red-hat">
+              {Math.round(parseInt(foodItem.common_items.calories))} cal
+            </div>
+          )}
+          {/* Vegan */}
+          {foodItem.common_items.vegan && (
+            <div className="px-[8px] py-[5px] rounded-full bg-veganGreen text-xs font-red-hat">
+              Vegan
+            </div>
+          )}
+          {/* Vegetarian */}
+          {foodItem.common_items.vegetarian && (
+            <div className="px-[8px] py-[5px] rounded-full bg-vegetarianOrange text-xs font-red-hat">
+              Vegetarian
+            </div>
+          )}
+          {/* Halal */}
+          {foodItem.common_items.halal && (
+            <div className="px-[8px] py-[5px] rounded-full bg-halalPink text-xs font-red-hat">
+              Halal
+            </div>
+          )}
+          {/* pescetarian */}
+          {foodItem.common_items.pescetarian && (
+          <div className="px-[8px] py-[5px] rounded-full bg-pescetarianYellow text-xs font-red-hat">
+            Pescetarian
+          </div>
+          )}
         </div>
       </div>
-      {/* Calories / dietary restrictions */}
-      <div className="flex flex-wrap justify-start items-start text-xs gap-2 text-white ">
-        {/* Calories */}
-        {foodItem.common_items.calories !== "N/A" && (
-          <div className="px-[8px] py-[5px] rounded-full bg-calorieBlue">
-            {Math.round(parseInt(foodItem.common_items.calories))} cal
-          </div>
-        )}
-        {/* Vegan */}
-        {foodItem.common_items.vegan && (
-          <div className="px-[8px] py-[5px] rounded-full bg-veganGreen">
-            Vegan
-          </div>
-        )}
-        {/* Vegetarian */}
-        {foodItem.common_items.vegetarian && (
-          <div className="px-[8px] py-[5px] rounded-full bg-vegetarianOrange">
-            Vegetarian
-          </div>
-        )}
-        {/* Halal */}
-        {foodItem.common_items.halal && (
-          <div className="px-[8px] py-[5px] rounded-full bg-halalPink">
-            Halal
-          </div>
-        )}
-      </div>
-    </div>
+    </label>
   );
 };
 

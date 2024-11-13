@@ -16,6 +16,9 @@ interface FoodItem {
     vegetarian: boolean;
     vegan: boolean;
     halal: boolean;
+    pescetarian: boolean;
+    dairyFree: boolean;
+    glutenFree: boolean;
     embedding: number[];
   };
 }

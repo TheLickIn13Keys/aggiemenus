@@ -10,31 +10,28 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
+  console.log("Current Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
+  console.log("Request body:", body);
+
   if (body["dc"] && body["day"] && body["meal"]) {
-    // Get data from supabase
     try {
       const { data, error } = await supabase
         .from("current_menu")
-        .select(`*, common_items ( * )`)
+        .select(`*, common_items(*)`)
         .eq("dc", body["dc"])
         .eq("day", body["day"])
         .eq("meal", body["meal"]);
 
       if (error) {
+        console.error("Supabase error:", error);
         throw new Error(error.message);
       }
 
       return NextResponse.json(data, { status: 200 });
     } catch (error: any) {
-      return NextResponse.json({ error: error.body }, { status: 500 });
+      console.error("API error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
   }
-
-  // Otherwise, tell the user we are missing the appropriate parameters
-  else {
-    return NextResponse.json(
-      { error: "Please enter valid parameters" },
-      { status: 400 }
-    );
-  }
+  return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
 }
