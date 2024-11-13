@@ -1,4 +1,5 @@
 .env
 __pycache__/
 .aider*
-frontend/public/
+
+.vscode/

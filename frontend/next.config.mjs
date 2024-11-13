@@ -1,21 +1,16 @@
 /** @type {import('next').NextConfig} */
-import  withPWA  from 'next-pwa';
-
-const nextMdxConfig =withPWA({
-    dest: 'public',
-  })
-
-export default nextMdxConfig
-
-/*export default withPWA({
-  //...before
-  pwa: {
-    dest: 'public',
-    register: true,
-    skipWaiting: true,
+const nextConfig = {
+  ...(process.env.NODE_ENV === 'development' 
+    ? {} 
+    : {
+        output: 'export',
+        distDir: 'dist',
+      }
+  ),
+  images: {
+    unoptimized: true,
   },
-  //...after
-});
-/*const nextConfig = {};
+  reactStrictMode: true,
+};
 
-export default nextConfig;*/
+export default nextConfig;

@@ -3,7 +3,7 @@ import FoodItem from "../api/foodItemSchema";
 
 interface Props {
   foodItem: FoodItem;
-  index: number;
+  index: string;
   // section: string;
 }
 
@@ -51,6 +51,9 @@ const FoodItemModal = ({ foodItem, index }: Props) => {
               ) : null}
               {foodItem.common_items.halal ? (
                 <div className="badge badge-error badge-outline ">Halal</div>
+              ) : null}
+              {foodItem.common_items.pescetarian ? (
+                <div className="badge badge-warning badge-outline">Pescetarian</div>
               ) : null}
             </div>
           </div>
