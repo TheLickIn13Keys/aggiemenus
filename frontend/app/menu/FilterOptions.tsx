@@ -3,10 +3,7 @@ Dietary restrictions:
 - Halal
 - Vegetarian
 - Vegan
-- Dairy free
-- Gluten free
-- Possibly pescetarian if I can make that work
-  - check if the allergens include fish and shellfish and reverse the logic we're doing currently
+- Pescetarian
 Allergens:
 - Dairy
 -Eggs
@@ -31,8 +28,6 @@ interface FilterOptionsProps {
     halal: boolean;
     vegetarian: boolean;
     vegan: boolean;
-    glutenFree: boolean;
-    dairyFree: boolean;
     pescetarian: boolean;
     milk: boolean;
     eggs: boolean;
@@ -50,11 +45,9 @@ interface FilterOptionsProps {
     halal: boolean;
     vegetarian: boolean;
     vegan: boolean;
-    glutenFree: boolean;
-    dairyFree: boolean;
     pescetarian: boolean;
 
-    //  allergens
+    // Allergens
     milk: boolean;
     eggs: boolean;
     fish: boolean;
@@ -103,24 +96,6 @@ const FilterOptions = ({ filters, setFilters }: FilterOptionsProps) => {
               className="checkbox checkbox-success"
             />
             <span>Vegan</span>
-          </label>
-          <label className="cursor-pointer flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={filters.glutenFree}
-              onChange={(e) => setFilters({ ...filters, glutenFree: e.target.checked })}
-              className="checkbox checkbox-info"
-            />
-            <span>Gluten Free</span>
-          </label>
-          <label className="cursor-pointer flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={filters.dairyFree}
-              onChange={(e) => setFilters({ ...filters, dairyFree: e.target.checked })}
-              className="checkbox checkbox-info"
-            />
-            <span>Dairy Free</span>
           </label>
           <label className="cursor-pointer flex items-center gap-2">
             <input
