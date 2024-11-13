@@ -15,7 +15,6 @@ const FavoritesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    // Load favorites from cookies instead of localStorage
     const storedFavorites = getCookie('favorites');
     console.log("Stored favorites from cookie:", storedFavorites);
     
