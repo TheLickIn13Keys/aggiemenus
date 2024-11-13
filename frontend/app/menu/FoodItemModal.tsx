@@ -55,12 +55,6 @@ const FoodItemModal = ({ foodItem, index }: Props) => {
               {foodItem.common_items.pescetarian ? (
                 <div className="badge badge-warning badge-outline">Pescetarian</div>
               ) : null}
-              {foodItem.common_items.dairyFree ? (
-                <div className="badge badge-error badge-outline">Dairy Free</div>
-              ) : null}
-              {foodItem.common_items.glutenFree ? (
-                <div className="badge badge-info badge-outline">Gluten Free</div>
-              ) : null}
             </div>
           </div>
           {/* Short description */}

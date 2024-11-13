@@ -22,8 +22,6 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     halal: false,
     vegetarian: false,
     vegan: false,
-    glutenFree: false,
-    dairyFree: false,
     pescetarian: false,
     milk: false,
     eggs: false,
@@ -51,13 +49,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     if (filters.vegan) {
       filteredItems = filteredItems.filter(item => item.common_items.vegan);
     }
-    if (filters.glutenFree) {
-      filteredItems = filteredItems.filter(item => item.common_items.glutenFree);
-    }
     
-    if (filters.dairyFree) {
-      filteredItems = filteredItems.filter(item => item.common_items.dairyFree);
-    }
     if (filters.pescetarian) {
       filteredItems = filteredItems.filter(item => item.common_items.pescetarian);
     }

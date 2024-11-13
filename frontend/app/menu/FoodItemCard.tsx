@@ -53,18 +53,6 @@ const FoodItemCard = ({ foodItem, index }: Props) => {
             Pescetarian
           </div>
           )}
-          {/* gluten free */}
-          {foodItem.common_items.glutenFree && (
-          <div className="px-[8px] py-[5px] rounded-full bg-glutenFreePurple">
-            Gluten Free
-          </div>
-          )}
-           {/* dairy free */}
-          {foodItem.common_items.dairyFree && (
-          <div className="px-[8px] py-[5px] rounded-full bg-dairyFreeRed">
-            Dairy Free
-          </div>
-          )}
         </div>
       </div>
     </label>
