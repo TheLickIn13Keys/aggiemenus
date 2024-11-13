@@ -39,8 +39,8 @@ const Selections = ({
     <div className="flex flex-col">
       {/* Tabs for DCs - in top left third */}
       <div className="relative bg-white">
-        <div className="w-1/3">
-          <div className={`grid grid-cols-4 justify-center items-center h-full p-[20px]`}>
+        <div className="w-screen">
+          <div className={`grid grid-cols-4 justify-center items-center h-full px-[15px] py-[20px]`}>
             {allDCs.map((dc) => (
               <div
                 key={dc}
@@ -69,9 +69,10 @@ const Selections = ({
       </div>
 
       {/* Days and meals - below DCs, also in left third */}
-      <div className="w-1/3 flex flex-col border-t-2 border-b-2 border-primary border-opacity-15">
+      <div className="w-screen flex flex-col border-t-2 border-b-2 border-primary border-opacity-15">
         {/* Days of the week */}
-        <div className="flex justify-between relative px-4 py-2">
+        {/* FIX NEGATIVE MARGINS */}
+        <div className="flex justify-between relative px-4 py-2 pt-[20px] -mb-[12px]">
           <button
             className="hover:cursor-pointer"
             onClick={() => changeDay(-1)}
@@ -103,33 +104,34 @@ const Selections = ({
 
         {/* Meals */}
         <div className="relative py-3">
-          <div className={`grid grid-cols-3 justify-center items-center h-full`}>
-            {meals.map((meal) => (
-              <div
-                key={meal}
-                className="relative col-span-1 items-center justify-between text-primary text-sm font-semibold text-center hover:cursor-pointer"
-                onClick={() => setSelectedMeal(meal)}
-              >
-                {meal}
-              </div>
-            ))}
+      <div className="-mb-[15px] grid grid-cols-3 justify-center items-center h-full">
+        {meals.map((meal) => (
+          <div
+            key={meal}
+            className="px-[15px] py-[20px] relative col-span-1 items-center justify-between text-primary text-sm font-semibold text-center hover:cursor-pointer"
+            onClick={() => setSelectedMeal(meal)}
+          >
+            {meal}
+            
+            {/* Animated underline - only appears for selected meal */}
+            {selectedMeal === meal && (
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 mx-[15px] bg-primary h-[2px]"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                exit={{ scaleX: 0 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 25,
+                  duration: 0.1,
+                }}
+              />
+            )}
           </div>
-          <AnimatePresence>
-            <motion.div
-              className="absolute bottom-0 bg-primary h-[2px]"
-              style={{
-                width: '33.333%',
-                left: `${meals.indexOf(selectedMeal) * 33.333}%`
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 25,
-                duration: 0.1,
-              }}
-            />
-          </AnimatePresence>
-        </div>
+        ))}
+      </div>
+    </div>
       </div>
     </div>
   );
