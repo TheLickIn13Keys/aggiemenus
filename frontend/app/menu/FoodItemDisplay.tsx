@@ -1,17 +1,11 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import FoodItem from "../api/foodItemSchema";
-import { createClient } from '@supabase/supabase-js'
 import FoodItemCard from "./FoodItemCard";
 import FoodItemModal from "./FoodItemModal";
 import NoFoodItems from "./NoFoodItems";
 import { motion } from "framer-motion";
 import FilterOptions from "./FilterOptions";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 interface Props {
   dc: string;
@@ -22,7 +16,7 @@ interface Props {
 
 const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
-  const [sections, setSections] = useState<string[]>([""]);
+  const [sections, setSections] = useState([""]);
   const [filters, setFilters] = useState({
     halal: false,
     vegetarian: false,
@@ -155,8 +149,32 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     return filteredItems;
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedSection, setSelectedSection] = useState<number | null>(0);
+
+  // Used for loading in foodItems animation
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+  const loadingSkeletons = [1, 2, 3];
+
+  // Sets a minimum timeout for the fetch request to resolve (for a smoother user experience)
+  const minTimeout = new Promise((resolve: any) => setTimeout(resolve, 800));
+
   useEffect(() => {
     setIsLoading(true);
+    const abortController = new AbortController();
     const fetchFoodItems = async () => {
       try {
         const res = await fetch("../api/items", {
@@ -184,24 +202,51 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
         }
 
         setFoodItems(items);
-        
+
+        // Get unique sections and replace null values
         const uniqueSections = Array.from(
           new Set(items.map((item) => item.section || "Other"))
         );
+
         setSections(uniqueSections);
-      } catch (error: any) {
-        console.log("Fetch error: ", error);
-      } finally {
+
+        // Save filters for current session
+        // if (typeof window !== undefined) {
+        //   sessionStorage.setItem("filters", JSON.stringify({ dc, day, meal }));
+        // }
+
         setIsLoading(false);
+      } catch (error: any) {
+        if (error.name === "AbortError") {
+          console.log("Fetch aborted");
+        } else {
+          console.log("Fetch error: ", error);
+        }
       }
     };
 
+    // Call function every time dc, day, or meal changes
     fetchFoodItems();
-  }, [dc, day, meal, minTimeout]);
 
-  const filteredItems = filterItems(foodItems);
+    // Cleanup function
+    return () => {
+      abortController.abort();
+    };
+  }, [dc, day, meal]);
 
-  return (
+  const handleAccordionClick = (curNumber: number) => {
+    if (selectedSection === curNumber) {
+      setSelectedSection(null);
+    } else {
+      setSelectedSection(curNumber);
+    }
+  };
+
+  return isLoading ? (
+    <div className="flex flex-col items-center align-middle justify-center py-60">
+      <span className="loading loading-spinner loading-lg"></span>
+    </div>
+  ) : (
     <div className="sm:px-32 pb-10">
       <FilterOptions filters={filters} setFilters={setFilters} />
       {/* Map through sections first */}
@@ -244,8 +289,10 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
           <div className="flex flex-col items-center justify-center py-20">
             <p className="text-xl text-gray-500">No results found for "{searchQuery}"</p>
           </div>
-        ))
-      )}
+          : 
+          <NoFoodItems dc={dc} />
+        )
+      }
     </div>
   );
 };
