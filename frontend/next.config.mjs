@@ -11,6 +11,7 @@ const nextConfig = {
     unoptimized: true,
   },
   reactStrictMode: true,
+  trailingSlash: true,
 };
 
 export default nextConfig;
