@@ -36,8 +36,9 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
         width={300}
         height={300}
         className={`${
+          // FIX LOGO RESPONSIVENESS AS WEB INCREASES IN SIZE AGAIN
           searchBarOpen ? "hidden" : ""
-        } items-center justify-center sm:size-[15%] size-[50%]`}
+        } items-center justify-center sm:size-[15%] size-[50%] hidden sm:flex`}
       />
     </div>
   );

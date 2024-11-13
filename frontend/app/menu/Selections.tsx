@@ -33,38 +33,54 @@ const Selections = ({
   };
 
   return (
-    <div className="flex flex-col pb-5 sm:gap-7">
-      {/* DC Tabs */}
-      <div className="w-full bg-white sm:px-0 px-10">
-        <div className="grid grid-cols-4 w-full">
-          {allDCs.map((dc) => (
-            <button
-              key={dc}
-              onClick={() => setSelectedDC(dc)}
-              className={`relative py-3 text-primary sm:text-xl text-sm font-semibold text-center hover:cursor-pointer ${
-                selectedDC === dc ? 'border-b-2 border-primary' : ''
-              }`}
-            >
-              {dc}
-            </button>
-          ))}
+    <div className="flex flex-col">
+      {/* Tabs for DCs - in top left third */}
+      <div className="relative bg-white">
+        <div className="w-screen">
+          <div className={`grid grid-cols-4 justify-center items-center h-full px-[15px] py-[20px]`}>
+            {allDCs.map((dc) => (
+              <div
+                key={dc}
+                className="relative col-span-1 items-center justify-between text-primary text-sm font-semibold text-center hover:cursor-pointer"
+                onClick={() => setSelectedDC(dc)}
+              >
+                {dc}
+                {selectedDC === dc && (
+                  <motion.div
+                    className="absolute bottom-[-20px] bg-primary h-[2px] w-full"
+                    initial={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
+                    animate={{ scaleX: 1, scaleY: 1, opacity: 1 }}
+                    exit={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 25,
+                      duration: 0.1,
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Days and Meals */}
-      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:py-5 py-3 sm:gap-3 gap-5 sm:px-32 px-8">
-        {/* Day selector */}
-        <div className="flex justify-between items-center relative">
+      {/* Days and meals - below DCs, also in left third */}
+      <div className="w-screen flex flex-col border-t-2 border-b-2 border-primary border-opacity-15">
+        {/* Days of the week */}
+        {/* FIX NEGATIVE MARGINS */}
+        <div className="flex justify-between relative px-4 py-2 pt-[20px] -mb-[12px]">
           <button
             className="hover:cursor-pointer"
             onClick={() => changeDay(-1)}
           >
-            <MdKeyboardArrowLeft color="primary" size={30} />
+            <MdKeyboardArrowLeft color="bg-primary" size={20} />
+
           </button>
           <AnimatePresence mode="wait">
             <motion.p
               key={selectedDay}
-              className="flex align-middle justify-center items-center sm:text-xl text-lg text-primary font-semibold"
+              className="flex align-middle justify-center items-center text-sm text-primary font-semibold"
               initial={{ opacity: 0, x: direction === 1 ? 50 : -50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: direction === 1 ? -50 : 50 }}
@@ -78,32 +94,41 @@ const Selections = ({
               {days[selectedDay]}
             </motion.p>
           </AnimatePresence>
-          <button 
-            className="hover:cursor-pointer"
-            onClick={() => changeDay(1)}
-          >
-            <MdKeyboardArrowRight color="primary" size={30} />
+          <button className="hover:cursor-pointer" onClick={() => changeDay(1)}>
+            <MdKeyboardArrowRight color="bg-primary" size={20} />
           </button>
         </div>
 
-        {/* Meal selector */}
-        <div className="relative h-12">
-          <div className="grid grid-cols-3 gap-4">
-            {meals.map((meal) => (
-              <button
-                key={meal}
-                onClick={() => setSelectedMeal(meal)}
-                className={`relative rounded-full transition-colors duration-300 ${
-                  selectedMeal === meal 
-                    ? 'bg-primary text-white' 
-                    : 'text-primary hover:bg-primary/10'
-                } sm:text-xl text-sm font-semibold py-2`}
-              >
-                {meal}
-              </button>
-            ))}
+        {/* Meals */}
+        <div className="relative py-3">
+      <div className="-mb-[15px] grid grid-cols-3 justify-center items-center h-full">
+        {meals.map((meal) => (
+          <div
+            key={meal}
+            className="px-[15px] py-[20px] relative col-span-1 items-center justify-between text-primary text-sm font-semibold text-center hover:cursor-pointer"
+            onClick={() => setSelectedMeal(meal)}
+          >
+            {meal}
+            
+            {/* Animated underline - only appears for selected meal */}
+            {selectedMeal === meal && (
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 mx-[15px] bg-primary h-[2px]"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                exit={{ scaleX: 0 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 25,
+                  duration: 0.1,
+                }}
+              />
+            )}
           </div>
-        </div>
+        ))}
+      </div>
+    </div>
       </div>
     </div>
   );
