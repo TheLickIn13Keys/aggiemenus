@@ -25,6 +25,17 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     glutenFree: false,
     dairyFree: false,
     pescetarian: false,
+    milk: false,
+    eggs: false,
+    fish: false,
+    shellfish: false,
+    treeNuts: false,
+    peanuts: false,
+    wheat: false,
+    soybeans: false,
+    sesame: false,
+    alcohol: false,
+    vinegar: false,
   });
 
   const filterItems = (items: FoodItem[]) => {
@@ -50,6 +61,91 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     if (filters.pescetarian) {
       filteredItems = filteredItems.filter(item => item.common_items.pescetarian);
     }
+
+    // Allergen filters
+    if (filters.milk) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('DAIRY') || 
+          allergen.toUpperCase().includes('MILK')
+        )
+      );
+    }
+    if (filters.eggs) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('EGG')
+        )
+      );
+    }
+    if (filters.fish) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('FISH')
+        )
+      );
+    }
+    if (filters.shellfish) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('SHELLFISH')
+        )
+      );
+    }
+    if (filters.treeNuts) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('TREE NUTS')
+        )
+      );
+    }
+    if (filters.peanuts) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('PEANUT') ||
+          allergen.toUpperCase().includes('PEANUT OIL')
+        )
+      );
+    }
+    if (filters.wheat) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('WHEAT') ||
+          allergen.toUpperCase().includes('GLUTEN')
+        )
+      );
+    }
+    if (filters.soybeans) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('SOY') ||
+          allergen.toUpperCase().includes('SOYBEAN OIL') ||
+          allergen.toUpperCase().includes('SOY LECITHIN')
+        )
+      );
+    }
+    if (filters.sesame) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('SESAME')
+        )
+      );
+    }
+    if (filters.alcohol) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('ALCOHOL')
+        )
+      );
+    }
+    if (filters.vinegar) {
+      filteredItems = filteredItems.filter(item => 
+        !item.common_items.allergens.some(allergen => 
+          allergen.toUpperCase().includes('VINEGAR')
+        )
+      );
+    }
+
     // Apply search query filter
     if (searchQuery) {
       filteredItems = filteredItems.filter(item =>
