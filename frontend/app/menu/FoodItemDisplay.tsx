@@ -183,11 +183,14 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
                   className="w-full"
                 >
                   <label htmlFor={`food_item_${sectionIndex}_${index}`}>
-                    <FoodItemCard foodItem={foodItem} index={index} />
+                    <FoodItemCard 
+                      foodItem={foodItem} 
+                      index={`${sectionIndex}_${index}`} 
+                    />
                   </label>
                   <FoodItemModal
                     foodItem={foodItem}
-                    index={index}
+                    index={`${sectionIndex}_${index}`}
                   />
                 </motion.div>
               ))}

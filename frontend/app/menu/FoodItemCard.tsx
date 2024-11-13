@@ -3,7 +3,7 @@ import FoodItem from "../api/foodItemSchema";
 
 interface Props {
   foodItem: FoodItem;
-  index: number;
+  index: string;
 }
 
 /**
