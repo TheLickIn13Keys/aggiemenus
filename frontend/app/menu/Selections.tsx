@@ -38,48 +38,63 @@ const Selections = ({
   return (
     <div className="flex flex-col sm:gap-7">
       {/* Tabs for DCs */}
-      <div className="relative bg-white sm:px-0 px-10">
-        <div
-          className={`grid grid-cols-${allDCs.length} justify-center items-center h-full p-[20px]`}
-        >
-          {allDCs.map((dc) => (
-            <div
-              key={dc}
-              className="col-span-1 items-center justify-between text-primary sm:text-xl text-sm font-semibold text-center hover:cursor-pointer"
-              onClick={() => setSelectedDC(dc)}
-            >
-              {dc}
-            </div>
-          ))}
-        </div>
-        {/* Animation for DC selection */}
-        
-        {/* ------------------------------FIX BOTTOM SLIDER FOR DC SELECTION--------------------------- */}
-        <motion.div
-          className="w-1/4 absolute bottom-0 h-[2px] bg-primary"
-          style={{
-            width: `calc(100% / ${allDCs.length})`,
-            left: `calc(${allDCs.indexOf(selectedDC)} * 100% / ${
-              allDCs.length
-            })`,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 25,
-            duration: 0.2,
-          }}
-        />
+      <div className="relative">
+      <div className="grid grid-cols-4 justify-center items-center h-full bg-white mx-[10px]">
+        {allDCs.map((dc) => (
+          <div
+            key={dc}
+            className="col-span-1 items-center justify-between relative hover:cursor-pointer"
+            onClick={() => setSelectedDC(dc)}
+          >
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={dc}
+                className={`text-sm px-[15px] py-[20px] flex align-middle justify-center items-center sm:text-xl text-lg font-semibold ${
+                  selectedDC === dc ? "text-textDarkBlue" : "text-primary"
+                }`}
+                initial={{ opacity: 0, x: direction === 1 ? 50 : -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction === 1 ? -50 : 50 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 30,
+                  duration: 0.3,
+                }}
+              >
+                {dc}
+              </motion.p>
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              {selectedDC === dc && (
+                <motion.div
+                  className="absolute bottom-0 left-0 bg-primary h-[2px] w-full"
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  animate={{ scaleX: 1, opacity: 1 }}
+                  exit={{ scaleX: 0, opacity: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 25,
+                    duration: 0.1,
+                  }}
+                />
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
       </div>
+    </div>
       {/* Days of the week and meals */}
-      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:px-32 px-8">
+      <div className="flex flex-col border-t-2 border-b-2 border-primary border-opacity-15 sm:px-32 px-0">
         {/* Days of the week */}
-        <div className="flex justify-between relative mt-[20px]">
+        <div className="flex justify-between relative mt-[20px] mx-[20px]">
           <button
             className="hover:cursor-pointer"
             onClick={() => changeDay(-1)}
           >
-            <MdKeyboardArrowLeft color="bg-primary" size={30} />
+            <MdKeyboardArrowLeft className="text-primary" size={30} />
           </button>
           {/* Animation for switching days */}
           <AnimatePresence mode="wait">
@@ -100,18 +115,18 @@ const Selections = ({
             </motion.p>
           </AnimatePresence>
           <button className="hover:cursor-pointer" onClick={() => changeDay(1)}>
-            <MdKeyboardArrowRight color="bg-primary" size={30} />
+            <MdKeyboardArrowRight className="text-primary" size={30} />
           </button>
         </div>
         {/* Meals */}
-        <div className="relative py-5">
+        <div className="relative">
           <div
             className={`grid grid-cols-3 justify-center items-center h-full`}
           >
             {meals.map((meal) => (
               <div
                 key={meal}
-                className="col-span-1 items-center justify-between"
+                className="px-[15px] py-[20px] col-span-1 items-center justify-between relative mx-2"
                 onClick={() => setSelectedMeal(meal)}
               >
                 <p
@@ -120,12 +135,12 @@ const Selections = ({
                   } sm:text-xl text-sm font-semibold text-center`}
                 >
                   {meal}
+
                 </p>
-                {/* Animate pill for meal times */}
                 <AnimatePresence mode="wait">
                   {selectedMeal === meal && (
                     <motion.div
-                      className="absolute bottom-0 bg-primary h-[2px] w-1/3 -z-10"
+                      className="absolute bottom-0 left-0 bg-primary h-[2px] w-full"
                       
                       initial={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
                       animate={{ scaleX: 1, scaleY: 1, opacity: 1 }}
@@ -139,6 +154,7 @@ const Selections = ({
                     />
                   )}
                 </AnimatePresence>
+                {/* Animate pill for meal times */}
               </div>
             ))}
           </div>
