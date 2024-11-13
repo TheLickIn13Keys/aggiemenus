@@ -25,31 +25,31 @@ const FoodItemCard = ({ foodItem, index }: Props) => {
         <div className="flex flex-row gap-2 items-center">
           {/* Calories */}
           {foodItem.common_items.calories !== "N/A" && (
-            <div className="px-3 py-1 rounded-full bg-calorieBlue text-white text-xs">
+            <div className="px-3 py-1 rounded-full bg-calorieBlue text-white text-xs font-red-hat">
               {Math.round(parseInt(foodItem.common_items.calories))} cal
             </div>
           )}
           {/* Vegan */}
           {foodItem.common_items.vegan && (
-            <div className="px-[8px] py-[5px] rounded-full bg-veganGreen">
+            <div className="px-[8px] py-[5px] rounded-full bg-veganGreen text-xs font-red-hat">
               Vegan
             </div>
           )}
           {/* Vegetarian */}
           {foodItem.common_items.vegetarian && (
-            <div className="px-[8px] py-[5px] rounded-full bg-vegetarianOrange">
+            <div className="px-[8px] py-[5px] rounded-full bg-vegetarianOrange text-xs font-red-hat">
               Vegetarian
             </div>
           )}
           {/* Halal */}
           {foodItem.common_items.halal && (
-            <div className="px-[8px] py-[5px] rounded-full bg-halalPink">
+            <div className="px-[8px] py-[5px] rounded-full bg-halalPink text-xs font-red-hat">
               Halal
             </div>
           )}
           {/* pescetarian */}
           {foodItem.common_items.pescetarian && (
-          <div className="px-[8px] py-[5px] rounded-full bg-pescetarianYellow">
+          <div className="px-[8px] py-[5px] rounded-full bg-pescetarianYellow text-xs font-red-hat">
             Pescetarian
           </div>
           )}
