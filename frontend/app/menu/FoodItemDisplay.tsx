@@ -153,7 +153,27 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
         )
       );
     }
-
+    if (filters.glutenFree) {
+      filteredItems = filteredItems.filter(item => {
+        const allergens = item.common_items.allergens.map(allergen => 
+          allergen.toLowerCase()
+        );
+        return !allergens.some(allergen => 
+          allergen.includes('wheat') || allergen.includes('gluten')
+        );
+      });
+    }
+    
+    if (filters.dairyFree) {
+      filteredItems = filteredItems.filter(item => {
+        const allergens = item.common_items.allergens.map(allergen => 
+          allergen.toLowerCase()
+        );
+        return !allergens.some(allergen => 
+          allergen.includes('dairy')
+        );
+      });
+    }
     // Apply search query filter
     if (searchQuery) {
       filteredItems = filteredItems.filter(item =>
@@ -183,7 +203,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
 
         const items = data as FoodItem[];
         setFoodItems(items);
-
+        
         const uniqueSections = Array.from(
           new Set(items.map((item) => item.section || "Other"))
         );
