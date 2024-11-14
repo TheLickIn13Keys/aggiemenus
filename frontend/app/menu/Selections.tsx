@@ -39,33 +39,37 @@ const Selections = ({
     <div className="flex flex-col">
       {/* Tabs for DCs - in top left third */}
       <div className="relative bg-white">
-        <div className="w-screen">
-          <div className={`grid grid-cols-4 justify-center items-center h-full px-[15px] py-[20px]`}>
-            {allDCs.map((dc) => (
-              <div
-                key={dc}
-                className="relative col-span-1 items-center justify-between text-primary text-sm font-semibold text-center hover:cursor-pointer"
-                onClick={() => setSelectedDC(dc)}
-              >
-                {dc}
-                {selectedDC === dc && (
-                  <motion.div
-                    className="absolute bottom-[-20px] bg-primary h-[2px] w-full"
-                    initial={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
-                    animate={{ scaleX: 1, scaleY: 1, opacity: 1 }}
-                    exit={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 300,
-                      damping: 25,
-                      duration: 0.1,
-                    }}
-                  />
-                )}
-              </div>
-            ))}
+      <div className="w-screen">
+      <div className="relative grid grid-cols-4 justify-center items-center h-full px-[15px] py-[20px]">
+        {allDCs.map((dc) => (
+          <div
+            key={dc}
+            className="col-span-1 text-primary text-sm font-semibold text-center hover:cursor-pointer"
+            onClick={() => setSelectedDC(dc)}
+          >
+            {dc}
           </div>
-        </div>
+        ))}
+        {selectedDC && (
+          <motion.div
+            className="absolute bottom-0 bg-primary h-[2px]"
+            style={{
+              width: '25%',
+              left: `${allDCs.indexOf(selectedDC) * 25}%`
+            }}
+            initial={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
+            animate={{ scaleX: 1, scaleY: 1, opacity: 1 }}
+            exit={{ scaleX: 0.5, scaleY: 0.5, opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 25,
+              duration: 0.1,
+            }}
+          />
+        )}
+      </div>
+    </div>
       </div>
 
       {/* Days and meals - below DCs, also in left third */}
