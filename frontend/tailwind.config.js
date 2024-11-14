@@ -17,6 +17,7 @@ module.exports = {
         halalPink: '#FC537C',
         pescetarianYellow: '#F5D300',
         textDarkBlue: '#355B85',
+        calorieGray: '#8B8B8B',
       },
       keyframes: {
         fadein: {

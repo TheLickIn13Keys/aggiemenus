@@ -43,7 +43,6 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSection, setSelectedSection] = useState<number | null>(0);
 
-  // Animation variants
   const itemVariants = {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0 },
@@ -71,109 +70,30 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     if (filters.pescetarian) filteredItems = filteredItems.filter(item => item.common_items.pescetarian);
 
     // Apply allergen filters
-    if (filters.milk) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('DAIRY') || 
-          allergen.toUpperCase().includes('MILK')
-        )
-      );
-    }
-    if (filters.eggs) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('EGG')
-        )
-      );
-    }
-    if (filters.fish) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('FISH')
-        )
-      );
-    }
-    if (filters.shellfish) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('SHELLFISH')
-        )
-      );
-    }
-    if (filters.treeNuts) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('TREE NUTS')
-        )
-      );
-    }
-    if (filters.peanuts) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('PEANUT') ||
-          allergen.toUpperCase().includes('PEANUT OIL')
-        )
-      );
-    }
-    if (filters.wheat) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('WHEAT') ||
-          allergen.toUpperCase().includes('GLUTEN')
-        )
-      );
-    }
-    if (filters.soybeans) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('SOY') ||
-          allergen.toUpperCase().includes('SOYBEAN OIL') ||
-          allergen.toUpperCase().includes('SOY LECITHIN')
-        )
-      );
-    }
-    if (filters.sesame) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('SESAME')
-        )
-      );
-    }
-    if (filters.alcohol) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('ALCOHOL')
-        )
-      );
-    }
-    if (filters.vinegar) {
-      filteredItems = filteredItems.filter(item => 
-        !item.common_items.allergens.some(allergen => 
-          allergen.toUpperCase().includes('VINEGAR')
-        )
-      );
-    }
-    if (filters.glutenFree) {
-      filteredItems = filteredItems.filter(item => {
-        const allergens = item.common_items.allergens.map(allergen => 
-          allergen.toLowerCase()
+    const allergenFilters = {
+      milk: ['DAIRY', 'MILK'],
+      eggs: ['EGG'],
+      fish: ['FISH'],
+      shellfish: ['SHELLFISH'],
+      treeNuts: ['TREE NUTS'],
+      peanuts: ['PEANUT', 'PEANUT OIL'],
+      wheat: ['WHEAT', 'GLUTEN'],
+      soybeans: ['SOY', 'SOYBEAN OIL', 'SOY LECITHIN'],
+      sesame: ['SESAME'],
+      alcohol: ['ALCOHOL'],
+      vinegar: ['VINEGAR']
+    };
+
+    Object.entries(allergenFilters).forEach(([filter, terms]) => {
+      if (filters[filter as keyof typeof filters]) {
+        filteredItems = filteredItems.filter(item =>
+          !item.common_items.allergens.some(allergen =>
+            terms.some(term => allergen.toUpperCase().includes(term))
+          )
         );
-        return !allergens.some(allergen => 
-          allergen.includes('wheat') || allergen.includes('gluten')
-        );
-      });
-    }
-    
-    if (filters.dairyFree) {
-      filteredItems = filteredItems.filter(item => {
-        const allergens = item.common_items.allergens.map(allergen => 
-          allergen.toLowerCase()
-        );
-        return !allergens.some(allergen => 
-          allergen.includes('dairy')
-        );
-      });
-    }
+      }
+    });
+
     // Apply search query filter
     if (searchQuery) {
       filteredItems = filteredItems.filter(item =>
@@ -190,7 +110,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     setIsLoading(true);
     const fetchFoodItems = async () => {
       try {
-        const [_] = await Promise.all([minTimeout()]);
+        await minTimeout();
         
         const { data, error } = await supabase
           .from('current_menu')
@@ -200,7 +120,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
           .eq('meal', meal);
 
         if (error) throw error;
-
+        
         const items = data as FoodItem[];
         setFoodItems(items);
         
@@ -208,7 +128,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
           new Set(items.map((item) => item.section || "Other"))
         );
         setSections(uniqueSections);
-      } catch (error: any) {
+      } catch (error) {
         console.log("Fetch error: ", error);
       } finally {
         setIsLoading(false);
@@ -220,56 +140,63 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
 
   const filteredItems = filterItems(foodItems);
 
+  const handleAccordionClick = (curNumber: number) => {
+    setSelectedSection(selectedSection === curNumber ? null : curNumber);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center align-middle justify-center py-60">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+
+  if (filteredItems.length === 0) {
+    return searchQuery ? (
+      <div className="flex flex-col items-center justify-center py-20">
+        <p className="text-xl text-gray-500">No results found for &ldquo;{searchQuery}&rdquo;</p>
+      </div>
+    ) : (
+      <NoFoodItems dc={dc} />
+    );
+  }
+
   return (
-    <div className="sm:px-32 pb-10">
+    <div className="px-[20px] py-[15px]">
       <FilterOptions filters={filters} setFilters={setFilters} />
-      
-      {isLoading ? (
-        <div className="flex flex-col items-center align-middle justify-center py-60">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      ) : filteredItems.length === 0 ? (
-        searchQuery ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <p className="text-xl text-gray-500">No results found for &ldquo;{searchQuery}&rdquo;</p>
-          </div>
-        ) : (
-          <NoFoodItems dc={dc} />
-        )
-      ) : (
-        sections.map((section, sectionIndex) => (
-          <div key={section} className="mb-8">
-            <h2 className="text-xl font-semibold text-textDarkBlue mb-4">{section}</h2>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 gap-4"
-            >
-              {filteredItems
-                .filter(item => item.section === section)
-                .map((foodItem, index) => (
-                  <motion.div
-                    key={foodItem.id}
-                    variants={itemVariants}
-                    className="w-full"
-                  >
-                    <label htmlFor={`food_item_${sectionIndex}_${index}`}>
-                      <FoodItemCard 
-                        foodItem={foodItem} 
-                        index={`${sectionIndex}_${index}`} 
-                      />
-                    </label>
-                    <FoodItemModal
-                      foodItem={foodItem}
-                      index={`${sectionIndex}_${index}`}
+      {sections.map((section, sectionIndex) => (
+        <div key={section} className="mb-8">
+          <h2 className="text-xl font-semibold text-textDarkBlue mb-4">{section}</h2>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 gap-4"
+          >
+            {filteredItems
+              .filter(item => item.section === section)
+              .map((foodItem, index) => (
+                <motion.div
+                  key={foodItem.id}
+                  variants={itemVariants}
+                  className="w-full"
+                >
+                  <label htmlFor={`food_item_${sectionIndex}_${index}`}>
+                    <FoodItemCard 
+                      foodItem={foodItem} 
+                      index={`${sectionIndex}_${index}`} 
                     />
-                  </motion.div>
-                ))}
-            </motion.div>
-          </div>
-        ))
-      )}
+                  </label>
+                  <FoodItemModal
+                    foodItem={foodItem}
+                    index={`${sectionIndex}_${index}`}
+                  />
+                </motion.div>
+              ))}
+          </motion.div>
+        </div>
+      ))}
     </div>
   );
 };
