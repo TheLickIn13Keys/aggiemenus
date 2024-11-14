@@ -248,7 +248,8 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
       <span className="loading loading-spinner loading-lg"></span>
     </div>
   ) : (
-    <div className="sm:px-32 pb-10">
+    // container for dc section and respective food items corresponding to those sections
+    <div className="px-[20px] py-[15px]">
       <FilterOptions filters={filters} setFilters={setFilters} />
       {/* Map through sections first */}
       {sections.map((section, sectionIndex) => (
