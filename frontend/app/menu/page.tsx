@@ -68,6 +68,7 @@ const Menu = () => {
           setSelectedDay={setSelectedDay}
           selectedMeal={selectedMeal}
           setSelectedMeal={setSelectedMeal}
+          setSearchQuery={setSearchQuery}
         />
         <FoodItemDisplay
           dc={selectedDC}
