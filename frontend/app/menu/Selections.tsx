@@ -15,6 +15,7 @@ interface Props {
   setSelectedDay: (day: number) => void;
   selectedMeal: string;
   setSelectedMeal: (meal: string) => void;
+  setSearchQuery: (query: string) => void;
 }
 
 const Selections = ({
@@ -24,6 +25,7 @@ const Selections = ({
   setSelectedDay,
   selectedMeal,
   setSelectedMeal,
+  setSearchQuery,
 }: Props) => {
   const allDCs = ["Segundo", "Tercero", "Cuarto", "Latitude"];
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -38,7 +40,7 @@ const Selections = ({
   };
   // logic for new search bar component 
   const [searchBarOpen, setSearchBarOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  // Remove duplicate searchQuery state since it's passed as prop
 
   return (
 <div className="flex flex-col">
