@@ -11,11 +11,10 @@ module.exports = {
         'red-hat': ['var(--font-red-hat)'],
       },
       colors: {
-        calorieBlue: '#3787E0',
+        pescetarianBlue: '#3787E0',
         veganGreen: '#6BD926',
         vegetarianOrange: '#FF9447',
         halalPink: '#FC537C',
-        pescetarianYellow: '#F5D300',
         textDarkBlue: '#355B85',
         calorieGray: '#8B8B8B',
       },
