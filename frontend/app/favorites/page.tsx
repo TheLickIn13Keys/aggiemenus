@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../menu/NavBar";
 import Footer from "../menu/Footer";
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 import Link from "next/link";
 import { createClient } from '@supabase/supabase-js';
 import FoodItem from "../api/foodItemSchema";
@@ -104,6 +104,15 @@ const FavoritesPage = () => {
     return acc;
   }, {} as Record<string, Record<string, FavoriteItem[]>>);
 
+  const toggleFavorite = (item: FavoriteItem) => {
+    const favorites: FavoriteItem[] = JSON.parse(getCookie('favorites') || '[]');
+    const newFavorites = favorites.filter(fav => 
+      !(fav.id === item.id && fav.name === item.name)
+    );
+    setCookie('favorites', JSON.stringify(newFavorites));
+    setFavorites(newFavorites);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <header>
@@ -168,13 +177,23 @@ const FavoritesPage = () => {
                           <h4 className="text-lg font-semibold text-textDarkBlue">
                             {item.name}
                           </h4>
-                          <span className="text-sm text-primary font-medium">
+                          <button 
+                            onClick={() => toggleFavorite(item)}
+                            className="flex items-center justify-center bg-[#F1F7F7] rounded-full w-[30px] h-[30px]"
+                          >
+                            <img 
+                              src="/filled_heart_icon.svg"
+                              className="transition-transform duration-300 hover:scale-110"
+                            />
+                          </button>
+                        </div>
+                        <div className="flex gap-2 text-sm text-gray-500 mt-1">
+                          <span className="text-primary font-medium">
                             {item.meal || "Unknown Meal"}
                           </span>
+                          <span>•</span>
+                          <span>{item.section}</span>
                         </div>
-                        <p className="text-sm text-gray-500 mt-1">
-                          {item.section}
-                        </p>
                       </div>
                     </div>
                   ))
