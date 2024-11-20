@@ -25,7 +25,10 @@ const FavoritesPage = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<'all' | 'available'>('all');
-  const [currentDay, setCurrentDay] = useState(0);
+  const [currentDay, setCurrentDay] = useState(() => {
+    const curDate = new Date(Date.now());
+    return (curDate.getDay() - 1 + 7) % 7;
+  });
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
 
   useEffect(() => {
