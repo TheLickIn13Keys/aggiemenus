@@ -30,6 +30,7 @@ const FavoritesPage = () => {
     return (curDate.getDay() - 1 + 7) % 7;
   });
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
+  const [tempUnfavorited, setTempUnfavorited] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const storedFavorites = getCookie('favorites');
@@ -108,12 +109,30 @@ const FavoritesPage = () => {
   }, {} as Record<string, Record<string, FavoriteItem[]>>);
 
   const toggleFavorite = (item: FavoriteItem) => {
-    const favorites: FavoriteItem[] = JSON.parse(getCookie('favorites') || '[]');
-    const newFavorites = favorites.filter(fav => 
-      !(fav.id === item.id && fav.name === item.name)
-    );
-    setCookie('favorites', JSON.stringify(newFavorites));
-    setFavorites(newFavorites);
+    const itemKey = `${item.id}-${item.name}`;
+    const newTempUnfavorited = new Set(tempUnfavorited);
+    
+    if (tempUnfavorited.has(itemKey)) {
+      // Re-favorite the item
+      newTempUnfavorited.delete(itemKey);
+      setTempUnfavorited(newTempUnfavorited);
+      
+      // Update cookies only if re-favoriting
+      const favorites: FavoriteItem[] = JSON.parse(getCookie('favorites') || '[]');
+      favorites.push(item);
+      setCookie('favorites', JSON.stringify(favorites));
+    } else {
+      // Temporarily unfavorite the item
+      newTempUnfavorited.add(itemKey);
+      setTempUnfavorited(newTempUnfavorited);
+      
+      // Update cookies
+      const favorites: FavoriteItem[] = JSON.parse(getCookie('favorites') || '[]');
+      const newFavorites = favorites.filter(fav => 
+        !(fav.id === item.id && fav.name === item.name)
+      );
+      setCookie('favorites', JSON.stringify(newFavorites));
+    }
   };
 
   return (
@@ -185,7 +204,7 @@ const FavoritesPage = () => {
                             className="flex items-center justify-center bg-[#F1F7F7] rounded-full w-[30px] h-[30px]"
                           >
                             <img 
-                              src="/filled_heart_icon.svg"
+                              src={tempUnfavorited.has(`${item.id}-${item.name}`) ? "/favorite_icon.svg" : "/filled_heart_icon.svg"}
                               className="transition-transform duration-300 hover:scale-110"
                             />
                           </button>
