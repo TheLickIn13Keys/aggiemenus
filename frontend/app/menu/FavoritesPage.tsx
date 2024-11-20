@@ -18,6 +18,11 @@ const supabase = createClient(
 
 const FavoritesButton = () => {
   const [isOpen, setIsOpen] = useState(false);
+  // for modal sliding animation, open and close
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
+
+
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [activeTab, setActiveTab] = useState<'all' | 'available'>('all');
   const [currentDay, setCurrentDay] = useState(() => {
@@ -109,6 +114,26 @@ const FavoritesButton = () => {
     return acc;
   }, {} as Record<string, Record<string, FavoriteItem[]>>);
 
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setTimeout(() => {
+        setIsVisible(true);
+      }, 10);
+    } else {
+      setIsVisible(false);
+      // Wait for animation to complete before unmounting
+      setTimeout(() => {
+        setShouldRender(false);
+      }, 300);
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
+    setIsOpen(false);
+  }
+
+
   return (
     <>
       <button 
@@ -119,87 +144,106 @@ const FavoritesButton = () => {
         <p className="text-primary font-medium">Favorites</p>
       </button>
 
-      {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-end z-50">
-          <div className="bg-[#ECF5F7] w-1/2 h-screen overflow-hidden">
-            <div className='relative'>
+      {shouldRender && (
+
+          // render close
+          <div className={`fixed inset-0 bg-black transition-opacity duration-300 flex items-end justify-end z-50
+          ${isVisible ? 'bg-opacity-50' : 'bg-opacity-0'}`}
+          >
+            {/* render open */}
+            <div className={`bg-[#ECF5F7] h-full w-1/2 flex flex-col transform transition-transform duration-300 ease-out
+            ${isVisible ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className='relative min-w-fit'>
               <img src="/favorites-background.png" className='w-full'/>
+
               <div className="absolute bottom-10 left-10">
                 <h1 className="font-red-hat text-white text-[24px] font-bold">
                   Favorited Items
                 </h1>
               </div>
+
               <button 
                 onClick={() => setIsOpen(false)}
                 className="absolute top-10 left-10"
               >
                 <img className='bg-[#5785B7] rounded-full w-fit p-2' src="/close_icon.svg"/>
               </button>
+
             </div>
 
-            <div className='pl-10 border-b border-[#C3D9ED]'>
-              <div className='py-[20px] flex gap-x-[15px] font-red-hat text-textDarkBlue text-[14px] font-bold'>
+            <div className='px-[40px] border-b border-[#C3D9ED]'>
+              <div className='flex gap-x-[30px] font-red-hat text-textDarkBlue text-[14px] font-bold'>
                 <button 
                   onClick={() => setActiveTab('available')}
-                  className={`${activeTab === 'available' ? 'text-primary border-b-2 border-primary pb-1' : ''}`}
+                  className={`pt-[20px] pb-[20px] ${activeTab === 'available' ? 'pt-[20px] pb-[20px] text-primary border-b-2 border-primary' : ''}`}
                 >
                   Offered this week
                 </button>
                 <button 
                   onClick={() => setActiveTab('all')}
-                  className={`${activeTab === 'all' ? 'text-primary border-b-2 border-primary pb-1' : ''}`}
+                  className={`pt-[20px] pb-[20px] ${activeTab === 'all' ? 'pt-[20px] pb-[20px] text-primary border-b-2 border-primary' : ''}`}
                 >
                   All favorited items
                 </button>
               </div>
             </div>
 
-            <div className="p-6 max-h-[70vh] overflow-y-auto">
-              {Object.entries(groupedFavorites).map(([dc, sections]) => (
-                <div key={dc} className="mb-6">
-                  <h3 className="text-xl font-semibold mb-4">{dc}</h3>
-                  {Object.entries(sections).map(([section, items]) => (
-                    <div key={section} className="mb-4">
-                      <h4 className="text-lg font-medium mb-2">{section}</h4>
-                      <div className="grid grid-cols-1 gap-4">
-                        {items.map((item) => (
-                          <div
-                            key={item.id}
-                            className="bg-white rounded-lg p-4 shadow hover:shadow-md transition-shadow"
-                          >
-                            <div className="flex justify-between items-start">
-                              <h4 className="text-lg font-semibold text-textDarkBlue">
-                                {item.name}
-                              </h4>
-                              <button 
-                                onClick={() => toggleFavorite(item)}
-                                className="flex items-center justify-center bg-[#F1F7F7] rounded-full w-[30px] h-[30px]"
+            <div className="flex-1 overflow-y-auto">
+              <div className="px-6 pt-6">
+                {Object.entries(groupedFavorites).map(([dc, sections]) => (
+                  <div key={dc} className="mb-6">
+                    <h3 className="font-red-hat text-sm font-bold text-textDarkBlue pb-[15px] pt-[40px]">{dc}</h3>
+                    {Object.entries(sections).map(([section, items]) => (
+                      <div key={section} className="mb-4">
+
+                        {/* removed padding from grid container but keep it negative to compensate for parent padding */}
+                        {/* so border line can fill width of parent container */}
+                        <div className="-mx-6">
+                          <div className="grid grid-cols-1 gap-y-[15px] border-b border-[#C3D9ED] pb-[40px] px-[24px]">
+                            {items.map((item) => (
+                              <div
+                                key={item.id}
+                                className="bg-white rounded-md p-[20px] items-center"
                               >
-                                <img 
-                                  src={tempUnfavorited.has(`${item.id}-${item.name}`) ? "/favorite_icon.svg" : "/filled_heart_icon.svg"}
-                                  className="transition-transform duration-300 hover:scale-110"
-                                />
-                              </button>
-                            </div>
-                            <div className="flex gap-2 text-sm text-gray-500 mt-1">
-                              <span className="text-primary font-medium">
-                                {item.meal || "Unknown Meal"}
-                              </span>
-                              <span>•</span>
-                              <span>{item.section}</span>
-                            </div>
+                                <div className="flex flex-row items-center justify-between">
+                                  <div>
+                                    <div className="flex justify-between items-start">
+                                      <h4 className="text-sm font-bold text-textDarkBlue">
+                                        {item.name}
+                                      </h4>
+                                    </div>
+                                    <div className="flex gap-2 text-sm text-[#8B8B8B] mt-1">
+                                      <span className="text-[11px] font-medium font-red-har">
+                                        {item.meal || "Unknown Meal"}
+                                      </span>
+                                      <span>•</span>
+                                      <span className='text-[11px] text-[#8B8B8B] font-medium font-red-hat'>{item.section}</span>
+                                    </div>
+                                  </div>
+                                  <button 
+                                    onClick={() => toggleFavorite(item)}
+                                    className="flex items-center justify-center bg-[#F1F7F7] rounded-full w-[30px] h-[30px]"
+                                  >
+                                    <img 
+                                      src={tempUnfavorited.has(`${item.id}-${item.name}`) ? "/favorite_icon.svg" : "/filled_heart_icon.svg"}
+                                      className="transition-transform duration-300 hover:scale-110"
+                                    />
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-              {Object.keys(groupedFavorites).length === 0 && (
-                <div className="flex flex-col items-center justify-center py-20">
-                  <p className="text-xl text-gray-500">No favorites yet</p>
-                </div>
-              )}
+                    ))}
+                  </div>
+                ))}
+                {Object.keys(groupedFavorites).length === 0 && (
+                  <div className="flex flex-col items-center justify-center py-20">
+                    <p className="text-xl text-gray-500">No favorites yet</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
