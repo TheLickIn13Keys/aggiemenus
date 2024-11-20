@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import FavoritesButton from "./FavoritesPage";
 
@@ -15,8 +15,8 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
   const handleSearchChange = (value: string) => {
     setQuery(value);
     setSearchQuery(value); // Update parent's searchQuery immediately
-  };
-
+  }
+  
   return (
     <div className="flex flex-row  items-center pt-[60px] pb-[15px] bg-white md:px-[140px] lg:pl-0 ">
       <div className="lg:pl-[140px] px-[20px] lg:max-w-[1880px] w-full h-[36px] items-center flex justify-between order-1 md:order-2">
