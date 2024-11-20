@@ -141,13 +141,13 @@ const FavoritesButton = () => {
               <div className='py-[20px] flex gap-x-[15px] font-red-hat text-textDarkBlue text-[14px] font-bold'>
                 <button 
                   onClick={() => setActiveTab('available')}
-                  className={`${activeTab === 'available' ? 'text-primary' : ''}`}
+                  className={`${activeTab === 'available' ? 'text-primary border-b-2 border-primary pb-1' : ''}`}
                 >
                   Offered this week
                 </button>
                 <button 
                   onClick={() => setActiveTab('all')}
-                  className={`${activeTab === 'all' ? 'text-primary' : ''}`}
+                  className={`${activeTab === 'all' ? 'text-primary border-b-2 border-primary pb-1' : ''}`}
                 >
                   All favorited items
                 </button>
