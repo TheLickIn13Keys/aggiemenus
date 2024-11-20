@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
+import FavoritesButton from "./FavoritesPage";
 
 interface Props {
   searchBarOpen: boolean;
@@ -50,10 +51,11 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
           <div className="flex flex-row items-center justify-center gap-x-[30px]">
 
             <div>
-              <button className="flex flex-row gap-x-[5px]">
+              {/* <button className="flex flex-row gap-x-[5px]">
                 <img className='' src="/favorite_icon.svg"/>
                 <p className="text-primary font-red-hat text-base font-medium">Favorites</p>
-              </button>
+              </button> */}
+              <FavoritesButton/>
             </div>
 
             <div>
