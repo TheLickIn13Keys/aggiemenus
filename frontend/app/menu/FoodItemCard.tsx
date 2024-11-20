@@ -11,6 +11,9 @@ interface Props {
 interface FavoriteItem {
   id: string;
   name: string;
+  dc?: string;
+  section?: string;
+  meal?: string;
 }
 
 /**
@@ -29,23 +32,26 @@ const FoodItemCard = ({ foodItem, index }: Props) => {
   }, [foodItem]);
 
   const toggleFavorite = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent modal from opening
-    e.stopPropagation(); // Stop event propagation
+    e.preventDefault();
+    e.stopPropagation();
     
     const favorites: FavoriteItem[] = JSON.parse(getCookie('favorites') || '[]');
     
     if (isFavorite) {
-      // Remove from favorites
       const newFavorites = favorites.filter(item => 
         !(item.id === foodItem.id && item.name === foodItem.common_items.name)
       );
       setCookie('favorites', JSON.stringify(newFavorites));
     } else {
       // Add to favorites
-      favorites.push({
+      const newFavoriteItem = {
         id: foodItem.id,
-        name: foodItem.common_items.name
-      });
+        name: foodItem.common_items.name,
+        dc: foodItem.dc,
+        section: foodItem.section,
+        meal: foodItem.meal
+      };
+      favorites.push(newFavoriteItem);
       setCookie('favorites', JSON.stringify(favorites));
     }
     
