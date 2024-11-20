@@ -59,7 +59,7 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
             <div>
               <button className="flex flex-row gap-x-[5px]">
                 <img className="" src="/profile_icon.svg"/>
-                <p className="text-primary font-red-hat text-base font-medium ">What's cooking, (NAME) </p>
+                <p className="text-primary font-red-hat text-base font-medium ">What`&apos`s cooking, (NAME) </p>
               </button>
             </div>
 
