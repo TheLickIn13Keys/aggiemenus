@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.aggiemenus.app',
-  appName: 'Aggie Menus',
+  appId: 'org.aggiemenus.app',
+  appName: 'aggiemenus',
   webDir: 'dist',
   server: {
     androidScheme: 'https',
