@@ -9,7 +9,11 @@ import Head from "next/head";
 const Menu = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [selectedDC, setSelectedDC] = useState("Segundo");
-  const [selectedDay, setSelectedDay] = useState(0);
+  const [selectedDay, setSelectedDay] = useState(() => {
+    // Initialize day based on current date
+    const curDate = new Date(Date.now());
+    return (curDate.getDay() - 1 + 7) % 7;
+  });
   const [selectedMeal, setSelectedMeal] = useState(() => {
     // Initialize meal based on current time
     const curTime = new Date().getHours();
@@ -22,13 +26,6 @@ const Menu = () => {
     }
   });
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Only handle day selection in useEffect
-  useEffect(() => {
-    const curDate = new Date(Date.now());
-    const day = (curDate.getDay() - 1 + 7) % 7;
-    setSelectedDay(day);
-  }, []);
 
   return (
     <div
