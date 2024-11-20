@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
-import Link from "next/link";
+import FavoritesButton from "./FavoritesPage";
 
 interface Props {
   searchBarOpen: boolean;
@@ -37,11 +37,9 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
                 <img src="/filter_icon.svg"></img>
           </button>
 
-          <Link href="/favorites">
-            <button className="md:hidden flex items-center justify-center">
-              <img src="/favorite_icon.svg"></img>
-            </button>
-          </Link>
+          <button className="md:hidden flex items-center justify-center">
+                <img src="/favorite_icon.svg"></img>
+          </button>
         </div>
 
         {/* container for aggie menu logo and favorites + profile icon */}
@@ -53,12 +51,11 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
           <div className="flex flex-row items-center justify-center gap-x-[30px]">
 
             <div>
-              <Link href="/favorites">
-                <button className="flex flex-row gap-x-[5px]">
-                  <img className='' src="/favorite_icon.svg"/>
-                  <p className="text-primary font-red-hat text-base font-medium">Favorites</p>
-                </button>
-              </Link>
+              {/* <button className="flex flex-row gap-x-[5px]">
+                <img className='' src="/favorite_icon.svg"/>
+                <p className="text-primary font-red-hat text-base font-medium">Favorites</p>
+              </button> */}
+              <FavoritesButton/>
             </div>
 
             <div>
