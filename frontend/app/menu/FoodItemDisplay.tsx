@@ -170,7 +170,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
       {sections.map((section, sectionIndex) => (
         <div key={section} className="mb-[15px]">
           <div className="flex items-center justify-center sm:justify-start">
-            <h2 className="text-xl font-semibold text-textDarkBlue mb-4 md:mt-[40px]">{section}</h2>
+            <h2 className="text-lg font-semibold text-textDarkBlue mb-4 md:mt-[40px]">{section}</h2>
           </div>
           <motion.div
             variants={containerVariants}

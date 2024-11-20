@@ -1,6 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useEffect } from "react";
 import { StatusBar, Style } from '@capacitor/status-bar';
+import FavoritesButton from "./FavoritesPage";
 
 interface Props {
   searchBarOpen: boolean;
@@ -28,9 +29,9 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
 
   const handleSearchChange = (value: string) => {
     setQuery(value);
-    setSearchQuery(value);
-  };
-
+    setSearchQuery(value); // Update parent's searchQuery immediately
+  }
+  
   return (
     <div className="flex flex-row items-center bg-white">
       <div className="h-[60px] w-full bg-white fixed top-0 left-0 z-50" />
@@ -70,13 +71,15 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
               alt="Aggie Menus"
             />
 
-            <div className="flex flex-row items-center justify-center gap-x-[30px]">
-              <div>
-                <button className="flex flex-row gap-x-[5px]">
-                  <img className="" src="/favorite_icon.svg" alt="Favorites" />
-                  <p className="text-primary font-red-hat text-base font-medium">Favorites</p>
-                </button>
-              </div>
+          <div className="flex flex-row items-center justify-center gap-x-[30px]">
+
+            <div>
+              {/* <button className="flex flex-row gap-x-[5px]">
+                <img className='' src="/favorite_icon.svg"/>
+                <p className="text-primary font-red-hat text-base font-medium">Favorites</p>
+              </button> */}
+              <FavoritesButton/>
+            </div>
 
               <div>
                 <button className="flex flex-row gap-x-[5px]">
