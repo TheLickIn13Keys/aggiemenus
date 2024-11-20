@@ -119,7 +119,8 @@ const Selections = ({
             <MdKeyboardArrowRight size={20} />
           </button>
         </div>
-
+        
+        {/* divider between meal selector and days selector */}
         <div className="hidden md:block order-2 bg-[#CBDEEF] self-stretch w-[2px]"/>
             
 
