@@ -33,7 +33,6 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
 
   return (
     <div className="flex flex-row items-center bg-white">
-      {/* Status bar spacer - matches iOS status bar height */}
       <div className="h-[60px] w-full bg-white fixed top-0 left-0 z-50" />
       
       <div className="flex flex-row items-center pt-[60px] pb-[15px] bg-white md:px-[140px] lg:pl-0 w-full">
