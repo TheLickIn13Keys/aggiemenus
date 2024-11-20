@@ -9,23 +9,28 @@ import Head from "next/head";
 const Menu = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [selectedDC, setSelectedDC] = useState("Segundo");
-  const [selectedDay, setSelectedDay] = useState(() => {
-    // Initialize day based on current date
-    const curDate = new Date(Date.now());
-    return (curDate.getDay() - 1 + 7) % 7;
-  });
-  const [selectedMeal, setSelectedMeal] = useState(() => {
-    // Initialize meal based on current time
-    const curTime = new Date().getHours();
-    if (curTime >= 0 && curTime < 11) {
-      return "Breakfast";
-    } else if (curTime >= 11 && curTime < 17) {
-      return "Lunch";
-    } else {
-      return "Dinner";
-    }
-  });
+  const [selectedDay, setSelectedDay] = useState(0);
+  const [selectedMeal, setSelectedMeal] = useState("Breakfast");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Automatically adjust the day and selectedMeal depending on the current day and time
+  useEffect(() => {
+    // Set the day
+    const curDate = new Date(Date.now());
+    const day = (curDate.getDay() - 1 + 7) % 7;
+    setSelectedDay(day);
+
+    // Set the meal
+    const curTime = curDate.getHours();
+    console.log(curTime);
+    if (curTime >= 0 && curTime < 11) {
+      setSelectedMeal("Breakfast");
+    } else if (curTime >= 11 && curTime < 17) {
+      setSelectedMeal("Lunch");
+    } else if (curTime >= 17 && curTime < 24) {
+      setSelectedMeal("Dinner");
+    }
+  }, []);
 
   return (
     <div
