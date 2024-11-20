@@ -71,9 +71,15 @@ const FoodItemCard = ({ foodItem, index }: Props) => {
             </div>
 
             <div className='flex-shrink-0 sm:opacity-0'>
-              <button className="flex items-center justify-center bg-[#F1F7F7] rounded-full w-[30px] h-[30px]">
-                <img src="/favorite_icon.svg"></img>
-              </button>
+              <button 
+    onClick={toggleFavorite}
+    className="flex items-center justify-center bg-[#F1F7F7] rounded-full w-[30px] h-[30px]"
+  >
+    <img 
+      src={isFavorite ? "/filled_heart_icon.svg" : "/favorite_icon.svg"}
+      className="transition-transform duration-300 hover:scale-110"
+    />
+  </button>
             </div>
         </div>
 
