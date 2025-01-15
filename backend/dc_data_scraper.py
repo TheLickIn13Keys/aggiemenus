@@ -4,123 +4,109 @@ from tqdm import tqdm
 
 
 def scrape_data(dc, parser):
-    # Parsing logic
     for i in tqdm(range(1, 8), desc=f"Parsing data from {dc}"):
         day = parser.find(id=f"tab{i}content")
-        date = datetime.strptime(day.find("h3").get_text(), "%A, %B %d, %Y") # Date info
-        meal_time = day.find_all("h4")
-        is_closed = day.find_next_sibling("h4", string="Menu not scheduled for today.")
-
-        # If the DC is closed, skip to the next day
-        if is_closed:
+        if not day:
             continue
+        
+        date_str = day.find("h3").get_text()
+        date = datetime.strptime(date_str, "%A, %B %d, %Y") # Date info
+        
+        meal_times = day.find_all("h4")
 
-        for meal in meal_time:
+        for meal in meal_times:
             meal_name = meal.get_text() # Ex: Breakfast
+            
+            sections = meal.find_next_siblings("h5")
+            for section in sections:
+                section_name = section.get_text() # Ex: Tomato Street Grill
 
-            for section in meal.find_next_siblings("h5"):
-                section_name = section.get_text() # Ex: Tomato Grill
-                for food_choices in section.find_next_sibling("ul").find_all("li", class_="trigger"):
-                    # Name of the food
-                    food_name = food_choices.find("span").get_text()
-
-                    # Food description
-                    description: str = food_choices.find("ul", class_="nutrition").find("p").get_text()
-
-                    is_mismatched = re.match("^:\s+|\s+oz|\s+g", description)
-
-                    if is_mismatched:
-                        description = "None"
-
-                    # Serving size per meal
-                    serving_size = food_choices.find_next("h6", string="Serving Size").find_next_sibling("p").get_text()
-
-                    # Amount of calories per meal
-                    calories = food_choices.find_next("h6", string="Calories").find_next_sibling("p").get_text()
-                    
-                    # Amount of fat per meal
-                    fat = food_choices.find_next("h6", string="Fat (g)").find_next_sibling("p").get_text()
-                    
-                    # Amount of carbs per meal
-                    carbs = food_choices.find_next("h6", string="Carbohydrates (g)").find_next_sibling("p").get_text()
-                    
-                    # Amount of protein per meal
-                    protein = food_choices.find_next("h6", string="Protein (g)").find_next_sibling("p").get_text()
-                    
-                    # Allergens per meal
-                    allergens = "No major allergens"
-                    allergens_tag = food_choices.find_next("h6", string="Allergens").find_next_sibling("p")
-                    if allergens_tag and allergens_tag.get_text().isupper():
-                        allergens = allergens_tag.get_text()
-
-                    # List of filter tags
-                    filter_tags = food_choices.get('class')
-
-                    halal, vegan, vegetarian = False, False, False
-                    pescetarian, dairyFree, glutenFree = False, False, False
-
-                    # If there are filter tags
-                    if filter_tags:
-                        # Check if item is halal
-                        if "filterHalal" in filter_tags: halal = True
-
-                        # Check if item is vegan (NOTE: if something is vegan it must be vegetarian)
-                        if "filterVegan" in filter_tags: vegan = True; vegetarian = True
+                food_choices = section.find_next_sibling("ul")
+                if food_choices:
+                    for food_choice in food_choices.find_all("li", class_="trigger"):
+                        food_name = food_choice.find("span").get_text().strip() # Name of the food
                         
-                        # Check if item is vegetarian 
-                        if "filterVegetarian" in filter_tags: vegetarian = True 
+                        # Extract nutrition information
+                        nutrition_info = food_choice.find("ul", class_="nutrition")
+                        description = "None"  # Default value for description
+                        serving_size = "N/A"
+                        calories = "N/A"
+                        fat = "N/A"
+                        carbs = "N/A"
+                        protein = "N/A"
+                        allergens = "No major allergens" # Default value
 
-                    allergens_lower = [allergen.strip().lower() for allergen in allergens.split(",")]
+                        if nutrition_info:
+                            nutrition_list = nutrition_info.find_all("li")
+                            
+                            # Extract description if available
+                            desc_p = nutrition_info.find("p")
+                            if desc_p:
+                                description = desc_p.get_text().strip()
 
-                    # Dairy-free if no dairy allergen
-                    dairyFree = not any('dairy' in allergen for allergen in allergens_lower)
+                            for li in nutrition_list:
+                                if "Serving Size" in li.text:
+                                    serving_size = li.text.split(":")[1].strip()
+                                elif "Calories" in li.text:
+                                    calories = li.text.split(":")[1].strip()
+                                elif "Fat" in li.text:
+                                    fat = li.text.split(":")[1].strip()
+                                elif "Carbohydrates" in li.text:
+                                    carbs = li.text.split(":")[1].strip()
+                                elif "Protein" in li.text:
+                                    protein = li.text.split(":")[1].strip()
+                                elif "Contains" in li.text:
+                                    allergens = li.find_next("p").get_text().strip().upper()
 
-                    # Gluten-free if no wheat/gluten allergen
-                    glutenFree = not any(('wheat' in allergen or 'gluten' in allergen) for allergen in allergens_lower)
+                        # Determine dietary tags
+                        filter_tags = food_choice.get('class')
+                        halal, vegan, vegetarian = False, False, False
+                        
+                        if filter_tags:
+                            if "filterHalal" in filter_tags:
+                                halal = True
+                            if "filterVegan" in filter_tags:
+                                vegan = True
+                                vegetarian = True
+                            elif "filterVegetarian" in filter_tags:
+                                vegetarian = True
 
-                    # Pescetarian if vegetarian/vegan OR contains fish/shellfish
-                    pescetarian = vegetarian or vegan or any(
-                        ('fish' in allergen or 'shellfish' in allergen) for allergen in allergens_lower
-                    )
+                        allergens_lower = [allergen.strip().lower() for allergen in allergens.split(",")]
 
-                    # Print allergens data before processing
-                    print(f"\nProcessing food item: {food_name}")
-                    print(f"Raw allergens text: {allergens}")
-                    print(f"Processed allergens list: {[word.strip().capitalize() for word in allergens.split(',')]}")
-                    print(f"DairyFree: {dairyFree}")
-                    print(f"GlutenFree: {glutenFree}")
-                    print(f"Pescetarian: {pescetarian}")
+                        # Dairy-free if no dairy allergen
+                        dairyFree = not any('dairy' in allergen for allergen in allergens_lower)
 
-                    # We split the info we scraped into 2 sections: common_item_info and current_menu_info
-                        # common_item_info contains information that will be inserted into the common_items table
-                        # current_menu_info contains information that will be inserted into the current_menu table
+                        # Gluten-free if no wheat/gluten allergen
+                        glutenFree = not any(('wheat' in allergen or 'gluten' in allergen) for allergen in allergens_lower)
 
-                    common_item_info = {
-                        "name": food_name,
-                        "description": description,
-                        "serving_size": re.sub("^:\s+", "", serving_size),
-                        "calories": re.sub("^:\s", "", calories),
-                        "fat": re.sub("^:\s", "", fat),
-                        "carbs": re.sub("^:\s", "", carbs),
-                        "protein": re.sub("^:\s", "", protein),
-                        "allergens": [word.strip().capitalize() for word in allergens.split(",")],
-                        "halal": halal,
-                        "vegan": vegan,
-                        "vegetarian": vegetarian,
-                        "pescetarian": pescetarian,
-                        "dairyFree": dairyFree,
-                        "glutenFree": glutenFree
-                    }
+                        # Pescetarian if vegetarian/vegan OR contains fish/shellfish
+                        pescetarian = vegetarian or vegan or any(
+                            ('fish' in allergen or 'shellfish' in allergen) for allergen in allergens_lower
+                        )
 
-                    # Print the final common_item_info
-                    print(f"Final common_item_info: {common_item_info}")
+                        common_item_info = {
+                            "name": food_name,
+                            "description": description,
+                            "serving_size": serving_size,
+                            "calories": calories,
+                            "fat": fat,
+                            "carbs": carbs,
+                            "protein": protein,
+                            "allergens": [word.strip().capitalize() for word in allergens.split(",")],
+                            "halal": halal,
+                            "vegan": vegan,
+                            "vegetarian": vegetarian,
+                           # "dairyFree": dairyFree,
+                           # "glutenFree": glutenFree,
+                           # "pescetarian": pescetarian
+                        }
 
-                    current_item_info = {
-                        "dc": dc,
-                        "day": date.weekday(), # Mon = 0, Sun = 6
-                        "meal": meal_name,
-                        "section": section_name, 
-                    }
+                        current_item_info = {
+                            "dc": dc,
+                            "day": date.weekday(), # Mon = 0, Sun = 6
+                            "meal": meal_name,
+                            "section": section_name, 
+                        }
 
-                    # Yield the scraped item to db_connection.py so we can insert the it into the DB
-                    yield (common_item_info, current_item_info)
+                        # Yield the scraped item to db_connection.py so we can insert the it into the DB
+                        yield (common_item_info, current_item_info)    # Parsing logic

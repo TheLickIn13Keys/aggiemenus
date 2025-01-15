@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar, Style } from '@capacitor/status-bar';
 import FavoritesButton from "./FavoritesPage";
 

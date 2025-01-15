@@ -58,7 +58,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
     },
   };
 
-  const minTimeout = useCallback(() => new Promise(resolve => setTimeout(resolve, 800)), []);
+  const minTimeout = useCallback(() => new Promise(resolve => setTimeout(resolve, 100)), []);
 
   const filterItems = (items: FoodItem[]) => {
     let filteredItems = items;
@@ -109,30 +109,30 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
   useEffect(() => {
     setIsLoading(true);
     const fetchFoodItems = async () => {
-      try {
-        await minTimeout();
-        
-        const { data, error } = await supabase
-          .from('current_menu')
-          .select(`*, common_items ( * )`)
-          .eq('dc', dc)
-          .eq('day', String(day))
-          .eq('meal', meal);
+        try {
+            //await minTimeout();
+            const response = await fetch(
+              `${process.env.NEXT_PUBLIC_SCRAPER_API_URL}/api/menu` +
+                `?dc=${dc}&day=${day}&meal=${meal}`
+            );
 
-        if (error) throw error;
-        
-        const items = data as FoodItem[];
-        setFoodItems(items);
-        
-        const uniqueSections = Array.from(
-          new Set(items.map((item) => item.section || "Other"))
-        );
-        setSections(uniqueSections);
-      } catch (error) {
-        console.log("Fetch error: ", error);
-      } finally {
-        setIsLoading(false);
-      }
+            if (!response.ok) {
+              throw new Error("Failed to fetch data from the backend");
+            }
+
+            // The response should be an array of items matching your FoodItem shape
+            const items: FoodItem[] = await response.json();
+            setFoodItems(items);
+
+            const uniqueSections = Array.from(
+              new Set(items.map((item) => item.section || "Other"))
+            );
+            setSections(uniqueSections);
+          } catch (error) {
+            console.error("Fetch error:", error);
+          } finally {
+            setIsLoading(false);
+          }
     };
 
     fetchFoodItems();
@@ -182,7 +182,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
               .filter(item => item.section === section)
               .map((foodItem, index) => (
                 <motion.div
-                  key={foodItem.id}
+                  key={foodItem.item_id}
                   variants={itemVariants}
                   className="w-full"
                 >

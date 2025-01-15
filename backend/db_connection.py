@@ -1,28 +1,41 @@
+import os
+import json
+import time
+import threading
+from dotenv import load_dotenv
+from openai import OpenAI
+import supabase
+from flask_cors import CORS
+
 import dc_data_scraper
 import all_dcs
-import supabase
-import json
-from dotenv import load_dotenv
-import os
-from openai import OpenAI
+
+# -- Flask Imports --
+from flask import Flask, request, jsonify
+
+# -- Scheduling library --
+import schedule
+
+app = Flask(__name__)
+CORS(app, resources={r"*": {"origins": "*"}})
+
+menu_data = {}
 
 def get_embedding(text, model="text-embedding-3-small"):
     text = text.replace("\n", " ")
-    client = OpenAI(
-        api_key = os.environ.get("OPEN_AI_KEY")
-    )
-    response = client.embeddings.create(
+    client_oa = OpenAI(api_key=os.environ.get("OPEN_AI_KEY"))
+    response = client_oa.embeddings.create(
         input=text,
-        model="text-embedding-ada-002"
+        model="text-embedding-ada-002",
     )
     return response.data[0].embedding
 
+
 def find_or_create_common_items(item):
-    """Finds item in common_items table, or creates a new item, and returns the id"""
+    """Finds item in the common_items table, or creates a new item, and returns the id."""
     try:
         # Check if the item exists in the common_items table
         res = client.table('common_items').select('id', 'name').eq('name', item['name']).execute()
-        # print(f"Search result for {item['name']}: {res.data}")
 
         if len(res.data) == 0:
             # If the item does not exist, insert it
@@ -40,91 +53,142 @@ def find_or_create_common_items(item):
                 'halal': item['halal'],
                 'vegan': item['vegan'],
                 'vegetarian': item['vegetarian'],
-                'pescetarian': item['pescetarian'],
-                'dairyFree': item['dairyFree'],
-                'glutenFree': item['glutenFree'],
+                #'pescetarian': item['pescetarian'],
+                #'dairyFree': item['dairyFree'],
+               # 'glutenFree': item['glutenFree'],
                 'embedding': embedding_data,
             }
-            # print(f"Inserting new item: {item['name']}")
             result = client.table('common_items').insert(item_without_id).execute()
             return result.data[0]['id'] if result.data else None
+
         elif len(res.data) == 1:
             print(f"Found existing item: {item['name']}")
             return res.data[0]['id']
         else:
             raise ValueError(f'More than one item found with name {item["name"]}')
+
     except Exception as e:
         print(f"Error processing item {item['name']}: {str(e)}")
         raise
 
+
 def update_current_menu(dc, menu):
-    """Update the DB menu that corresponds to the selected DC"""
+    """Updates the 'current_menu' table for a specific DC in Supabase."""
     try:
         # First, delete existing menu items for this DC
-        delete_result = client.table("current_menu").delete().eq("dc", dc).execute()
-        # print(f"Deleted existing menu items for {dc}")
-        
-        # Add IDs to each menu item before inserting
+        client.table("current_menu").delete().eq("dc", dc).execute()
+
+        # Make sure no leftover 'id' fields cause conflicts
         for item in menu:
-            if 'id' in item:
-                del item['id']
-        
+            item.pop('id', None)
+
         # Insert the new menu items
         insert_result = client.table("current_menu").insert(menu).execute()
         print(f"Inserted {len(menu)} items for {dc}")
-        
         return True
+
     except Exception as e:
         print(f"Error updating menu for {dc}: {str(e)}")
         raise
-    
-# def delete_all_data(): used for testing to delete all data from both tables in the database, basically dont use this unless you know what you are doing
-#     """Delete all data from both tables in the database"""
-#     try:
-#         # Delete all items from current_menu first (due to foreign key constraints)
-#         delete_menu_result = client.table("current_menu").delete().neq("id", 0).execute()
-#         print(f"Deleted all items from current_menu: {delete_menu_result.data}")
-        
-#         # Delete all items from common_items
-#         delete_items_result = client.table("common_items").delete().neq("id", 0).execute()
-#         print(f"Deleted all items from common_items: {delete_items_result.data}")
-        
-#         return True
-#     except Exception as e:
-#         print(f"Error in delete_all_data: {str(e)}")
-#         raise
 
-if __name__ == '__main__':
-    # Load variables from .env file
-    load_dotenv()
+def scrape_and_load():
+   
+    print("Starting daily scrape_and_load() ...")
+    # Clear old in-memory data to avoid duplication
+    menu_data.clear()
 
-    # Get supabase url and key from .env
-    url = os.environ.get("SUPABASE_URL")
-    key = os.environ.get("SUPABASE_SERVICE_KEY")
-
-    print(f"Using Supabase URL: {url}")
-    print(f"Using key ending in: {key[-4:] if key else 'None'}")
-
-    # Create supabase client
-    client = supabase.create_client(url, key)
-
-    # Process each DC
     for dc, parser in all_dcs.all_parsers:
         print(f"\nProcessing {dc}...")
         menu = []
+        
+        # Run the existing scraper
         for common_item_info, current_menu_info in dc_data_scraper.scrape_data(dc=dc, parser=parser):
-            # Find or create a common item and store its primary key
+            # Create/find corresponding common_item row
             common_item_id = find_or_create_common_items(item=common_item_info)
             if common_item_id:
-                # The common item's primary key will be used as a foreign key in the current menu
+                # Link the new row to the current_menu item
                 current_menu_info['item_id'] = common_item_id
+                current_menu_info['common_items'] = common_item_info
                 menu.append(current_menu_info)
 
-        # Update the menu for the current DC
-        if menu:
-            print(f"Updating menu for {dc} with {len(menu)} items")
-            update_current_menu(dc=dc, menu=menu)
+        # Remove 'common_items' from each dict before passing to update_current_menu
+        sanitized_menu = []
+        for menu_item in menu:
+            # Make a shallow copy to avoid mutating the original
+            menu_item_copy = dict(menu_item)
+            menu_item_copy.pop('common_items', None)
+            sanitized_menu.append(menu_item_copy)
+
+        # Update the menu in Supabase for this DC
+        if sanitized_menu:
+            print(f"Updating menu for {dc} with {len(sanitized_menu)} items")
+            update_current_menu(dc=dc, menu=sanitized_menu)
         else:
             print(f"No menu items found for {dc}")
 
-    #    delete_all_data() yeah its in the name
+        # ALSO store everything in our in-memory dictionary
+        for item in menu:
+            key = (item["dc"], item["day"], item["meal"])
+            menu_data.setdefault(key, []).append(item)
+
+print("Finished daily scrape_and_load().")
+
+@app.route('/api/menu', methods=['GET'])
+def get_menu():
+    """
+    Usage: GET /api/menu?dc=Segundo&day=2&meal=Lunch
+    Returns the list of items from our in-memory store without hitting Supabase
+    """
+    dc = request.args.get("dc")
+    day_str = request.args.get("day")
+    meal = request.args.get("meal")
+
+    if not dc or day_str is None or not meal:
+        return jsonify({"error": "Please specify dc, day, and meal"}), 400
+
+    try:
+        day = int(day_str)
+    except ValueError:
+        return jsonify({"error": f"Invalid day: {day_str}"}), 400
+
+    key = (dc, day, meal)
+    items = menu_data.get(key, [])
+    return jsonify(items), 200
+
+def run_scheduler():
+    """
+    Runs the schedule.run_pending() loop in a background thread so that
+    it doesn't block the Flask server.
+    """
+    while True:
+        schedule.run_pending()
+        time.sleep(60)  # Check tasks once per minute
+
+
+if __name__ == '__main__':
+    load_dotenv()
+
+    # Get Supabase URL and key
+    url = os.environ.get("SUPABASE_URL")
+    s_key = os.environ.get("SUPABASE_SERVICE_KEY")
+    print(f"Using Supabase URL: {url}")
+    print(f"Using key ending in: {s_key[-4:] if s_key else 'None'}")
+
+    global client
+    client = supabase.create_client(url, s_key)
+
+    # 1) Initial scrape when starting up
+    scrape_and_load()
+
+
+    # schedule.every().day.at("04:00").do(scrape_and_load)
+    schedule.every().hour.do(scrape_and_load)
+
+    # 3) Start the scheduler in a background thread
+    scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
+    scheduler_thread.start()
+
+    # 4) Start Flask
+    #    The app will keep running, and the scheduler thread will do the daily job.
+    app.run(host='0.0.0.0', port=5231)
+
