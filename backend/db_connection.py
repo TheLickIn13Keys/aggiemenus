@@ -35,7 +35,6 @@ def get_embedding(text, model="text-embedding-3-small"):
 def find_or_create_common_items(item):
     """Finds item in the common_items table, or creates a new item, and returns the id."""
     try:
-        # Check if the item exists in the common_items table
         res = (
             client.table("common_items")
             .select("id", "name")
