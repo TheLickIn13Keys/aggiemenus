@@ -121,7 +121,7 @@ def scrape_data(dc, parser):
                             "glutenFree": glutenFree,
                             "pescetarian": pescetarian,
                         }
-                        print(common_item_info)
+                        # print(common_item_info)
 
                         current_item_info = {
                             "dc": dc,
@@ -129,7 +129,7 @@ def scrape_data(dc, parser):
                             "meal": meal_name,
                             "section": section_name,
                         }
-                        print(current_item_info)
+                        # print(current_item_info)
 
                         # Yield the scraped item to db_connection.py so we can insert the it into the DB
                         yield (common_item_info, current_item_info)  # Parsing logic
