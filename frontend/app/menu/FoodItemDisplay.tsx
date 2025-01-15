@@ -100,6 +100,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
                 item.common_items.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 item.common_items.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 item.section.toLowerCase().includes(searchQuery.toLowerCase())
+
             );
         }
 
