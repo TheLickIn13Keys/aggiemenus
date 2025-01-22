@@ -200,7 +200,7 @@ if __name__ == "__main__":
 
     # 4) Start Flask
     #    The app will keep running, and the scheduler thread will do the daily job.
-    from waitress import serve
+    # from waitress import serve
 
-    serve(app, host="0.0.0.0", port=5231)
-    # app.run(host="0.0.0.0", port=5231)
+    # serve(app, host="0.0.0.0", port=5231)
+    app.run(host="0.0.0.0", port=5231)
