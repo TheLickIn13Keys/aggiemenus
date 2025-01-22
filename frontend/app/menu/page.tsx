@@ -15,8 +15,8 @@ const Menu = () => {
     const curDate = new Date(Date.now());
     return (curDate.getDay() - 1 + 7) % 7;
   });
-  
-    const [selectedMeal, setSelectedMeal] = useState(() => {
+
+  const [selectedMeal, setSelectedMeal] = useState(() => {
     // Initialize meal based on current time
     const curTime = new Date().getHours();
     if (curTime >= 0 && curTime < 11) {
@@ -30,9 +30,8 @@ const Menu = () => {
 
   return (
     <div
-      className={`flex flex-col min-h-screen ${
-        !searchBarOpen ? "animate-fade-in" : "animate-fade-out"
-      }`}
+      className={`flex flex-col min-h-screen bg-[#F1F7F7] ${!searchBarOpen ? "animate-fade-in" : "animate-fade-out"
+        }`}
     >
       <Head>
         <meta charSet="utf-8" />
