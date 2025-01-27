@@ -18,9 +18,11 @@ interface Props {
     day: number;
     meal: string;
     searchQuery: string;
+    isFilterOpen: boolean;
+    setIsFilterOpen: (isOpen: boolean) => void;
 }
 
-const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
+const FoodItemDisplay = ({ dc, day, meal, searchQuery, isFilterOpen, setIsFilterOpen }: Props) => {
     const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
     const [sections, setSections] = useState<string[]>([""]);
     const [filters, setFilters] = useState({
@@ -205,11 +207,17 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery }: Props) => {
                 </div>
                 {/* Filter options sidebar - hidden on mobile, visible on lg screens */}
                 <div className="hidden lg:block w-full max-w-[386px] ml-[45px] mr-[140px] mt-[40px] pt-[30px]">
-                    <FilterOptions filters={filters} setFilters={setFilters} />
+                    <FilterOptions filters={filters} setFilters={setFilters} isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
                 </div>
             </div>
 
-
+            {/* Mobile filter panel */}
+            <FilterOptions 
+                filters={filters}
+                setFilters={setFilters}
+                isOpen={isFilterOpen}
+                onClose={() => setIsFilterOpen(false)}
+            />
         </div>
     );
 };
