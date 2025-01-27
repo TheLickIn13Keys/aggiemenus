@@ -5,11 +5,13 @@ import FavoritesButton from "./FavoritesPage";
 
 interface Props {
     searchBarOpen: boolean;
-    setSearchBarOpen: (searchBarOpen: boolean) => void;
+    setSearchBarOpen: (isOpen: boolean) => void;
     setSearchQuery: (query: string) => void;
+    isFilterOpen: boolean;
+    setIsFilterOpen: (isOpen: boolean) => void;
 }
 
-const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
+const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery, isFilterOpen, setIsFilterOpen }: Props) => {
     const [query, setQuery] = useState("");
 
     useEffect(() => {
@@ -34,8 +36,6 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
 
     return (
         <div className="flex flex-row items-center bg-white">
-            <div className="h-[60px] w-full bg-white fixed top-0 left-0 z-50" />
-
             <div className="flex flex-row items-center pt-[60px] pb-[15px] bg-white md:px-[140px] lg:pl-0 w-full">
                 <div className="lg:pl-[140px] px-[20px] lg:max-w-[1880px] w-full h-[36px] items-center flex justify-between order-1 md:order-2">
                     <div className="lg:hidden form-control relative">
@@ -55,7 +55,10 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
 
                     {/* only viewable for smaller screens */}
                     <div className="md:hidden flex flex-row gap-x-[15px] flex-shrink-0">
-                        <button className="flex items-center justify-center">
+                        <button 
+                            className="flex items-center justify-center"
+                            onClick={() => setIsFilterOpen(!isFilterOpen)}
+                        >
                             <img src="/filter_icon.svg" alt="Filter" />
                         </button>
 
