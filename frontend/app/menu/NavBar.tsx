@@ -4,13 +4,15 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import FavoritesButton from "./FavoritesPage";
 
 interface Props {
-  searchBarOpen: boolean;
-  setSearchBarOpen: (searchBarOpen: boolean) => void;
-  setSearchQuery: (query: string) => void;
+    searchBarOpen: boolean;
+    setSearchBarOpen: (isOpen: boolean) => void;
+    setSearchQuery: (query: string) => void;
+    isFilterOpen: boolean;
+    setIsFilterOpen: (isOpen: boolean) => void;
 }
 
-const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
-  const [query, setQuery] = useState("");
+const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery, isFilterOpen, setIsFilterOpen }: Props) => {
+    const [query, setQuery] = useState("");
 
   useEffect(() => {
     const setupStatusBar = async () => {
@@ -32,35 +34,33 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery }: Props) => {
     setSearchQuery(value); // Update parent's searchQuery immediately
   }
 
-  return (
-    <div className="flex flex-row items-center bg-white">
-      <div className="flex flex-row items-center pt-[60px] pb-[15px] bg-white md:px-[140px] lg:pl-0 w-full">
-        <div className="lg:pl-[140px] px-[20px] lg:max-w-[1880px] w-full h-[36px] items-center flex justify-between order-1 md:order-2">
-          <div className="lg:hidden form-control relative">
-            <input
-              type="text"
-              placeholder="Search"
-              className="input h-[36px] font-red-hat rounded-full w-full px-10 mr-[15px] bg-[#F1F7F7]"
-              value={query}
-              onChange={(e) => handleSearchChange(e.target.value)}
-            />
-            <img
-              src="/search_icon.svg"
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              alt="Search"
-            />
-          </div>
+    return (
+        <div className="flex flex-row items-center bg-white">
+            <div className="flex flex-row items-center pt-[60px] pb-[15px] bg-white md:px-[140px] lg:pl-0 w-full">
+                <div className="lg:pl-[140px] px-[20px] lg:max-w-[1880px] w-full h-[36px] items-center flex justify-between order-1 md:order-2">
+                    <div className="lg:hidden form-control relative">
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            className="input h-[36px] font-red-hat rounded-full w-full px-10 mr-[15px]"
+                            value={query}
+                            onChange={(e) => handleSearchChange(e.target.value)}
+                        />
+                        <img
+                            src="/search_icon.svg"
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                            alt="Search"
+                        />
+                    </div>
 
-          {/* only viewable for smaller screens */}
-          <div className="md:hidden flex flex-row gap-x-[15px] flex-shrink-0">
-            <button className="flex items-center justify-center">
-              <img src="/filter_icon.svg" alt="Filter" />
-            </button>
-
-            <button className="md:hidden flex items-center justify-center">
-              <img src="/favorite_icon.svg" alt="Favorites" />
-            </button>
-          </div>
+                    {/* only viewable for smaller screens */}
+                    <div className="md:hidden flex flex-row gap-x-[15px] flex-shrink-0">
+                        <button 
+                            className="flex items-center justify-center"
+                            onClick={() => setIsFilterOpen(!isFilterOpen)}
+                        >
+                            <img src="/filter_icon.svg" alt="Filter" />
+                        </button>
 
           {/* container for aggie menu logo and favorites + profile icon */}
           <div className="hidden lg:flex w-full flex flex-row justify-between items-center">

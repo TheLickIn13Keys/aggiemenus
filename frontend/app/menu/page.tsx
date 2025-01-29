@@ -28,6 +28,10 @@ const Menu = () => {
     }
   });
 
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+
+
   return (
     <div
       className={`flex flex-col min-h-screen bg-[#F1F7F7] ${!searchBarOpen ? "animate-fade-in" : "animate-fade-out"
@@ -52,6 +56,8 @@ const Menu = () => {
           searchBarOpen={searchBarOpen}
           setSearchBarOpen={setSearchBarOpen}
           setSearchQuery={setSearchQuery}
+          isFilterOpen={isFilterOpen}
+          setIsFilterOpen={setIsFilterOpen}
         />
       </header>
       <main className="flex flex-col flex-grow">
@@ -70,6 +76,8 @@ const Menu = () => {
           day={selectedDay}
           meal={selectedMeal}
           searchQuery={searchQuery}
+          isFilterOpen={isFilterOpen}
+          setIsFilterOpen={setIsFilterOpen}
         />
       </main>
       <footer>
