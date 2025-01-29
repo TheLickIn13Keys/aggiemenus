@@ -14,25 +14,25 @@ interface Props {
 const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery, isFilterOpen, setIsFilterOpen }: Props) => {
     const [query, setQuery] = useState("");
 
-    useEffect(() => {
-        const setupStatusBar = async () => {
-            try {
-                await StatusBar.setOverlaysWebView({ overlay: true });
-                await StatusBar.setBackgroundColor({ color: '#FFFFFF' });
-                await StatusBar.setStyle({ style: Style.Light });
+  useEffect(() => {
+    const setupStatusBar = async () => {
+      try {
+        await StatusBar.setOverlaysWebView({ overlay: true });
+        await StatusBar.setBackgroundColor({ color: '#FFFFFF' });
+        await StatusBar.setStyle({ style: Style.Light });
 
-            } catch (error) {
-                console.log('Status bar setup error:', error);
-            }
-        };
+      } catch (error) {
+        console.log('Status bar setup error:', error);
+      }
+    };
 
-        setupStatusBar();
-    }, []);
+    setupStatusBar();
+  }, []);
 
-    const handleSearchChange = (value: string) => {
-        setQuery(value);
-        setSearchQuery(value); // Update parent's searchQuery immediately
-    }
+  const handleSearchChange = (value: string) => {
+    setQuery(value);
+    setSearchQuery(value); // Update parent's searchQuery immediately
+  }
 
     return (
         <div className="flex flex-row items-center bg-white">
@@ -62,40 +62,35 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery, isFilterOpen,
                             <img src="/filter_icon.svg" alt="Filter" />
                         </button>
 
-                        <button className="md:hidden flex items-center justify-center">
-                            <img src="/favorite_icon.svg" alt="Favorites" />
-                        </button>
-                    </div>
+          {/* container for aggie menu logo and favorites + profile icon */}
+          <div className="hidden lg:flex w-full flex flex-row justify-between items-center">
+            <img
+              src="/aggiemenus2.svg"
+              alt="Aggie Menus"
+            />
 
-                    {/* container for aggie menu logo and favorites + profile icon */}
-                    <div className="hidden lg:flex w-full flex flex-row justify-between items-center">
-                        <img
-                            src="/aggiemenus2.svg"
-                            alt="Aggie Menus"
-                        />
+            <div className="flex flex-row items-center justify-center gap-x-[30px]">
 
-                        <div className="flex flex-row items-center justify-center gap-x-[30px]">
-
-                            <div>
-                                {/* <button className="flex flex-row gap-x-[5px]">
+              <div>
+                {/* <button className="flex flex-row gap-x-[5px]">
                 <img className='' src="/favorite_icon.svg"/>
                 <p className="text-primary font-red-hat text-base font-medium">Favorites</p>
               </button> */}
-                                <FavoritesButton />
-                            </div>
+                <FavoritesButton />
+              </div>
 
-                            <div>
-                                <button className="flex flex-row gap-x-[5px]">
-                                    <img className="" src="/profile_icon.svg" alt="Profile" />
-                                    <p className="text-primary font-red-hat text-base font-medium">What&apos;s cooking, Aggie?</p>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              <div>
+                <button className="flex flex-row gap-x-[5px]">
+                  <img className="" src="/profile_icon.svg" alt="Profile" />
+                  <p className="text-primary font-red-hat text-base font-medium">What&apos;s cooking, Aggie?</p>
+                </button>
+              </div>
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default NavBar;

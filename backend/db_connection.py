@@ -19,7 +19,21 @@ import schedule
 app = Flask(__name__)
 CORS(app, resources={r"*": {"origins": "*"}})
 
+# Global variables
 menu_data = {}
+menu_lock = threading.Lock()
+client = None
+
+# Initialize Supabase client
+load_dotenv()
+url = os.environ.get("SUPABASE_URL")
+s_key = os.environ.get("SUPABASE_SERVICE_KEY")
+if url and s_key:
+    client = supabase.create_client(url, s_key)
+    print(f"Using Supabase URL: {url}")
+    print(f"Using key ending in: {s_key[-4:]}")
+else:
+    print("Warning: Supabase credentials not found in environment")
 
 
 def get_embedding(text, model="text-embedding-3-small"):
@@ -99,8 +113,8 @@ def update_current_menu(dc, menu):
 
 def scrape_and_load():
     print("Starting daily scrape_and_load() ...")
-    # Clear old in-memory data to avoid duplication
-    menu_data.clear()
+    # Create temporary storage for new data
+    new_menu_data = {}
 
     for dc, parser in all_dcs.all_parsers:
         print(f"\nProcessing {dc}...")
@@ -134,10 +148,15 @@ def scrape_and_load():
         else:
             print(f"No menu items found for {dc}")
 
-        # ALSO store everything in our in-memory dictionary
+        # Store everything in our temporary dictionary
         for item in menu:
             key = (item["dc"], item["day"], item["meal"])
-            menu_data.setdefault(key, []).append(item)
+            new_menu_data.setdefault(key, []).append(item)
+
+    # After all DCs are processed, update the global menu_data atomically
+    with menu_lock:
+        menu_data.clear()
+        menu_data.update(new_menu_data)
 
 
 print("Finished daily scrape_and_load().")
@@ -162,7 +181,8 @@ def get_menu():
         return jsonify({"error": f"Invalid day: {day_str}"}), 400
 
     key = (dc, day, meal)
-    items = menu_data.get(key, [])
+    with menu_lock:
+        items = menu_data.get(key, [])
     return jsonify(items), 200
 
 
@@ -177,16 +197,9 @@ def run_scheduler():
 
 
 if __name__ == "__main__":
-    load_dotenv()
-
-    # Get Supabase URL and key
-    url = os.environ.get("SUPABASE_URL")
-    s_key = os.environ.get("SUPABASE_SERVICE_KEY")
-    print(f"Using Supabase URL: {url}")
-    print(f"Using key ending in: {s_key[-4:] if s_key else 'None'}")
-
-    global client
-    client = supabase.create_client(url if url else " ", s_key if s_key else " ")
+    if not client:
+        print("Error: Supabase client not initialized")
+        exit(1)
 
     # 1) Initial scrape when starting up
     scrape_and_load()
@@ -200,7 +213,7 @@ if __name__ == "__main__":
 
     # 4) Start Flask
     #    The app will keep running, and the scheduler thread will do the daily job.
-    from waitress import serve
+    # from waitress import serve
 
-    serve(app, host="0.0.0.0", port=5231)
-    # app.run(host="0.0.0.0", port=5231)
+    # serve(app, host="0.0.0.0", port=5231)
+    app.run(host="0.0.0.0", port=5231)
