@@ -5,6 +5,7 @@ import FoodItemDisplay from "./FoodItemDisplay";
 import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Head from "next/head";
+import { usePostHog } from 'posthog-js/react';
 
 const Menu = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
@@ -30,7 +31,17 @@ const Menu = () => {
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-
+  const posthog = usePostHog();
+  
+  useEffect(() => {
+    if (posthog) {
+      posthog.capture('menu_page_viewed', {
+        dc: selectedDC,
+        meal: selectedMeal,
+        day: selectedDay
+      });
+    }
+  }, [posthog, selectedDC, selectedMeal, selectedDay]);
 
   return (
     <div

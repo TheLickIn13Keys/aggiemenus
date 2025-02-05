@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter, Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import React, { useEffect } from "react";
+import { PostHogProvider } from "./providers";
+import PostHogPageView from "./PostHogPageView"
 
 const inter = Inter({ subsets: ["latin"] });
 const redHat = Red_Hat_Display({
@@ -27,8 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${redHat.variable}`}>
       <body>
-        {children}
-        <Analytics />
+        <PostHogProvider>
+          <PostHogPageView />
+          {children}
+          <Analytics />
+        </PostHogProvider>
       </body>
     </html>
   );
