@@ -1,6 +1,8 @@
+"use client";
 import React, { useEffect } from "react";
 import FoodItem from "../api/foodItemSchema";
 import { useFavoritesStore } from '../favorites/favoritesStore';
+import { usePostHog } from 'posthog-js/react';
 
 interface Props {
     foodItem: FoodItem;
@@ -9,6 +11,7 @@ interface Props {
 
 const FoodItemCard = ({ foodItem, index }: Props) => {
     const { initializeFavorites, toggleFavorite, isFavorite } = useFavoritesStore();
+    const posthog = usePostHog();
 
     useEffect(() => {
         initializeFavorites();
@@ -25,6 +28,15 @@ const FoodItemCard = ({ foodItem, index }: Props) => {
             section: foodItem.section,
             meal: foodItem.meal
         });
+
+        if (posthog) {
+            posthog.capture('food_item_favorited', {
+                item_name: foodItem.common_items.name,
+                item_id: foodItem.id,
+                dc: foodItem.dc,
+                meal: foodItem.meal
+            });
+        }
     };
 
     const favorited = isFavorite(foodItem.id, foodItem.common_items.name);
