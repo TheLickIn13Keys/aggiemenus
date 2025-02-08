@@ -9,4 +9,9 @@ COPY . .
 RUN addgroup --system app && adduser --system --ingroup app app && chown app:app /app
 USER app
 
-CMD ["python3", "./db_connection.py"]
+# Use supervisord to run both processes
+RUN pip3 install supervisor
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

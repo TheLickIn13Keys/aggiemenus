@@ -2,10 +2,10 @@ import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter, Red_Hat_Display } from "next/font/google";
 import "./globals.css";
-import React, { useEffect } from "react";
+
+import React from "react";
 import { PostHogProvider } from "./providers";
 import PostHogPageView from "./PostHogPageView"
-
 const inter = Inter({ subsets: ["latin"] });
 const redHat = Red_Hat_Display({
   subsets: ['latin'],
