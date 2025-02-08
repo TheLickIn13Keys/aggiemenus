@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { StatusBar, Style } from '@capacitor/status-bar';
-import FavoritesButton from "./FavoritesPage";
+import FavoritesButton from "../favorites/FavoritesPage";
+import MobileFavoritesButton from "../favorites/MobileFavoritesPage";
 
 interface Props {
   searchBarOpen: boolean;
@@ -77,11 +78,15 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery, isFilterOpen,
             <div className="flex flex-row items-center justify-center gap-x-[30px]">
 
               <div>
-                {/* <button className="flex flex-row gap-x-[5px]">
-                <img className='' src="/favorite_icon.svg"/>
-                <p className="text-primary font-red-hat text-base font-medium">Favorites</p>
-              </button> */}
-                <FavoritesButton />
+                {/* Mobile Favorites - shown only on small screens */}
+                <div className="md:hidden">
+                  <MobileFavoritesButton />
+                </div>
+                
+                {/* Desktop Favorites - hidden on small screens, shown on md and up */}
+                <div className="hidden md:block">
+                  <FavoritesButton />
+                </div>
               </div>
 
               <div>
