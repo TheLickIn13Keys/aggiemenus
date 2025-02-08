@@ -5,14 +5,13 @@ import FoodItem from "../../api/foodItemSchema";
 import { useFavoritesStore, FavoriteItem } from '../util/favoritesStore';
 
 // mobile view
-// need to fix so that available now items dont grab from supabase but grab from our data.json in the backend
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// Button component that appears in the navbar
+// button in navbar; only appears on mobile and takes you to new page 
 const MobileFavoritesButton = () => {
   return (
     <Link href="/favorites/mobile" className="block md:hidden">
@@ -24,7 +23,7 @@ const MobileFavoritesButton = () => {
   );
 };
 
-// The actual mobile favorites page
+// deprecated, no longer gonna be used 
 const MobileFavoritesPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
