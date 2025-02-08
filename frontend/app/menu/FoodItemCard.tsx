@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import FoodItem from "../api/foodItemSchema";
-import { useFavoritesStore } from '../favorites/favoritesStore';
+import { useFavoritesStore } from '../favorites/util/favoritesStore';
 import { usePostHog } from 'posthog-js/react';
 
 interface Props {
