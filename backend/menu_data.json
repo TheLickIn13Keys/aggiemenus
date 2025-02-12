@@ -12316,213 +12316,6 @@
       "dc": "Segundo",
       "day": 5,
       "meal": "Breakfast",
-      "section": "Tomato Street Grill",
-      "item_id": 4566,
-      "common_items": {
-        "name": "Shredded Chicken Burrito Bar",
-        "description": "Tender chicken shredded and seasoned with our house Fajita blend.",
-        "serving_size": "100 g",
-        "calories": "355.79",
-        "fat": "26.58",
-        "carbs": "0.83",
-        "protein": "26.43",
-        "allergens": [
-          "Fresh raw boneless skinless halal chicken thigh",
-          "Fajita seasoning (iodized granulated salt (salt",
-          "Sodium silicoaluminate",
-          "Dextrose",
-          "Potassium iodine",
-          "Sodium bicarbonate)",
-          "Onion powder (onion powder)",
-          "Vegan fine granulated white sugar",
-          "Lemon pepper spice mix (salt",
-          "Spices",
-          "Citric acid",
-          "Onion",
-          "Monosodium glutamate",
-          "Sugar",
-          "Corn starch",
-          "Garlic",
-          "Silicon dioxide",
-          "Natural flavor",
-          "Fd&amp;c yellow 5)",
-          "Granulated garlic",
-          "Domestic paprika (paprika",
-          "Silicon dioxide)",
-          "Ground cumin",
-          "Vegan fine granulated white sugar",
-          "Ground white pepper",
-          "Season salt",
-          "Production)"
-        ],
-        "halal": true,
-        "vegan": false,
-        "vegetarian": false,
-        "dairyFree": true,
-        "glutenFree": true,
-        "pescetarian": false
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Breakfast",
-      "section": "Tomato Street Grill",
-      "item_id": 3504,
-      "common_items": {
-        "name": "Scrambled Egg",
-        "description": "Softly scrambled cage-free eggs.",
-        "serving_size": "3.05 oz",
-        "calories": "138.75",
-        "fat": "9.54",
-        "carbs": "1.82",
-        "protein": "10.86",
-        "allergens": [
-          "Egg"
-        ],
-        "halal": true,
-        "vegan": false,
-        "vegetarian": true,
-        "dairyFree": true,
-        "glutenFree": true,
-        "pescetarian": true
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Breakfast",
-      "section": "Tomato Street Grill",
-      "item_id": 3541,
-      "common_items": {
-        "name": "Bacon",
-        "description": "Freshly-baked crispy bacon.",
-        "serving_size": "2 oz",
-        "calories": "283.94",
-        "fat": "20.28",
-        "carbs": "0.00",
-        "protein": "24.34",
-        "allergens": [
-          "No major allergens"
-        ],
-        "halal": false,
-        "vegan": false,
-        "vegetarian": false,
-        "dairyFree": true,
-        "glutenFree": true,
-        "pescetarian": false
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Breakfast",
-      "section": "Tomato Street Grill",
-      "item_id": 3949,
-      "common_items": {
-        "name": "Pinto Beans",
-        "description": "Pinto beans cooked with bell peppers, onions and spices",
-        "serving_size": "1.62 oz",
-        "calories": "36.62",
-        "fat": "0.57",
-        "carbs": "6.37",
-        "protein": "1.64",
-        "allergens": [
-          "No major allergens"
-        ],
-        "halal": true,
-        "vegan": true,
-        "vegetarian": true,
-        "dairyFree": true,
-        "glutenFree": true,
-        "pescetarian": true
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Breakfast",
-      "section": "Tomato Street Grill",
-      "item_id": 3814,
-      "common_items": {
-        "name": "Flour Tortillas",
-        "description": ": 2.5 oz",
-        "serving_size": "2.5 oz",
-        "calories": "209.62",
-        "fat": "4.49",
-        "carbs": "35.93",
-        "protein": "4.99",
-        "allergens": [
-          "Wheat/gluten",
-          "Soybean oil"
-        ],
-        "halal": false,
-        "vegan": false,
-        "vegetarian": false,
-        "dairyFree": true,
-        "glutenFree": false,
-        "pescetarian": false
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Breakfast",
-      "section": "Tomato Street Grill",
-      "item_id": 3506,
-      "common_items": {
-        "name": "Diced Hash Browns",
-        "description": "Crispy hash brown potatoes.",
-        "serving_size": "4 oz",
-        "calories": "259.25",
-        "fat": "16.07",
-        "carbs": "25.67",
-        "protein": "2.70",
-        "allergens": [
-          "Soybean oil",
-          "Prepared in a shared fryer"
-        ],
-        "halal": true,
-        "vegan": true,
-        "vegetarian": true,
-        "dairyFree": true,
-        "glutenFree": true,
-        "pescetarian": true
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Breakfast",
-      "section": "Tomato Street Grill",
-      "item_id": 3503,
-      "common_items": {
-        "name": "Breakfast Burrito Bar",
-        "description": "Warm flour tortillas ready to wrap chicken, eggs, beans, rice, cheese and house made salsa in",
-        "serving_size": "100 g",
-        "calories": "163.13",
-        "fat": "11.86",
-        "carbs": "4.62",
-        "protein": "9.6",
-        "allergens": [
-          "Soy",
-          "Wheat/gluten",
-          "Dairy",
-          "Egg",
-          "Soybean oil"
-        ],
-        "halal": true,
-        "vegan": false,
-        "vegetarian": false,
-        "dairyFree": false,
-        "glutenFree": false,
-        "pescetarian": false
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Breakfast",
       "section": "Go Live",
       "item_id": 3617,
       "common_items": {
@@ -13642,31 +13435,6 @@
       "dc": "Segundo",
       "day": 5,
       "meal": "Lunch",
-      "section": "Bistro",
-      "item_id": 4582,
-      "common_items": {
-        "name": "Garlic Sweet Potato Mash",
-        "description": "A simple yet savory blend of sweet potatoes and garlic, roasted to perfection and lightly seasoned with salt and pepper.",
-        "serving_size": "4.03 oz",
-        "calories": "102.01",
-        "fat": "2.30",
-        "carbs": "19.34",
-        "protein": "1.60",
-        "allergens": [
-          "No major allergens"
-        ],
-        "halal": true,
-        "vegan": true,
-        "vegetarian": true,
-        "dairyFree": true,
-        "glutenFree": true,
-        "pescetarian": true
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Lunch",
       "section": "Saucey",
       "item_id": 3482,
       "common_items": {
@@ -14089,16 +13857,17 @@
       "day": 5,
       "meal": "Dinner",
       "section": "Tomato Street Grill",
-      "item_id": 3704,
+      "item_id": 3560,
       "common_items": {
-        "name": "Sweet Potato Fries",
-        "description": "Crispy fried sweet potato fries",
-        "serving_size": "0.27 lb",
-        "calories": "253.84",
-        "fat": "16.80",
-        "carbs": "23.33",
-        "protein": "1.37",
+        "name": "Curly Fries",
+        "description": "Crispy deep-fried seasoned curly cut potato fries.",
+        "serving_size": "4.4 oz",
+        "calories": "313.17",
+        "fat": "20.78",
+        "carbs": "28.35",
+        "protein": "2.69",
         "allergens": [
+          "Wheat/gluten",
           "Soybean oil",
           "Prepared in a shared fryer"
         ],
@@ -14106,7 +13875,7 @@
         "vegan": true,
         "vegetarian": true,
         "dairyFree": true,
-        "glutenFree": true,
+        "glutenFree": false,
         "pescetarian": true
       }
     },
@@ -14152,7 +13921,7 @@
         "carbs": "5.65",
         "protein": "2.40",
         "allergens": [
-          "Fresh broccoli florets"
+          "No major allergens"
         ],
         "halal": true,
         "vegan": true,
@@ -14356,60 +14125,6 @@
         "vegetarian": true,
         "dairyFree": true,
         "glutenFree": true,
-        "pescetarian": true
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Dinner",
-      "section": "Saucey",
-      "item_id": 3482,
-      "common_items": {
-        "name": "Pepperoni Pizza",
-        "description": "Pizza topped with pepperoni, Mozzarella, and Parmesan cheese.",
-        "serving_size": "3.33 oz",
-        "calories": "220.82",
-        "fat": "8.16",
-        "carbs": "28.09",
-        "protein": "9.19",
-        "allergens": [
-          "Wheat/gluten",
-          "Dairy",
-          "Soybean oil"
-        ],
-        "halal": true,
-        "vegan": false,
-        "vegetarian": false,
-        "dairyFree": false,
-        "glutenFree": false,
-        "pescetarian": false
-      }
-    },
-    {
-      "dc": "Segundo",
-      "day": 5,
-      "meal": "Dinner",
-      "section": "Saucey",
-      "item_id": 3483,
-      "common_items": {
-        "name": "Cheese Pizza",
-        "description": "Topped with our house-made tomato sauce, Mozzarella, and Parmesan cheese.",
-        "serving_size": "3.2 oz",
-        "calories": "201.61",
-        "fat": "6.38",
-        "carbs": "28.05",
-        "protein": "8.47",
-        "allergens": [
-          "Wheat/gluten",
-          "Dairy",
-          "Soybean oil"
-        ],
-        "halal": true,
-        "vegan": false,
-        "vegetarian": true,
-        "dairyFree": false,
-        "glutenFree": false,
         "pescetarian": true
       }
     },

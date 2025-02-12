@@ -18,6 +18,26 @@ def load_menu_data():
         print("Error: Invalid JSON in menu_data.json")
         return {}
 
+def load_food_truck_data():
+    """Load food truck data from JSON file."""
+    try:
+        with open("food_truck_data.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print("Warning: food_truck_data.json not found")
+        return {"food_trucks": []}
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON in food_truck_data.json")
+        return {"food_trucks": []}
+
+
+@app.route("/api/food-trucks", methods=["GET"])
+def get_food_trucks():
+    """
+    Returns food truck schedule data from the JSON file
+    """
+    food_truck_data = load_food_truck_data()
+    return jsonify(food_truck_data), 200
 
 @app.route("/api/menu", methods=["GET"])
 def get_menu():
@@ -52,4 +72,3 @@ def get_menu():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
-
