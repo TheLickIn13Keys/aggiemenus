@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import FoodItem from "../../api/foodItemSchema";
 import { useFavoritesStore, FavoriteItem } from '../util/favoritesStore';
+import menu_data from '../../../../backend/menu_data.json';
 
-// desktop view 
-// need to fix so that available now items dont grab from supabase but grab from our data.json in the backend
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// desktop view
+// need to fix so that available now items dont grab from supabase but grab from our menu_data.json in the backend
 
 const FavoritesButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,38 +20,67 @@ const FavoritesButton = () => {
   const { favorites, initializeFavorites, toggleFavorite } = useFavoritesStore();
 
   useEffect(() => {
-    initializeFavorites();
+    const storedFavorites = localStorage.getItem('CapacitorStorage.favorites');
+    
+    if (!favorites.length && storedFavorites) {
+      const parsedFavorites = JSON.parse(storedFavorites);
+      initializeFavorites();
+      for (const favorite of parsedFavorites) {
+        toggleFavorite(favorite);
+      }
+    }
   }, []);
 
   useEffect(() => {
-    const fetchCurrentMenu = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('current_menu')
-          .select(`*, common_items ( * )`)
-          .eq('day', String(currentDay));
+    const getCurrentMenuItems = () => {
+      console.log('Current day:', currentDay);
+      
+      const allItems = Object.entries(menu_data).flatMap(([key, items]) => {
+        const [dc, day, meal] = key.split('_');
+        const processed = items.map((item: any) => ({
+          ...item,
+          id: Number(item.item_id),
+          name: item.common_items.name,
+          day: parseInt(day),
+          meal: meal,
+          dc: dc
+        }));
+        return processed;
+      });
 
-        if (error) throw error;
-        setFoodItems(data || []);
-      } catch (error) {
-        console.error("Error fetching current menu:", error);
-      }
+      const currentDayItems = allItems.filter(item => item.day === currentDay);
+      setFoodItems(currentDayItems);
     };
 
     if (currentDay !== null) {
-      fetchCurrentMenu();
+      getCurrentMenuItems();
     }
   }, [currentDay]);
 
   const getAvailableFavorites = () => {
-    return favorites.filter(item => {
-      const matchingItems = foodItems.filter(foodItem =>
-        foodItem.id === item.id &&
-        foodItem.dc === item.dc &&
-        foodItem.meal === item.meal
-      );
-      return matchingItems.length > 0;
+
+    const available = favorites.filter(favorite => {
+
+      const matchingItems = foodItems.filter(foodItem => {
+        const nameMatch = foodItem.common_items.name === favorite.name;
+        const dcMatch = foodItem.dc.toLowerCase() === (favorite.dc?.toLowerCase() ?? '');
+        const mealMatch = foodItem.meal.toLowerCase() === (favorite.meal?.toLowerCase() ?? '');
+
+        if (nameMatch || dcMatch || mealMatch) {
+          console.log('Potential match found:', {
+            name: foodItem.common_items.name,
+            matches: { nameMatch, dcMatch, mealMatch }
+          });
+        }
+
+        return nameMatch && dcMatch && mealMatch;
+      });
+
+      const isAvailable = matchingItems.length > 0;
+      return isAvailable;
     });
+
+    return available;
   };
 
   const favoritesToDisplay = activeTab === 'available' ? getAvailableFavorites() : favorites;
