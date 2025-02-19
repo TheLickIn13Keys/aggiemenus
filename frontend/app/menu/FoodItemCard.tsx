@@ -24,6 +24,7 @@ const FoodItemCard = ({ foodItem, index }: Props) => {
         await toggleFavorite({
             id: foodItem.id,
             name: foodItem.common_items.name,
+            common_items: foodItem.common_items,
             dc: foodItem.dc,
             section: foodItem.section,
             meal: foodItem.meal

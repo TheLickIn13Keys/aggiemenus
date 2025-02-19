@@ -39,28 +39,31 @@ const NavBar = ({
         setQuery(value);
         setSearchQuery(value); // Update parent's searchQuery immediately
     };
-
     return (
         <div className="flex flex-row items-center bg-white">
             <div className="flex flex-row items-center pt-[60px] pb-[15px] bg-white md:px-[140px] lg:pl-0 w-full">
                 <div className="lg:pl-[140px] px-[20px] lg:max-w-[1880px] w-full h-[36px] items-center flex justify-between order-1 md:order-2">
-                    <div className="lg:hidden form-control relative">
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            className="input h-[36px] font-red-hat rounded-full w-full px-10 mr-[15px]"
-                            value={query}
-                            onChange={(e) => handleSearchChange(e.target.value)}
-                        />
-                        <img
-                            src="/search_icon.svg"
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                            alt="Search"
-                        />
-                    </div>
+                    {/* Mobile/Tablet row: search bar, filter, favorites (visible up to lg) */}
+                    <div className="lg:hidden flex flex-row items-center gap-x-[15px] w-full">
+                        {/* Search bar */}
+                        <div className="relative flex-1">
+                            <input
+                                type="text"
+                                placeholder="Search"
+                                className="input h-[36px] font-red-hat rounded-full w-full px-10"
+                                value={query}
+                                onChange={(e) =>
+                                    handleSearchChange(e.target.value)
+                                }
+                            />
+                            <img
+                                src="/search_icon.svg"
+                                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                                alt="Search"
+                            />
+                        </div>
 
-                    {/* only viewable for smaller screens */}
-                    <div className="md:hidden flex flex-row gap-x-[15px] flex-shrink-0">
+                        {/* Filter button */}
                         <button
                             className="flex items-center justify-center"
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -68,27 +71,24 @@ const NavBar = ({
                             <img src="/filter_icon.svg" alt="Filter" />
                         </button>
 
+                        {/* Favorites button (mobile) */}
                         <MobileFavoritesButton />
                     </div>
 
-                    {/* container for aggie menu logo and favorites + profile icon */}
+                    {/* Desktop layout: logo, favorites, profile (visible at lg+) */}
                     <div className="hidden lg:flex w-full flex-row justify-between items-center">
                         <img src="/aggiemenus2.svg" alt="Aggie Menus" />
 
                         <div className="flex flex-row items-center justify-center gap-x-[30px]">
-                            <div>
-                                {/* Mobile Favorites - shown only on small screens */}
-
-                                {/* Desktop Favorites - hidden on small screens, shown on md and up */}
-                                <div className="hidden md:block">
-                                    <FavoritesButton />
-                                </div>
+                            {/* Desktop Favorites */}
+                            <div className="hidden lg:block">
+                                <FavoritesButton />
                             </div>
 
+                            {/* Profile */}
                             <div>
                                 <button className="flex flex-row gap-x-[5px]">
                                     <img
-                                        className=""
                                         src="/profile_icon.svg"
                                         alt="Profile"
                                     />
@@ -104,5 +104,4 @@ const NavBar = ({
         </div>
     );
 };
-
 export default NavBar;
