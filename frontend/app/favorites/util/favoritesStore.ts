@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { getFavorites, addFavorite, removeFavorite } from './preferencesUtils';
 
 export interface FavoriteItem {
+    common_items: any;
     id: string;
     name: string;
     dc?: string;
@@ -23,7 +24,7 @@ export const useFavoritesStore = create<FavoritesStore>((set, get) => ({
 
     initializeFavorites: async () => {
         if (!get().initialized) {
-            const favorites = await getFavorites();
+            const favorites = await getFavorites() as FavoriteItem[];
             set({ favorites, initialized: true });
         }
     },
