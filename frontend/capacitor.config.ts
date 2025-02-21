@@ -19,14 +19,6 @@ const config: CapacitorConfig = {
     // ios: {
     //     contentInset: "automatic",
     // },
-,
-    android: {
-       buildOptions: {
-          keystorePath: 'undefined',
-          keystoreAlias: 'undefined',
-       }
-    }
-  };
+};
 
 export default config;
-
