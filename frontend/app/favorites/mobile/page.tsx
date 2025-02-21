@@ -23,9 +23,15 @@ const MobileFavoritesPage = () => {
     const [favoritesToDisplay, setFavoritesToDisplay] = useState<
         EnhancedFavoriteItem[]
     >([]);
+    const [isCapacitor, setIsCapacitor] = useState(false);
 
     useEffect(() => {
         initializeFavorites();
+    }, []);
+
+    useEffect(() => {
+        // Check if running in Capacitor
+        setIsCapacitor(window.location.protocol === "capacitor:");
     }, []);
 
     useEffect(() => {
@@ -50,7 +56,7 @@ const MobileFavoritesPage = () => {
         };
 
         fetchCurrentMenu();
-    }, []); // Only fetch once when component mounts
+    }, []);
 
     useEffect(() => {
         setFavoritesToDisplay(
@@ -102,7 +108,11 @@ const MobileFavoritesPage = () => {
                         />
                     </button>
                 </Link>
-                <h4 className="w-full text-center text-primary font-semibold">
+                <h4
+                    className={`w-full text-center text-primary font-semibold ${
+                        isCapacitor ? "mt-8" : ""
+                    }`}
+                >
                     Favorited Items
                 </h4>
             </div>
@@ -148,26 +158,32 @@ const MobileFavoritesPage = () => {
                                             {item.name}
                                         </h4>
                                     </div>
-                                    <div className="flex gap-2 text-sm text-[#8B8B8B] mt-1">
-                                        {activeTab === "available" && (
-                                            <>
-                                                <span className="text-[11px] font-medium font-red-hat">
-                                                    {item.dcs?.join(", ") ||
-                                                        "No DC Info"}
-                                                </span>
-                                                <span>•</span>
-                                            </>
-                                        )}
-                                        <span className="text-[11px] font-medium font-red-hat">
-                                            {item.availableMeals?.[0] ||
-                                                item.meal ||
-                                                "Unknown Meal"}
-                                        </span>
-                                        <span>•</span>
-                                        <span className="text-[11px] text-[#8B8B8B] font-medium font-red-hat">
-                                            {item.availableSections?.[0] ||
-                                                item.section}
-                                        </span>
+                                    <div className="flex flex-wrap text-sm text-[#8B8B8B] mt-1">
+                                        <div className="inline-flex flex-wrap gap-2">
+                                            {activeTab === "available" && (
+                                                <>
+                                                    <span className="text-[11px] font-medium font-red-hat whitespace-nowrap">
+                                                        {item.dcs?.join(", ") ||
+                                                            "No DC Info"}
+                                                    </span>
+                                                    <span className="whitespace-nowrap">
+                                                        •
+                                                    </span>
+                                                </>
+                                            )}
+                                            <span className="text-[11px] font-medium font-red-hat whitespace-nowrap">
+                                                {item.availableMeals?.[0] ||
+                                                    item.meal ||
+                                                    "Unknown Meal"}
+                                            </span>
+                                            <span className="whitespace-nowrap">
+                                                •
+                                            </span>
+                                            <span className="text-[11px] text-[#8B8B8B] font-medium font-red-hat whitespace-nowrap">
+                                                {item.availableSections?.[0] ||
+                                                    item.section}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <button

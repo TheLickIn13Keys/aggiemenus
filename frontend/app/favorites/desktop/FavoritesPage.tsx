@@ -23,7 +23,9 @@ const FavoritesButton = () => {
         return (curDate.getDay() - 1 + 7) % 7;
     });
     const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
-    const [favoritesToDisplay, setFavoritesToDisplay] = useState<EnhancedFavoriteItem[]>([]);
+    const [favoritesToDisplay, setFavoritesToDisplay] = useState<
+        EnhancedFavoriteItem[]
+    >([]);
 
     const { favorites, initializeFavorites, toggleFavorite } =
         useFavoritesStore();
@@ -66,31 +68,41 @@ const FavoritesButton = () => {
     }, []); // Remove currentDay dependency since we're fetching all data
 
     const getAvailableFavorites = (): EnhancedFavoriteItem[] => {
-        return favorites.map(favorite => {
+        return favorites.map((favorite) => {
             // Find all instances of this item across all DCs
-            const matchingItems = foodItems.filter(foodItem =>
-                foodItem.common_items.name === favorite.name
+            const matchingItems = foodItems.filter(
+                (foodItem) => foodItem.common_items.name === favorite.name
             );
-            
+
             // Get unique DCs serving this item
-            const servingDCs = Array.from(new Set(matchingItems.map(item => item.dc))).sort();
-            
+
+            const dcOrder = ["Segundo", "Tercero", "Cuarto", "Latitude"];
+            const servingDCs = Array.from(
+                new Set(matchingItems.map((item) => item.dc))
+            ).sort((a, b) => dcOrder.indexOf(a) - dcOrder.indexOf(b));
+
             // Get unique meals and sections (taking the first one if multiple exist)
-            const meals = Array.from(new Set(matchingItems.map(item => item.meal)));
-            const sections = Array.from(new Set(matchingItems.map(item => item.section)));
-            
+            const meals = Array.from(
+                new Set(matchingItems.map((item) => item.meal))
+            );
+            const sections = Array.from(
+                new Set(matchingItems.map((item) => item.section))
+            );
+
             return {
                 ...favorite,
                 dcs: servingDCs,
                 availableMeals: meals,
                 availableSections: sections,
-                isAvailable: matchingItems.length > 0
+                isAvailable: matchingItems.length > 0,
             };
         });
     };
 
     useEffect(() => {
-        setFavoritesToDisplay(activeTab === "available" ? getAvailableFavorites() : favorites);
+        setFavoritesToDisplay(
+            activeTab === "available" ? getAvailableFavorites() : favorites
+        );
     }, [activeTab, favorites, foodItems]);
 
     useEffect(() => {
@@ -180,7 +192,10 @@ const FavoritesButton = () => {
                             <div className="px-6 pt-6">
                                 <div className="grid grid-cols-1 gap-y-[15px] border-b border-[#C3D9ED] pb-[40px] px-[24px]">
                                     {favoritesToDisplay.map((item) => (
-                                        <div key={item.id} className="bg-white rounded-md p-[20px] items-center">
+                                        <div
+                                            key={item.id}
+                                            className="bg-white rounded-md p-[20px] items-center"
+                                        >
                                             <div className="flex flex-row items-center justify-between">
                                                 <div>
                                                     <div className="flex justify-between items-start">
@@ -190,20 +205,29 @@ const FavoritesButton = () => {
                                                     </div>
                                                     <div className="flex gap-2 text-sm text-[#8B8B8B] mt-1">
                                                         <span className="text-[11px] font-medium font-red-hat">
-                                                            {item.dcs?.join(', ') || 'No DC Info'}
+                                                            {item.dcs?.join(
+                                                                ", "
+                                                            ) || "No DC Info"}
                                                         </span>
                                                         <span>•</span>
                                                         <span className="text-[11px] font-medium font-red-hat">
-                                                            {item.availableMeals?.[0] || item.meal || 'Unknown Meal'}
+                                                            {item
+                                                                .availableMeals?.[0] ||
+                                                                item.meal ||
+                                                                "Unknown Meal"}
                                                         </span>
                                                         <span>•</span>
                                                         <span className="text-[11px] text-[#8B8B8B] font-medium font-red-hat">
-                                                            {item.availableSections?.[0] || item.section}
+                                                            {item
+                                                                .availableSections?.[0] ||
+                                                                item.section}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <button
-                                                    onClick={() => toggleFavorite(item)}
+                                                    onClick={() =>
+                                                        toggleFavorite(item)
+                                                    }
                                                     className="flex items-center justify-center bg-[#F1F7F7] rounded-full w-[30px] h-[30px]"
                                                 >
                                                     <img
