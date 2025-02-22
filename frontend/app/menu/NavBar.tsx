@@ -18,7 +18,7 @@ const NavBar = ({
     setSearchQuery,
     isFilterOpen,
     setIsFilterOpen,
-}: Props) => {
+}: Props) => { 
     const [query, setQuery] = useState("");
 
     useEffect(() => {
@@ -39,6 +39,7 @@ const NavBar = ({
         setQuery(value);
         setSearchQuery(value); // Update parent's searchQuery immediately
     };
+    
     return (
         <div className="flex flex-row items-center bg-white">
             <div className="flex flex-row items-center pt-[60px] pb-[15px] bg-white md:px-[140px] lg:pl-0 w-full">
@@ -63,17 +64,18 @@ const NavBar = ({
                             />
                         </div>
 
-          {/* only viewable for smaller screens */}
-          <div className="lg:hidden flex flex-row gap-x-[15px] flex-shrink-0">
-            <button
-              className="flex items-center justify-center"
-              onClick={() => setIsFilterOpen(!isFilterOpen)}
-            >
-              <img src="/filter_icon.svg" alt="Filter" />
-            </button>
+                        {/* only viewable for smaller screens */}
+                        <div className="lg:hidden flex flex-row gap-x-[15px] flex-shrink-0">
+                            <button
+                                className="flex items-center justify-center"
+                                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                            >
+                                <img src="/filter_icon.svg" alt="Filter" />
+                            </button>
 
-                        {/* Favorites button (mobile) */}
-                        <MobileFavoritesButton />
+                            {/* Favorites button (mobile) */}
+                            <MobileFavoritesButton />
+                        </div>
                     </div>
 
                     {/* Desktop layout: logo, favorites, profile (visible at lg+) */}
