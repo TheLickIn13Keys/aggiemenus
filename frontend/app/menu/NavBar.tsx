@@ -55,7 +55,7 @@ const NavBar = ({ searchBarOpen, setSearchBarOpen, setSearchQuery, isFilterOpen,
           </div>
 
           {/* only viewable for smaller screens */}
-          <div className="md:hidden flex flex-row gap-x-[15px] flex-shrink-0">
+          <div className="lg:hidden flex flex-row gap-x-[15px] flex-shrink-0">
             <button
               className="flex items-center justify-center"
               onClick={() => setIsFilterOpen(!isFilterOpen)}
