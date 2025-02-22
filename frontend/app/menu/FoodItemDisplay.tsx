@@ -20,9 +20,10 @@ interface Props {
     searchQuery: string;
     isFilterOpen: boolean;
     setIsFilterOpen: (isOpen: boolean) => void;
+    view: "default" | "grid";
 }
 
-const FoodItemDisplay = ({ dc, day, meal, searchQuery, isFilterOpen, setIsFilterOpen }: Props) => {
+const FoodItemDisplay = ({ dc, day, meal, searchQuery, isFilterOpen, setIsFilterOpen, view }: Props) => {
     const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
     const [sections, setSections] = useState<string[]>([""]);
     const [filters, setFilters] = useState({
@@ -214,7 +215,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery, isFilterOpen, setIsFilter
     return (
         <div className="flex flex-col lg:flex-row w-full">
             {/* Main content with menu items */}
-            <div className="w-full lg:flex-1 lg:flex lg:flex-row">
+            <div className="w-full lg:flex-1 lg:flex lg:flex-row ">
                 <div className="px-[20px] py-[15px] md:px-[140px] lg:pr-0 lg:w-[1450px] max-w-[1450px]">
                     {sections.map((section, sectionIndex) => (
                         <div key={section} className="mb-[15px]">
@@ -225,8 +226,9 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery, isFilterOpen, setIsFilter
                                 variants={containerVariants}
                                 initial="hidden"
                                 animate="visible"
-                                className="grid grid-cols-1 gap-4 "
+                                className={`grid gap-4 ${view === "grid" ? "grid-cols-2" : "grid-cols-1"}`}
                             >
+
                                 {filteredItems
                                     .filter(item => item.section === section)
                                     .map((foodItem, index) => (
@@ -239,6 +241,7 @@ const FoodItemDisplay = ({ dc, day, meal, searchQuery, isFilterOpen, setIsFilter
                                                 <FoodItemCard
                                                     foodItem={foodItem}
                                                     index={`${sectionIndex}_${index}`}
+                                                    view = {view}
                                                 />
                                             </label>
                                             <FoodItemModal
