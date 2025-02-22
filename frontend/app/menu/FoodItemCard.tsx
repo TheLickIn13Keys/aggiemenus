@@ -7,9 +7,10 @@ import { usePostHog } from 'posthog-js/react';
 interface Props {
     foodItem: FoodItem;
     index: string;
+    view: "default" | "grid";
 }
 
-const FoodItemCard = ({ foodItem, index }: Props) => {
+const FoodItemCard = ({ foodItem, index, view }: Props) => {
     const { initializeFavorites, toggleFavorite, isFavorite } = useFavoritesStore();
     const posthog = usePostHog();
 
@@ -44,9 +45,9 @@ const FoodItemCard = ({ foodItem, index }: Props) => {
 
     return (
         <label htmlFor={`food_item_${index}`}>
-            <div className="flex items-center rounded bg-white hover:bg-slate-200 hover:cursor-pointer transition duration-300 ease-in-out">
+            <div className="flex items-center rounded bg-white hover:bg-slate-200 hover:cursor-pointer transition duration-300 ease-in-out ">
                 <div className="flex flex-col sm:justify-between sm:flex-row sm:items-center w-full p-[20px]">
-                    <div className='sm:flex sm:flex-row'>
+                <div className={`sm:flex ${view === "grid" ? "flex-col gap-y-[7px]" : "flex-row"}`}>
                         <div className="flex flex-row justify-between">
                             <div className="flex flex-col">
                                 <div className="font-semibold text-sm text-textDarkBlue sm:w-[150px] md:w-[75px] lg:w-[100px] xl:w-[150px]">
@@ -73,7 +74,7 @@ const FoodItemCard = ({ foodItem, index }: Props) => {
                         </div>
 
                         {/* Diet tags section */}
-                        <div className="mt-[8px] sm:mt-0 flex flex-row gap-[7px] items-center lg:grid lg:grid-cols-2 xl:flex xl:flex-row">
+                        <div className={`mt-[8px] sm:mt-0 flex flex-row gap-[7px] items-center lg:grid lg:grid-cols-2 xl:flex xl:flex-row`}>
                             {foodItem.common_items.pescetarian && (
                                 <div className="text-white px-[8px] py-[5px] rounded-full bg-pescetarianBlue text-xs font-red-hat">
                                     Pescetarian
@@ -95,6 +96,8 @@ const FoodItemCard = ({ foodItem, index }: Props) => {
                                 </div>
                             )}
                         </div>
+
+
                     </div>
 
                     <div className='flex-shrink-0 hidden sm:block w-fit'>

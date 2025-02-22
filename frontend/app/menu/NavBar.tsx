@@ -63,13 +63,14 @@ const NavBar = ({
                             />
                         </div>
 
-                        {/* Filter button */}
-                        <button
-                            className="flex items-center justify-center"
-                            onClick={() => setIsFilterOpen(!isFilterOpen)}
-                        >
-                            <img src="/filter_icon.svg" alt="Filter" />
-                        </button>
+          {/* only viewable for smaller screens */}
+          <div className="lg:hidden flex flex-row gap-x-[15px] flex-shrink-0">
+            <button
+              className="flex items-center justify-center"
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+            >
+              <img src="/filter_icon.svg" alt="Filter" />
+            </button>
 
                         {/* Favorites button (mobile) */}
                         <MobileFavoritesButton />
