@@ -1,0 +1,58 @@
+{
+  "food_trucks": [
+    {
+      "date": "Monday,\u00a0 February 24, 2025",
+      "location": "Quad",
+      "place": "Quickly's",
+      "time": "\u2014 11  a.m. to 3  p.m."
+    },
+    {
+      "date": "Tuesday,\u00a0 February 25, 2025",
+      "location": "Quad",
+      "place": "Star Ginger",
+      "time": "\u2014 11  a.m. to 3  p.m."
+    },
+    {
+      "date": "Wednesday,\u00a0 February 26, 2025",
+      "location": "Bioletti Way",
+      "place": "Star Ginger",
+      "time": "\u2014 11  a.m. to 7  p.m."
+    },
+    {
+      "date": "Thursday,\u00a0 February 27, 2025",
+      "location": "Bioletti Way",
+      "place": "Quickly's",
+      "time": "\u2014 11  a.m. to 3  p.m."
+    },
+    {
+      "date": "Friday,\u00a0 February 28, 2025",
+      "location": "Quad",
+      "place": "Star Ginger",
+      "time": "\u2014 11  a.m. to 3  p.m."
+    },
+    {
+      "date": "Saturday,\u00a0 March 01, 2025",
+      "location": "Quad",
+      "place": "Star Ginger",
+      "time": "\u2014 11  a.m. to 3  p.m."
+    },
+    {
+      "date": "Sunday,\u00a0 March 02, 2025",
+      "location": "Quad",
+      "place": "Star Ginger",
+      "time": "\u2014 11  a.m. to 3  p.m."
+    },
+    {
+      "date": "Monday,\u00a0 March 03, 2025",
+      "location": "Quad",
+      "place": "Star Ginger",
+      "time": "\u2014 11  a.m. to 3  p.m."
+    },
+    {
+      "date": "Tuesday,\u00a0 March 04, 2025",
+      "location": "Quad",
+      "place": "Quickly's",
+      "time": "\u2014 11  a.m. to 3  p.m."
+    }
+  ]
+}
