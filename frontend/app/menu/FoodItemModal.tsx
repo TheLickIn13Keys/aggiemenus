@@ -22,7 +22,7 @@ const FoodItemModal = ({ foodItem, index }: Props) => {
         <div className="flex flex-row">
 
           {/* container for sub containers of food name, food section, tags, description, allergsn, and nutritional info */}
-          <div className="flex flex-col">
+          <div className="flex flex-col font-red-hat">
             {/* close button */}
             <label
               htmlFor={`food_item_${index}`}
@@ -70,7 +70,7 @@ const FoodItemModal = ({ foodItem, index }: Props) => {
               </div>
 
               {/* Short description */}
-              <p className="w-full flex justify-start text-start text-textDarkBlue font-semibold">
+              <p className="w-full flex justify-start text-start text-textDarkBlue font-normal">
                 {foodItem.common_items.description !== "None"
                   ? foodItem.common_items.description
                   : ""}

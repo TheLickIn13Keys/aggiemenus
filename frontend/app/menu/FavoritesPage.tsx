@@ -93,7 +93,7 @@ const FavoritesButton = () => {
         className="flex flex-row items-center gap-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
       >
         <img className="w-5 h-5" src="/favorite_icon.svg" alt="Favorites" />
-        <p className="text-primary font-medium">Favorites</p>
+        <p className="text-primary font-red-hat font-medium">Favorites</p>
       </button>
 
       {shouldRender && (
