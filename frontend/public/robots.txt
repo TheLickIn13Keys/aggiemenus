@@ -1,0 +1,10 @@
+# www.robotstxt.org/
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /api/
+
+Crawl-delay: 10
+
+Sitemap: https://aggiemenus.org/sitemap.xml 
