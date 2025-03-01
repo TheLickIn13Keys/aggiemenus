@@ -12,10 +12,12 @@ const Menu = () => {
   const [selectedDC, setSelectedDC] = useState("Segundo");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDay, setSelectedDay] = useState(() => {
+    
     // Initialize day based on current date
     const curDate = new Date(Date.now());
     return (curDate.getDay() - 1 + 7) % 7;
   });
+
 
   const [selectedMeal, setSelectedMeal] = useState(() => {
     // Initialize meal based on current time
@@ -42,6 +44,10 @@ const Menu = () => {
       });
     }
   }, [posthog, selectedDC, selectedMeal, selectedDay]);
+
+  type ViewType = "default" | "grid";
+
+  const [view, setView] = useState<ViewType>("default"); // Lift state up
 
   return (
     <div
@@ -81,6 +87,8 @@ const Menu = () => {
           selectedMeal={selectedMeal}
           setSelectedMeal={setSelectedMeal}
           setSearchQuery={setSearchQuery}
+          view = {view}
+          setView={setView}
         />
         <FoodItemDisplay
           dc={selectedDC}
@@ -89,6 +97,7 @@ const Menu = () => {
           searchQuery={searchQuery}
           isFilterOpen={isFilterOpen}
           setIsFilterOpen={setIsFilterOpen}
+          view = {view}
         />
       </main>
       <footer>
