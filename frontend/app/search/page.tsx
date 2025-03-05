@@ -61,7 +61,7 @@ export default function SearchPage() {
         sesame: false,
     });
 
-    // For “Recently searched” and “Trying searching for...”
+    // For "Recently searched" and "Trying searching for..."
     // In reality, these might come from localStorage or an API
     const [recentSearches] = useState([
         "Tomato soup",
@@ -347,6 +347,7 @@ export default function SearchPage() {
                                             key={item.id}
                                             foodItem={item}
                                             index={index.toString()}
+                                            view="default"
                                         />
                                     ))}
                                 </div>
