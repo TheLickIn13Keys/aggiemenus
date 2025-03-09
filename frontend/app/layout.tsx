@@ -7,6 +7,9 @@ import React from "react";
 import { PostHogProvider } from "./providers";
 import PostHogPageView from "./PostHogPageView";
 import { StatusBarSpace } from "./StatusBarSpace";
+import StructuredData from "./structuredData";
+import Head from "next/head";
+
 const inter = Inter({ subsets: ["latin"] });
 const redHat = Red_Hat_Display({
     subsets: ["latin"],
@@ -16,10 +19,31 @@ const redHat = Red_Hat_Display({
 
 export const metadata: Metadata = {
     title: "aggiemenus",
-    description:
-        "The improved dining commons menu for UC Davis students made by AggieWorks",
+    openGraph: {
+        title: "AggieMenus",
+        description: "Find your perfect dining experience, all in one place",
+        url: "https://aggiemenus.org",
+        siteName: "AggieMenus",
+        images: "/cowlogo.png",
+        type: "website",
+        locale: "en_US",
+    },
     icons: { icon: "/cowlogo.png" },
     manifest: "/manifest.json",
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
+    alternates: {
+        canonical: 'https://aggiemenus.org',
+    },
 };
 
 export default function RootLayout({
@@ -29,6 +53,12 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className={`${redHat.variable}`}>
+            <Head>
+            <title>AggieMenus</title>
+            <meta name="description" content="Find your perfect dining experience, all in one place" />
+            <meta name="referrer" content="no-referrer" />
+            <StructuredData />
+      </Head>
             <body>
                 <PostHogProvider>
                     <PostHogPageView />

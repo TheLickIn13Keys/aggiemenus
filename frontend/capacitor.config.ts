@@ -1,7 +1,7 @@
 import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-    appId: "org.aggiemenus.app",
+    appId: "com.aggiemenus.app",
     appName: "aggiemenus",
     webDir: "dist",
     server: {

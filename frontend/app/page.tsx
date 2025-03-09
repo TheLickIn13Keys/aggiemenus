@@ -1,18 +1,39 @@
-"use client"; // This is a client component 
+// "use client"; // This is a client component 
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useEffect } from 'react';
-import  Head  from 'next/head';                                                                                                                                                                                                         
-import { useRouter } from 'next/router';
 
+export const metadata = {
+  title: 'Davis Dining Commons',
+  description: 'Find your perfect dining experience, all in one place',
+  keywords: ['dining', 'food', 'restaurants', 'davis', 'dining commons', 'segundo', 'latitude', 'tercero', 'cuarto', 'ucd', 'uc davis', 'memorial union', 'mu', 
+              'davis dining', 'davis dining commons', 'davis dining hours', 'davis dining menu', 'davis dining prices', 'davis dining reviews', 'davis dining hours', 
+              'davis dining menu', 'davis dining prices', 'davis dining reviews', 'uc davis dining hall', 'ucd dining commons', 'segundo dining hall',
+              'segundo dc menu', 'segundo dc hours', 'segundo dc', 'segundo dc reviews', 'latitude dining hall', 'latitude dc menu', 'latitude dc hours',
+              'latitude dc', 'latitude dc reviews', 'tercero dining hall', 'tercero dc menu', 'tercero dc hours', 'tercero dc', 'tercero dc reviews',
+              'cuarto dining hall', 'cuarto dc menu', 'cuarto dc hours', 'cuarto dc', 'cuarto dc reviews', 'ucd dining commons', 'ucd dc menu',
+              'ucd dc hours', 'ucd dc', 'ucd dc reviews'
+            ],
+            
+  authors: [{ name: 'AggieMenus', url: 'https://aggiemenus.org' }],
+  openGraph: {
+    title: 'AggieMenus',
+    description: 'Find your perfect dining experience, all in one place',
+    url: 'https://aggiemenus.org', 
+    siteName: 'AggieMenus',
+    locale: 'en_US',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
 
 export default function Home() {
     redirect('/menu'); // Redirect to '/menu' route
   return (
 	<>
-
-
       <div
         className="hero min-h-screen"
         style={{
