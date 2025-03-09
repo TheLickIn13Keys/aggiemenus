@@ -40,6 +40,7 @@ def scrape_food_trucks():
         response = requests.get(url, headers=headers)
         soup = BeautifulSoup(response.text, "html.parser")
         schedules = soup.find_all("div", class_="food_trucks_schedule")
+
         if schedules:
             schedule_div = schedules[0]
             dates = schedule_div.find_all("h3")
