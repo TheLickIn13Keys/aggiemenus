@@ -3,7 +3,6 @@ import json
 import time
 import threading
 from dotenv import load_dotenv
-from openai import OpenAI
 import supabase
 import schedule
 
@@ -23,15 +22,6 @@ if url and s_key:
 else:
     print("Warning: Supabase credentials not found in environment")
 
-def get_embedding(text, model="text-embedding-3-small"):
-    text = text.replace("\n", " ")
-    client_oa = OpenAI(api_key=os.environ.get("OPEN_AI_KEY"))
-    response = client_oa.embeddings.create(
-        input=text,
-        model="text-embedding-ada-002",
-    )
-    return response.data[0].embedding
-
 def find_or_create_common_items(item):
     """Finds item in the common_items table, or creates a new item, and returns the id."""
     if client is None:
@@ -46,8 +36,6 @@ def find_or_create_common_items(item):
 
         if len(res.data) == 0:
             # If the item does not exist, insert it
-            item_string = json.dumps(item)
-            embedding_data = get_embedding(item_string)
             item_without_id = {
                 "name": item["name"],
                 "description": item["description"],
@@ -63,7 +51,6 @@ def find_or_create_common_items(item):
                 "pescetarian": item["pescetarian"],
                 "dairyFree": item["dairyFree"],
                 "glutenFree": item["glutenFree"],
-                "embedding": embedding_data,
             }
             result = client.table("common_items").insert(item_without_id).execute()
             return result.data[0]["id"] if result.data else None
