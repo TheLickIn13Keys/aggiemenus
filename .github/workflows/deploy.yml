@@ -10,7 +10,7 @@ on:
 jobs:
   deploy-frontend:
     name: Build Frontend (Docker)
-    runs-on: self-hosted
+    runs-on: cicd
 
     steps:
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
 
   deploy-backend:
     name: Build Backend (Docker)
-    runs-on: self-hosted
+    runs-on: cicd
 
     steps:
       - name: Checkout code
@@ -50,7 +50,7 @@ jobs:
 
   deploy-services:
     name: Deploy Services (Docker Compose)
-    runs-on: self-hosted
+    runs-on: cicd
     needs: [deploy-frontend, deploy-backend]
 
     steps:
@@ -82,7 +82,7 @@ jobs:
 
   run-scraper:
     name: Run Scraper
-    runs-on: self-hosted
+    runs-on: cicd
 
     if: github.event_name == 'schedule'
 
