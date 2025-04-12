@@ -1,10 +1,7 @@
 import os
 import json
-import time
-import threading
 from dotenv import load_dotenv
 import supabase
-import schedule
 
 import dc_data_scraper
 import all_dcs
@@ -89,7 +86,7 @@ def scrape_and_save():
             menu_data.setdefault(key, []).append(item)
 
     # Save to JSON file
-    with open('menu_data.json', 'w') as f:
+    with open('/opt/aggiemenus/shared-data/menu_data.json', 'w') as f:
         # Convert tuple keys to strings for JSON serialization
         serializable_data = {
             f"{dc}_{day}_{meal}": items
@@ -99,12 +96,6 @@ def scrape_and_save():
 
     print("Finished daily scrape_and_save().")
 
-def run_scheduler():
-    """Runs the schedule.run_pending() loop in a background thread."""
-    while True:
-        schedule.run_pending()
-        time.sleep(60)  # Check tasks once per minute
-
 if __name__ == "__main__":
     if not client:
         print("Error: Supabase client not initialized")
@@ -112,17 +103,3 @@ if __name__ == "__main__":
 
     # Initial scrape
     scrape_and_save()
-
-    # Schedule daily scrape
-    schedule.every().day.at("04:00").do(scrape_and_save)
-
-    # Start scheduler in background thread
-    scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
-    scheduler_thread.start()
-
-    # Keep main thread alive
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("Shutting down...")

@@ -1,0 +1,7 @@
+python-dotenv
+supabase
+regex
+tqdm
+beautifulsoup4
+requests
+schedule

@@ -9,7 +9,7 @@ CORS(app, resources={r"*": {"origins": "*"}})
 def load_menu_data():
     """Load menu data from JSON file."""
     try:
-        with open("menu_data.json", "r") as f:
+        with open("/app/shared_data/menu_data.json", "r") as f:
             return json.load(f)
     except FileNotFoundError:
         print("Warning: menu_data.json not found")

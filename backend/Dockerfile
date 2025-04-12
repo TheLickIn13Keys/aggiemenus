@@ -1,17 +1,16 @@
-FROM python:3.9-slim
+FROM python:3.11-slim AS base
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-COPY ./requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
 
-RUN addgroup --system app && adduser --system --ingroup app app && chown app:app /app
-USER app
+EXPOSE 5000
 
-# Use supervisord to run both processes
-RUN pip3 install supervisor
-
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
