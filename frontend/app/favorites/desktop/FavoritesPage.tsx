@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FoodItem from "../../api/foodItemSchema";
 import { useFavoritesStore, FavoriteItem } from "../util/favoritesStore";
-import menu_data from "../../../../backend/menu_data.json";
 
 // desktop view
 // need to fix so that available now items dont grab from supabase but grab from our menu_data.json in the backend
