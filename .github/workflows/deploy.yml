@@ -10,7 +10,7 @@ on:
 jobs:
   deploy-frontend:
     name: Build Frontend (Docker)
-    runs-on: aggieworks-cicd-sj-1
+    runs-on: homelab-sj-1-cloud
 
     steps:
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
 
   deploy-backend:
     name: Build Backend (Docker)
-    runs-on: aggieworks-cicd-sj-1
+    runs-on: homelab-sj-1-cloud
 
     steps:
       - name: Checkout code
@@ -50,7 +50,7 @@ jobs:
 
   deploy-services:
     name: Deploy Services (Docker Compose)
-    runs-on: aggieworks-cicd-sj-1
+    runs-on: homelab-sj-1-cloud
     needs: [deploy-frontend, deploy-backend]
 
     steps:
@@ -82,7 +82,7 @@ jobs:
 
   run-scraper:
     name: Run Scraper
-    runs-on: aggieworks-cicd-sj-1
+    runs-on: homelab-sj-1-cloud
 
     if: github.event_name == 'schedule'
 
